@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsAggregatorMain", "NewsAggregatorMain\NewsAggregatorMain.csproj", "{433B0626-A255-4771-AC43-B08947FE6A04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{27EAA895-40A7-4B37-82B1-7D39ADC6AC55}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{433B0626-A255-4771-AC43-B08947FE6A04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{433B0626-A255-4771-AC43-B08947FE6A04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{433B0626-A255-4771-AC43-B08947FE6A04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{433B0626-A255-4771-AC43-B08947FE6A04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27EAA895-40A7-4B37-82B1-7D39ADC6AC55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27EAA895-40A7-4B37-82B1-7D39ADC6AC55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27EAA895-40A7-4B37-82B1-7D39ADC6AC55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27EAA895-40A7-4B37-82B1-7D39ADC6AC55}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {58D15C9A-D706-4BDB-8F86-5D458F2E4469}
+	EndGlobalSection
+EndGlobal

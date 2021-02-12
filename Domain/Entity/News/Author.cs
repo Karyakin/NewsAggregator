@@ -9,5 +9,7 @@ namespace Domain.Entity.News
         public long Id { get; set; }
         public string Name { get; set; }
         public IEnumerable<Source> Sources { get; set; }
+        public string TEST { get; set; } 
+
     }
 }

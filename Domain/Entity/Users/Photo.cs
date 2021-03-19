@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Entity.Users
+namespace NewsAgregator.DAL.Entities.Entity.Users
 {
     public class Photo
     {

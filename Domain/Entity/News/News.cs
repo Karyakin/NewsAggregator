@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Entity.News
+namespace NewsAgregator.DAL.Entities.Entity.News
 {
     public class News
     {

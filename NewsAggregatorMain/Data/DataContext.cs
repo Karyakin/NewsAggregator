@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Domain.Entity.News;
-using Domain.Entity.Users;
+﻿
 using Microsoft.EntityFrameworkCore;
+using NewsAgregator.DAL.Entities.Entity.News;
+using NewsAgregator.DAL.Entities.Entity.Users;
 
 namespace NewsAggregatorMain.Data
 {
@@ -23,7 +20,7 @@ namespace NewsAggregatorMain.Data
         private DbSet<Role> Roles { get; set; }
         private DbSet<Photo> Photos { get; set; }
         private DbSet<Author> Authors { get; set; }
-        private DbSet<Source> Sources{ get; set; }
+        private DbSet<Source> Sources { get; set; }
         private DbSet<Category> Categories{ get; set; }
         private DbSet<Comment> Comments{ get; set; }
 

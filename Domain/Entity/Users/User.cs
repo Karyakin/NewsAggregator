@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Domain.Entity.News;
+using NewsAgregator.DAL.Entities.Entity.News;
 
-namespace Domain.Entity.Users
+namespace NewsAgregator.DAL.Entities.Entity.Users
 {
     public class User
     {

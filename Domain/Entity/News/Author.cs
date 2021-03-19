@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Domain.Entity.News
+namespace NewsAgregator.DAL.Entities.Entity.News
 {
     public class Author
     {

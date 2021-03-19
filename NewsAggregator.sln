@@ -5,7 +5,13 @@ VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsAggregatorMain", "NewsAggregatorMain\NewsAggregatorMain.csproj", "{433B0626-A255-4771-AC43-B08947FE6A04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{27EAA895-40A7-4B37-82B1-7D39ADC6AC55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsAgregator.DAL.Entities", "Domain\NewsAgregator.DAL.Entities.csproj", "{27EAA895-40A7-4B37-82B1-7D39ADC6AC55}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL(DataAccessLayer)", "DAL(DataAccessLayer)", "{B3985BCA-3585-4581-BE4E-A96AD3305B07}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BusinessLogicLayer", "BusinessLogicLayer", "{170F76CB-F604-4862-8288-C1772F60D4A4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PresintationLayer", "PresintationLayer", "{9D7FB8F2-B0B8-440B-986E-014441944DAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +30,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{27EAA895-40A7-4B37-82B1-7D39ADC6AC55} = {B3985BCA-3585-4581-BE4E-A96AD3305B07}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {58D15C9A-D706-4BDB-8F86-5D458F2E4469}

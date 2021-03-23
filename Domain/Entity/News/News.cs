@@ -6,7 +6,7 @@ namespace NewsAgregator.DAL.Entities.Entity.News
 {
     public class News
     {
-        public long Id { get; set; }
+        public Guid Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
         public string Url { get; set; }
@@ -14,10 +14,10 @@ namespace NewsAgregator.DAL.Entities.Entity.News
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        public long SourceId { get; set; }
+        public Guid SourceId { get; set; }
         public RssSource Source { get; set; }
 
-        public long CategoryId { get; set; }
+        public Guid CategoryId { get; set; }
         public Category Category { get; set; }
 
         public IEnumerable<Comment> Comments { get; set; }

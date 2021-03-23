@@ -6,7 +6,7 @@ namespace NewsAgregator.DAL.Entities.Entity.News
 {
    public class RssSource
     {
-        public long Id { get; set; }
+        public Guid Id { get; set; }
         public string Link { get; set; } // Содержит полный URL адрес до страницы, на которой данный элемент представлен максимально подробно.
         public DateTime DateOfReceiving { get; set; }
         public IEnumerable<Author> Authors{ get; set; }

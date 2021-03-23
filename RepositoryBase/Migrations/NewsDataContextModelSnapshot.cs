@@ -21,11 +21,11 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("AuthorRssSource", b =>
                 {
-                    b.Property<long>("AuthorsId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("AuthorsId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<long>("SourcesId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("SourcesId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("AuthorsId", "SourcesId");
 
@@ -36,10 +36,9 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.Author", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -51,10 +50,9 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.Category", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -69,16 +67,15 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.Comment", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("NewsId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("NewsId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("RemoveDate")
                         .HasColumnType("datetime2");
@@ -86,8 +83,8 @@ namespace Repositories.Migrations
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -100,13 +97,12 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.News", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<long>("CategoryId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
@@ -117,8 +113,8 @@ namespace Repositories.Migrations
                     b.Property<float>("Rating")
                         .HasColumnType("real");
 
-                    b.Property<long>("SourceId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("SourceId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -140,10 +136,9 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.RssSource", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateOfReceiving")
                         .HasColumnType("datetime2");
@@ -158,10 +153,9 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.City", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -173,19 +167,18 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.ContactDetails", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AdditionalInformation")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("CityId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("CityId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<long>("CountryId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("CountryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -198,10 +191,9 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.Country", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CountryCod")
                         .HasColumnType("nvarchar(max)");
@@ -219,13 +211,12 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.EMail", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<long>("ContactDetailsId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("ContactDetailsId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
@@ -245,13 +236,12 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.Phone", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<long>("ContactDetailsId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("ContactDetailsId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
@@ -271,10 +261,9 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.Photo", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsMain")
                         .HasColumnType("bit");
@@ -282,8 +271,8 @@ namespace Repositories.Migrations
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -294,10 +283,9 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.Role", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
@@ -318,16 +306,15 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.User", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AdditionalInformation")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("ContactDetailsId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("ContactDetailsId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
@@ -368,11 +355,11 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("RoleUser", b =>
                 {
-                    b.Property<long>("RolesId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("RolesId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<long>("UsersId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("UsersId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("RolesId", "UsersId");
 

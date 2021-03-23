@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Repositories;
+using Repositories.WrapperRepository;
+using RepositoriesInterfaces.WrapperInterface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,8 +33,9 @@ namespace NewsAggregatorMain
             services.AddDbContext<NewsDataContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("SqlConnectionStr"));
-
             });
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

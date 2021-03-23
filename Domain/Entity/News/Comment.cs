@@ -7,15 +7,15 @@ namespace NewsAgregator.DAL.Entities.Entity.News
 {
     public class Comment
     {
-        public long Id { get; set; }
+        public Guid Id { get; set; }
         public string Text { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; set; } = DateTime.Now;
         public DateTime RemoveDate { get; set; }
 
         public News News { get; set; }
-        public long NewsId { get; set; }
+        public Guid NewsId { get; set; }
 
         public User User { get; set; }
-        public long UserId { get; set; }
+        public Guid UserId { get; set; }
     }
 }

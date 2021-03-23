@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoriesInterfaces", "R
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositories", "RepositoryBase\Repositories.csproj", "{48BCDCD3-1E14-4DF3-A083-EA6AE71FBF0D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsAgregator.Services", "NewsAgregator.Servises\NewsAgregator.Services.csproj", "{EFF92DD2-8F93-42B1-B7D3-0D3E29807E5D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{48BCDCD3-1E14-4DF3-A083-EA6AE71FBF0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48BCDCD3-1E14-4DF3-A083-EA6AE71FBF0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48BCDCD3-1E14-4DF3-A083-EA6AE71FBF0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFF92DD2-8F93-42B1-B7D3-0D3E29807E5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFF92DD2-8F93-42B1-B7D3-0D3E29807E5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFF92DD2-8F93-42B1-B7D3-0D3E29807E5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFF92DD2-8F93-42B1-B7D3-0D3E29807E5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,6 +53,7 @@ Global
 		{27EAA895-40A7-4B37-82B1-7D39ADC6AC55} = {B3985BCA-3585-4581-BE4E-A96AD3305B07}
 		{FBE84C73-A635-42F5-867E-B33E85AD0D63} = {B3985BCA-3585-4581-BE4E-A96AD3305B07}
 		{48BCDCD3-1E14-4DF3-A083-EA6AE71FBF0D} = {B3985BCA-3585-4581-BE4E-A96AD3305B07}
+		{EFF92DD2-8F93-42B1-B7D3-0D3E29807E5D} = {170F76CB-F604-4862-8288-C1772F60D4A4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {58D15C9A-D706-4BDB-8F86-5D458F2E4469}

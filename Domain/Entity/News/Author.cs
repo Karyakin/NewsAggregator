@@ -7,7 +7,7 @@ namespace NewsAgregator.DAL.Entities.Entity.News
 {
     public class Author
     {
-        public long Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public IEnumerable<RssSource> Sources{ get; set; }
 

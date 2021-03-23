@@ -7,7 +7,7 @@ namespace NewsAgregator.DAL.Entities.Entity.Users
 {
     public class User
     {
-        public long Id { get; set; }
+        public Guid Id { get; set; }
         public string Login { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -18,13 +18,13 @@ namespace NewsAgregator.DAL.Entities.Entity.Users
         public byte[] PasswordSalt { get; set; }
         public DateTime CreateDate { get; set; } = DateTime.Now;
         public DateTime RemovedDate { get; set; }
-        public DateTime LastActiv { get; set; }
+        public DateTime LastActiv { get; set; } = DateTime.Now;
 
         public IEnumerable<Photo> Photos { get; set; }
         public IEnumerable<Role> Roles { get; set; }
 
         public ContactDetails ContactDetails { get; set; }
-        public long ContactDetailsId { get; set; }
+        public Guid ContactDetailsId { get; set; }
 
         public IEnumerable<Comment> Comments { get; set; }
     }

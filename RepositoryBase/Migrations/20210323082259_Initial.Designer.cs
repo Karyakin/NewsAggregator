@@ -3,23 +3,25 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using NewsAggregatorMain.Data;
+using Repositories;
 
-namespace NewsAggregatorMain.Data.Migrations
+namespace Repositories.Migrations
 {
-    [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(NewsDataContext))]
+    [Migration("20210323082259_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.3")
+                .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("AuthorSource", b =>
+            modelBuilder.Entity("AuthorRssSource", b =>
                 {
                     b.Property<long>("AuthorsId")
                         .HasColumnType("bigint");
@@ -31,10 +33,10 @@ namespace NewsAggregatorMain.Data.Migrations
 
                     b.HasIndex("SourcesId");
 
-                    b.ToTable("AuthorSource");
+                    b.ToTable("AuthorRssSource");
                 });
 
-            modelBuilder.Entity("Domain.Entity.News.Author", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.Author", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -49,7 +51,7 @@ namespace NewsAggregatorMain.Data.Migrations
                     b.ToTable("Authors");
                 });
 
-            modelBuilder.Entity("Domain.Entity.News.Category", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.Category", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -67,7 +69,7 @@ namespace NewsAggregatorMain.Data.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Domain.Entity.News.Comment", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.Comment", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,7 +100,7 @@ namespace NewsAggregatorMain.Data.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("Domain.Entity.News.News", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.News", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -138,7 +140,7 @@ namespace NewsAggregatorMain.Data.Migrations
                     b.ToTable("News");
                 });
 
-            modelBuilder.Entity("Domain.Entity.News.Source", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.RssSource", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -156,7 +158,7 @@ namespace NewsAggregatorMain.Data.Migrations
                     b.ToTable("Sources");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Users.City", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.City", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -171,7 +173,7 @@ namespace NewsAggregatorMain.Data.Migrations
                     b.ToTable("Сities");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Users.ContactDetails", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.ContactDetails", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -196,7 +198,7 @@ namespace NewsAggregatorMain.Data.Migrations
                     b.ToTable("ContactDetails");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Users.Country", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.Country", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -217,7 +219,7 @@ namespace NewsAggregatorMain.Data.Migrations
                     b.ToTable("Countries");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Users.EMail", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.EMail", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -243,7 +245,7 @@ namespace NewsAggregatorMain.Data.Migrations
                     b.ToTable("EMails");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Users.Phone", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.Phone", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -269,7 +271,7 @@ namespace NewsAggregatorMain.Data.Migrations
                     b.ToTable("Phones");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Users.Photo", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.Photo", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -292,7 +294,7 @@ namespace NewsAggregatorMain.Data.Migrations
                     b.ToTable("Photos");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Users.Role", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.Role", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -316,7 +318,7 @@ namespace NewsAggregatorMain.Data.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Users.User", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.User", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -381,30 +383,30 @@ namespace NewsAggregatorMain.Data.Migrations
                     b.ToTable("RoleUser");
                 });
 
-            modelBuilder.Entity("AuthorSource", b =>
+            modelBuilder.Entity("AuthorRssSource", b =>
                 {
-                    b.HasOne("Domain.Entity.News.Author", null)
+                    b.HasOne("NewsAgregator.DAL.Entities.Entity.News.Author", null)
                         .WithMany()
                         .HasForeignKey("AuthorsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entity.News.Source", null)
+                    b.HasOne("NewsAgregator.DAL.Entities.Entity.News.RssSource", null)
                         .WithMany()
                         .HasForeignKey("SourcesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entity.News.Comment", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.Comment", b =>
                 {
-                    b.HasOne("Domain.Entity.News.News", "News")
+                    b.HasOne("NewsAgregator.DAL.Entities.Entity.News.News", "News")
                         .WithMany("Comments")
                         .HasForeignKey("NewsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entity.Users.User", "User")
+                    b.HasOne("NewsAgregator.DAL.Entities.Entity.Users.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -415,15 +417,15 @@ namespace NewsAggregatorMain.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entity.News.News", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.News", b =>
                 {
-                    b.HasOne("Domain.Entity.News.Category", "Category")
+                    b.HasOne("NewsAgregator.DAL.Entities.Entity.News.Category", "Category")
                         .WithMany("News")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entity.News.Source", "Source")
+                    b.HasOne("NewsAgregator.DAL.Entities.Entity.News.RssSource", "Source")
                         .WithMany("News")
                         .HasForeignKey("SourceId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -434,15 +436,15 @@ namespace NewsAggregatorMain.Data.Migrations
                     b.Navigation("Source");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Users.ContactDetails", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.ContactDetails", b =>
                 {
-                    b.HasOne("Domain.Entity.Users.City", "City")
+                    b.HasOne("NewsAgregator.DAL.Entities.Entity.Users.City", "City")
                         .WithMany()
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entity.Users.Country", "Country")
+                    b.HasOne("NewsAgregator.DAL.Entities.Entity.Users.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -453,9 +455,9 @@ namespace NewsAggregatorMain.Data.Migrations
                     b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Users.EMail", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.EMail", b =>
                 {
-                    b.HasOne("Domain.Entity.Users.ContactDetails", "ContactDetails")
+                    b.HasOne("NewsAgregator.DAL.Entities.Entity.Users.ContactDetails", "ContactDetails")
                         .WithMany()
                         .HasForeignKey("ContactDetailsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -464,9 +466,9 @@ namespace NewsAggregatorMain.Data.Migrations
                     b.Navigation("ContactDetails");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Users.Phone", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.Phone", b =>
                 {
-                    b.HasOne("Domain.Entity.Users.ContactDetails", "ContactDetails")
+                    b.HasOne("NewsAgregator.DAL.Entities.Entity.Users.ContactDetails", "ContactDetails")
                         .WithMany()
                         .HasForeignKey("ContactDetailsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -475,9 +477,9 @@ namespace NewsAggregatorMain.Data.Migrations
                     b.Navigation("ContactDetails");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Users.Photo", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.Photo", b =>
                 {
-                    b.HasOne("Domain.Entity.Users.User", "User")
+                    b.HasOne("NewsAgregator.DAL.Entities.Entity.Users.User", "User")
                         .WithMany("Photos")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -486,9 +488,9 @@ namespace NewsAggregatorMain.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Users.User", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.User", b =>
                 {
-                    b.HasOne("Domain.Entity.Users.ContactDetails", "ContactDetails")
+                    b.HasOne("NewsAgregator.DAL.Entities.Entity.Users.ContactDetails", "ContactDetails")
                         .WithMany()
                         .HasForeignKey("ContactDetailsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -499,35 +501,35 @@ namespace NewsAggregatorMain.Data.Migrations
 
             modelBuilder.Entity("RoleUser", b =>
                 {
-                    b.HasOne("Domain.Entity.Users.Role", null)
+                    b.HasOne("NewsAgregator.DAL.Entities.Entity.Users.Role", null)
                         .WithMany()
                         .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entity.Users.User", null)
+                    b.HasOne("NewsAgregator.DAL.Entities.Entity.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entity.News.Category", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.Category", b =>
                 {
                     b.Navigation("News");
                 });
 
-            modelBuilder.Entity("Domain.Entity.News.News", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.News", b =>
                 {
                     b.Navigation("Comments");
                 });
 
-            modelBuilder.Entity("Domain.Entity.News.Source", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.RssSource", b =>
                 {
                     b.Navigation("News");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Users.User", b =>
+            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.User", b =>
                 {
                     b.Navigation("Comments");
 

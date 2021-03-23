@@ -1,13 +1,12 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NewsAgregator.DAL.Entities.Entity.News;
 using NewsAgregator.DAL.Entities.Entity.Users;
 
-namespace NewsAggregatorMain.Data
+namespace  Repositories//NewsAggregatorMain.DataNewsAggregatorMain
 {
-    public class DataContext : DbContext
+    public class NewsDataContext : DbContext
     {
-        public DataContext(DbContextOptions options) : base(options)
+        public NewsDataContext(DbContextOptions<NewsDataContext> options) : base(options)
         {
         }
 
@@ -20,7 +19,7 @@ namespace NewsAggregatorMain.Data
         private DbSet<Role> Roles { get; set; }
         private DbSet<Photo> Photos { get; set; }
         private DbSet<Author> Authors { get; set; }
-        private DbSet<Source> Sources { get; set; }
+        private DbSet<RssSource> Sources { get; set; }
         private DbSet<Category> Categories{ get; set; }
         private DbSet<Comment> Comments{ get; set; }
 

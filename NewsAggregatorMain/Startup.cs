@@ -5,13 +5,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NewsAggregatorMain.Data;
+using Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-
+/*PS C:\Users\d.karyakin\Desktop\NewsAggregator\RepositoryBase> dotnet ef --startup-project ../NewsAggregatorMain/ migration
+s add Initial*/
 namespace NewsAggregatorMain
 {
     public class Startup
@@ -27,7 +28,7 @@ namespace NewsAggregatorMain
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<DataContext>(options =>
+            services.AddDbContext<NewsDataContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("SqlConnectionStr"));
 

@@ -15,7 +15,7 @@ namespace NewsAgregator.DAL.Entities.Entity.News
         public DateTime EndDate { get; set; }
 
         public long SourceId { get; set; }
-        public Source Source { get; set; }
+        public RssSource Source { get; set; }
 
         public long CategoryId { get; set; }
         public Category Category { get; set; }

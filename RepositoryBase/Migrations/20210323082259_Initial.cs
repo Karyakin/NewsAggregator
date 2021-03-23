@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace NewsAggregatorMain.Data.Migrations
+namespace Repositories.Migrations
 {
-    public partial class InitialAll : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -58,7 +58,7 @@ namespace NewsAggregatorMain.Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsMember = table.Column<bool>(type: "bit", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RemovedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    RemovedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -93,7 +93,7 @@ namespace NewsAggregatorMain.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AuthorSource",
+                name: "AuthorRssSource",
                 columns: table => new
                 {
                     AuthorsId = table.Column<long>(type: "bigint", nullable: false),
@@ -101,15 +101,15 @@ namespace NewsAggregatorMain.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AuthorSource", x => new { x.AuthorsId, x.SourcesId });
+                    table.PrimaryKey("PK_AuthorRssSource", x => new { x.AuthorsId, x.SourcesId });
                     table.ForeignKey(
-                        name: "FK_AuthorSource_Authors_AuthorsId",
+                        name: "FK_AuthorRssSource_Authors_AuthorsId",
                         column: x => x.AuthorsId,
                         principalTable: "Authors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AuthorSource_Sources_SourcesId",
+                        name: "FK_AuthorRssSource_Sources_SourcesId",
                         column: x => x.SourcesId,
                         principalTable: "Sources",
                         principalColumn: "Id",
@@ -125,9 +125,9 @@ namespace NewsAggregatorMain.Data.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Rating = table.Column<float>(type: "real", nullable: true),
+                    Rating = table.Column<float>(type: "real", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SourceId = table.Column<long>(type: "bigint", nullable: false),
                     CategoryId = table.Column<long>(type: "bigint", nullable: false)
                 },
@@ -183,7 +183,7 @@ namespace NewsAggregatorMain.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserEMail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RemovedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    RemovedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ContactDetailsId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
@@ -205,7 +205,7 @@ namespace NewsAggregatorMain.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RemovedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    RemovedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ContactDetailsId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
@@ -229,12 +229,12 @@ namespace NewsAggregatorMain.Data.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DayOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DayOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AdditionalInformation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RemovedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    RemovedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastActiv = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ContactDetailsId = table.Column<long>(type: "bigint", nullable: false)
                 },
@@ -257,7 +257,7 @@ namespace NewsAggregatorMain.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RemoveDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    RemoveDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     NewsId = table.Column<long>(type: "bigint", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false)
                 },
@@ -324,8 +324,8 @@ namespace NewsAggregatorMain.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AuthorSource_SourcesId",
-                table: "AuthorSource",
+                name: "IX_AuthorRssSource_SourcesId",
+                table: "AuthorRssSource",
                 column: "SourcesId");
 
             migrationBuilder.CreateIndex(
@@ -387,7 +387,7 @@ namespace NewsAggregatorMain.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AuthorSource");
+                name: "AuthorRssSource");
 
             migrationBuilder.DropTable(
                 name: "Comments");

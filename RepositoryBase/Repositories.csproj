@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\NewsAgregator.DAL.Entities.csproj" />
-    <ProjectReference Include="..\RepositoriesInterfaces\RepositoriesInterfaces.csproj" />
+    <ProjectReference Include="..\Domain\Entities.csproj" />
+    <ProjectReference Include="..\RepositoriesInterfaces\Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>

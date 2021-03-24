@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Entity.Users;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace NewsAgregator.DAL.Entities.Entity.Users
+namespace Entities.Entity.Users
 {
     public class ContactDetails
     {

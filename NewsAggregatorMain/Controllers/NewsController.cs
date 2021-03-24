@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using RepositoriesInterfaces.WrapperInterface;
+﻿using Contracts.WrapperInterface;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +19,7 @@ namespace NewsAggregatorMain.Controllers
         public IActionResult Index()
         {
 
-            var resq = _wrapper.News.FindByCondition(6376438,false);
+            //var resq = _wrapper.News.FindByCondition(6376438,false);
             var res = _wrapper.News.FindAll(trackChanges: false).ToList();
 
 

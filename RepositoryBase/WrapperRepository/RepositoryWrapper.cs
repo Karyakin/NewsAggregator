@@ -1,8 +1,7 @@
-﻿//using NewsAggregatorMain.Data;
-//using NewsAggregatorMain;
+﻿
 using Repositories.Migrations;
-using RepositoriesInterfaces;
-using RepositoriesInterfaces.WrapperInterface;
+using Contracts;
+using Contracts.WrapperInterface;
 using System;
 using System.Collections.Generic;
 using System.Linq;

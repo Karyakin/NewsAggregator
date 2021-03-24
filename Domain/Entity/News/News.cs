@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace NewsAgregator.DAL.Entities.Entity.News
+namespace Entities.Entity.News
 {
     public class News
     {
@@ -12,7 +12,7 @@ namespace NewsAgregator.DAL.Entities.Entity.News
         public string Url { get; set; }
         public float Rating { get; set; }
         public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         public Guid SourceId { get; set; }
         public RssSource Source { get; set; }

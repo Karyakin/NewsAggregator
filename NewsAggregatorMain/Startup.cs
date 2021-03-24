@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Repositories;
 using Repositories.WrapperRepository;
-using RepositoriesInterfaces.WrapperInterface;
+using Contracts.WrapperInterface;
 using System;
 using System.Collections.Generic;
 using System.Linq;

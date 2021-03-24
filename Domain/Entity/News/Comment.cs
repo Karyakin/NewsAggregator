@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Entities.Entity.Users;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using NewsAgregator.DAL.Entities.Entity.Users;
 
-namespace NewsAgregator.DAL.Entities.Entity.News
+
+namespace Entities.Entity.News
 {
     public class Comment
     {

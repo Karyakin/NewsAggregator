@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Entities.Entity.Users;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace NewsAgregator.DAL.Entities.Entity.Users
+namespace Entity.Users
 {
     public class EMail
     {

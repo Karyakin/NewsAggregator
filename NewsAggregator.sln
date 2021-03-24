@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsAggregatorMain", "NewsAggregatorMain\NewsAggregatorMain.csproj", "{433B0626-A255-4771-AC43-B08947FE6A04}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsAgregator.DAL.Entities", "Domain\NewsAgregator.DAL.Entities.csproj", "{27EAA895-40A7-4B37-82B1-7D39ADC6AC55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Domain\Entities.csproj", "{27EAA895-40A7-4B37-82B1-7D39ADC6AC55}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL(DataAccessLayer)", "DAL(DataAccessLayer)", "{B3985BCA-3585-4581-BE4E-A96AD3305B07}"
 EndProject
@@ -13,11 +13,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BusinessLogicLayer", "Busin
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PresintationLayer", "PresintationLayer", "{9D7FB8F2-B0B8-440B-986E-014441944DAD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoriesInterfaces", "RepositoriesInterfaces\RepositoriesInterfaces.csproj", "{FBE84C73-A635-42F5-867E-B33E85AD0D63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "RepositoriesInterfaces\Contracts.csproj", "{FBE84C73-A635-42F5-867E-B33E85AD0D63}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositories", "RepositoryBase\Repositories.csproj", "{48BCDCD3-1E14-4DF3-A083-EA6AE71FBF0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsAgregator.Services", "NewsAgregator.Servises\NewsAgregator.Services.csproj", "{EFF92DD2-8F93-42B1-B7D3-0D3E29807E5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsAgregator.Services", "NewsAgregator.Servises\NewsAgregator.Services.csproj", "{EFF92DD2-8F93-42B1-B7D3-0D3E29807E5D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

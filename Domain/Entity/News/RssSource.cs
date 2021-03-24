@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace NewsAgregator.DAL.Entities.Entity.News
+namespace Entities.Entity.News
 {
    public class RssSource
     {

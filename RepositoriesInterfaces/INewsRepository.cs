@@ -1,11 +1,12 @@
-﻿using NewsAgregator.DAL.Entities.Entity.News;
+﻿using Entities.Entity.News;
+using Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RepositoriesInterfaces
+namespace Contracts
 {
     public interface INewsRepository : IRepositoryBase<News>
     {

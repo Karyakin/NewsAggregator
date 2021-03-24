@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Entities.Entity.News;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using NewsAgregator.DAL.Entities.Entity.News;
 
-namespace NewsAgregator.DAL.Entities.Entity.Users
+namespace Entities.Entity.Users
 {
     public class User
     {

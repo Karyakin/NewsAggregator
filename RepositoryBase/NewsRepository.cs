@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NewsAgregator.DAL.Entities.Entity.News;
-using RepositoriesInterfaces;
+using Entities.Entity.News;
+using Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;

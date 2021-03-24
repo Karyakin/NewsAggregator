@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-//using NewsAggregatorMain;
-using RepositoriesInterfaces;
+
+using Contracts;
 using System;
 using System.Linq;
 using System.Linq.Expressions;

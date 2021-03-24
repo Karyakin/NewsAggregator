@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NewsAgregator.DAL.Entities.Entity.News;
-using NewsAgregator.DAL.Entities.Entity.Users;
+using Entities.Entity.News;
+using Entities.Entity.Users;
+using Entity.Users;
 
 namespace  Repositories//NewsAggregatorMain.DataNewsAggregatorMain
 {

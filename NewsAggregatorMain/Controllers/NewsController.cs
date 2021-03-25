@@ -1,5 +1,9 @@
-﻿using Contracts.WrapperInterface;
+﻿using AutoMapper;
+using Contracts.WrapperInterface;
+using Entities.DataTransferObject;
+using Entities.Entity.News;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,23 +11,33 @@ using System.Threading.Tasks;
 
 namespace NewsAggregatorMain.Controllers
 {
+    //[Route("[controller]")]
     public class NewsController : Controller
     {
-        public IRepositoryWrapper _wrapper;
-        public NewsController(IRepositoryWrapper wrapper)
+        private readonly IRepositoryWrapper _wrapper;
+        private readonly IMapper _mapper;
+        public NewsController(IRepositoryWrapper wrapper, IMapper mapper)
         {
             _wrapper = wrapper;
+            _mapper = mapper;
         }
 
-        //[HttpGet]
-        public IActionResult Index()
+        [HttpGet]
+        public async Task <IActionResult> Index()
         {
+            var companies = await _wrapper.News.FindAll(trackChanges: false).ToListAsync();
 
-            //var resq = _wrapper.News.FindByCondition(6376438,false);
-            var res = _wrapper.News.FindAll(trackChanges: false).ToList();
+            var getCompanyDTO = _mapper.Map<IEnumerable<NewsGetDTO>>(companies);
 
+            return Ok(getCompanyDTO);
+        }
 
-            return Ok(res);
+        [HttpGet("AddNews")]
+        public async Task <IActionResult> AddNews(News news)
+        {
+             _wrapper.News.Create(news);
+            await _wrapper.SaveAsync();
+            return Ok();
         }
     }
 }

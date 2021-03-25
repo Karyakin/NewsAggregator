@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
 using Contracts;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Contracts.RepositoryInterfaces;
+using Repositories.Context;
 
 namespace Repositories
 {
@@ -19,9 +20,11 @@ namespace Repositories
 
 
         public IQueryable<T> FindAll(bool trackChanges) =>
-        !trackChanges ?
-        _newsDataContext.Set<T>().AsNoTracking()
-            : _newsDataContext.Set<T>();
+        !trackChanges 
+            ?
+              _newsDataContext.Set<T>().AsNoTracking()
+            : 
+                _newsDataContext.Set<T>();
 
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges) =>
         !trackChanges
@@ -30,8 +33,9 @@ namespace Repositories
             :
             _newsDataContext.Set<T>().Where(expression);
 
-        public void Create(T entity) => _newsDataContext.Set<T>().Add(entity);
-        public void Update(T entity) => _newsDataContext.Set<T>().Update(entity); public void Delete(T entity) => _newsDataContext.Set<T>().Remove(entity);
+        public void Create(T entity) => _newsDataContext.Set<T>().AddRangeAsync(entity);
+        public void Update(T entity) => _newsDataContext.Set<T>().Update(entity); 
+        public void Delete(T entity) => _newsDataContext.Set<T>().Remove(entity);
     }
 
 }

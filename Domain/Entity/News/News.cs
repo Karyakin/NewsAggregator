@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Entities.Entity.News
 {
+    [Table("News")]
     public class News
     {
         public Guid Id { get; set; }
+
+        [Required(ErrorMessage = "Name is required")]
         public string Title { get; set; }
         public string Content { get; set; }
         public string Url { get; set; }

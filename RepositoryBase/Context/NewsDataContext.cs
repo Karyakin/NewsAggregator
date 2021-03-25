@@ -3,7 +3,7 @@ using Entities.Entity.News;
 using Entities.Entity.Users;
 using Entity.Users;
 
-namespace  Repositories//NewsAggregatorMain.DataNewsAggregatorMain
+namespace Repositories.Context
 {
     public class NewsDataContext : DbContext
     {

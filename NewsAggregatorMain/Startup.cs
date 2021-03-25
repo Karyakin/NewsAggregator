@@ -1,17 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Repositories;
 using Repositories.WrapperRepository;
 using Contracts.WrapperInterface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Entities.DataTransferObject;
+using Repositories.Context;
 
 /*PS C:\Users\d.karyakin\Desktop\NewsAggregator\RepositoryBase> dotnet ef --startup-project ../NewsAggregatorMain/ migration
 s add Initial*/
@@ -35,6 +31,7 @@ namespace NewsAggregatorMain
                 options.UseSqlServer(Configuration.GetConnectionString("SqlConnectionStr"));
             });
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+            services.AddAutoMapper(typeof(MappingProfile).Assembly);
            
         }
 

@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Contracts.RepositoryInterfaces;
+using Repositories.Context;
+using Repositories.Categories;
 
 namespace Repositories.WrapperRepository
 {
@@ -19,6 +22,8 @@ namespace Repositories.WrapperRepository
     {
         private NewsDataContext _newsDataContextWrapper;
         private INewsRepository _newsRepository;
+        private ICategoryRepository _categoryRepository;
+        private IRssSourceRepository _rssSourceRepository;
         public RepositoryWrapper(NewsDataContext newsDataContextWrapper)
         {
             _newsDataContextWrapper = newsDataContextWrapper;
@@ -34,6 +39,32 @@ namespace Repositories.WrapperRepository
                 return _newsRepository;
             }
         }
+
+        public ICategoryRepository Category
+        {
+            get
+            {
+                if (_categoryRepository == null)
+                    _categoryRepository = new CategoryRepository(_newsDataContextWrapper);
+
+                return _categoryRepository;
+            }
+        }
+
+        public IRssSourceRepository RssSource
+        {
+            get
+            {
+                if (_rssSourceRepository == null)
+                    _rssSourceRepository = new CategoryRepository(_newsDataContextWrapper);
+
+                return _rssSourceRepository;
+            }
+        }
+
+       
+
+
 
         public void Save() => _newsDataContextWrapper.SaveChanges();
         public Task SaveAsync() => _newsDataContextWrapper.SaveChangesAsync();

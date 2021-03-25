@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Entities.Entity.News;
-using Contracts;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Contracts.RepositoryInterfaces;
+using Repositories.Context;
 
 namespace Repositories.Migrations
 {
@@ -15,6 +14,7 @@ namespace Repositories.Migrations
             : base(newsDataContext)
         {
         }
+      //  https://www.youtube.com/watch?v=S4YDarQBkiM&ab_channel=CodeMaze
 
         /// <summary>
         /// trackChanges параметр. Мы собираемся использовать его для повышения производительности наших запросов только для чтения. 
@@ -23,30 +23,27 @@ namespace Repositories.Migrations
         /// </summary>
 
 
-        public void DeleteNews(News news) => Delete(news);
         public void UpdateNews(News news) => Update(news);
+        public void DeleteNews(News news) =>  Delete(news);
 
-
-        public async Task CreateAsync(News news)
-        {
-            await CreateAsync(news);
-        }
-        
         public async Task<IEnumerable<News>> GetAllNewsAsync(bool trackChanges)
         {
             var res = await FindAll(trackChanges).ToListAsync();
             var res1 = res;
             return res1;
         }
-        public async Task<IEnumerable<News>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges)
+        public async Task<News> GetByIdsAsync(Guid ids, bool trackChanges)
         {
-            var res = await FindByCondition(news => news.Id.Equals(ids), trackChanges).ToListAsync();
+            var res = await FindByCondition(news => news.Id.Equals(ids), trackChanges).FirstOrDefaultAsync();
             return res;
         }
-        public async Task<News> GetNewsAsync(Guid newsId, bool trackChanges)
+        public async Task<IEnumerable<News>> GetNewsAsync(IEnumerable<Guid> newsId, bool trackChanges)
         {
-            var res = await FindByCondition(x => x.Id.Equals(newsId), trackChanges).SingleOrDefaultAsync();
+            var res = await FindByCondition(x => x.Id.Equals(newsId), trackChanges).ToListAsync();
             return res;
         }
+
+        public void CreateOneNewsAsync(News news)=>Create(news);
+
     }
 }

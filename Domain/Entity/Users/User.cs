@@ -1,4 +1,4 @@
-﻿using Entities.Entity.News;
+﻿using Entities.Entity.NewsEnt;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,7 +17,7 @@ namespace Entities.Entity.Users
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public DateTime CreateDate { get; set; } = DateTime.Now;
-        public DateTime RemovedDate { get; set; }
+        public DateTime? RemovedDate { get; set; }
         public DateTime LastActiv { get; set; } = DateTime.Now;
 
         public IEnumerable<Photo> Photos { get; set; }

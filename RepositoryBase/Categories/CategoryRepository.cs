@@ -1,5 +1,5 @@
 ﻿using Contracts.RepositoryInterfaces;
-using Entities.Entity.News;
+using Entities.Entity.NewsEnt;
 using Microsoft.EntityFrameworkCore;
 using Repositories.Context;
 using System;
@@ -16,7 +16,12 @@ namespace Repositories.Categories
         {
         }
 
-       public void CreateOneCategory(Category category)
+        public void CreateManyCategories(IEnumerable<Category> categories)
+        {
+            CreateMany(categories);
+        }
+
+        public void CreateOneCategory(Category category)
         {
             Create(category);
         }

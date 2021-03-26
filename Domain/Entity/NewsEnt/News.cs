@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Entities.Entity.News
+namespace Entities.Entity.NewsEnt
 {
     [Table("News")]
     public class News
@@ -16,7 +16,7 @@ namespace Entities.Entity.News
         public string Content { get; set; }
         public string Url { get; set; }
         public float Rating { get; set; }
-        public DateTime StartDate { get; set; }
+        public DateTime StartDate { get; set; } = DateTime.Now;
         public DateTime? EndDate { get; set; }
 
         public Guid SourceId { get; set; }

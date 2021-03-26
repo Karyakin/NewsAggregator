@@ -5,13 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Repositories;
 using Repositories.Context;
 
 namespace Repositories.Migrations
 {
     [DbContext(typeof(NewsDataContext))]
-    [Migration("20210323143843_Initial")]
+    [Migration("20210326055647_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,7 +36,7 @@ namespace Repositories.Migrations
                     b.ToTable("AuthorRssSource");
                 });
 
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.Author", b =>
+            modelBuilder.Entity("Entities.Entity.News.Author", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,7 +50,7 @@ namespace Repositories.Migrations
                     b.ToTable("Authors");
                 });
 
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.Category", b =>
+            modelBuilder.Entity("Entities.Entity.News.Category", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -68,7 +67,7 @@ namespace Repositories.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.Comment", b =>
+            modelBuilder.Entity("Entities.Entity.News.Comment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,7 +97,7 @@ namespace Repositories.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.News", b =>
+            modelBuilder.Entity("Entities.Entity.News.News", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -110,7 +109,7 @@ namespace Repositories.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<float>("Rating")
@@ -123,6 +122,7 @@ namespace Repositories.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Url")
@@ -137,7 +137,7 @@ namespace Repositories.Migrations
                     b.ToTable("News");
                 });
 
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.RssSource", b =>
+            modelBuilder.Entity("Entities.Entity.News.RssSource", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -149,12 +149,15 @@ namespace Repositories.Migrations
                     b.Property<string>("Link")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Sources");
                 });
 
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.City", b =>
+            modelBuilder.Entity("Entities.Entity.Users.City", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -168,7 +171,7 @@ namespace Repositories.Migrations
                     b.ToTable("Сities");
                 });
 
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.ContactDetails", b =>
+            modelBuilder.Entity("Entities.Entity.Users.ContactDetails", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -192,52 +195,7 @@ namespace Repositories.Migrations
                     b.ToTable("ContactDetails");
                 });
 
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.Country", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CountryCod")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CountryPhoneCod")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Countries");
-                });
-
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.EMail", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ContactDetailsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("RemovedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserEMail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContactDetailsId");
-
-                    b.ToTable("EMails");
-                });
-
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.Phone", b =>
+            modelBuilder.Entity("Entities.Entity.Users.Phone", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -262,7 +220,7 @@ namespace Repositories.Migrations
                     b.ToTable("Phones");
                 });
 
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.Photo", b =>
+            modelBuilder.Entity("Entities.Entity.Users.Photo", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -284,7 +242,7 @@ namespace Repositories.Migrations
                     b.ToTable("Photos");
                 });
 
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.Role", b =>
+            modelBuilder.Entity("Entities.Entity.Users.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -307,7 +265,7 @@ namespace Repositories.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.User", b =>
+            modelBuilder.Entity("Entities.Entity.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -356,6 +314,51 @@ namespace Repositories.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Entity.Users.Country", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CountryCod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CountryPhoneCod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Countries");
+                });
+
+            modelBuilder.Entity("Entity.Users.EMail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ContactDetailsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("RemovedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserEMail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContactDetailsId");
+
+                    b.ToTable("EMails");
+                });
+
             modelBuilder.Entity("RoleUser", b =>
                 {
                     b.Property<Guid>("RolesId")
@@ -373,28 +376,28 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("AuthorRssSource", b =>
                 {
-                    b.HasOne("NewsAgregator.DAL.Entities.Entity.News.Author", null)
+                    b.HasOne("Entities.Entity.News.Author", null)
                         .WithMany()
                         .HasForeignKey("AuthorsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NewsAgregator.DAL.Entities.Entity.News.RssSource", null)
+                    b.HasOne("Entities.Entity.News.RssSource", null)
                         .WithMany()
                         .HasForeignKey("SourcesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.Comment", b =>
+            modelBuilder.Entity("Entities.Entity.News.Comment", b =>
                 {
-                    b.HasOne("NewsAgregator.DAL.Entities.Entity.News.News", "News")
+                    b.HasOne("Entities.Entity.News.News", "News")
                         .WithMany("Comments")
                         .HasForeignKey("NewsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NewsAgregator.DAL.Entities.Entity.Users.User", "User")
+                    b.HasOne("Entities.Entity.Users.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -405,15 +408,15 @@ namespace Repositories.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.News", b =>
+            modelBuilder.Entity("Entities.Entity.News.News", b =>
                 {
-                    b.HasOne("NewsAgregator.DAL.Entities.Entity.News.Category", "Category")
+                    b.HasOne("Entities.Entity.News.Category", "Category")
                         .WithMany("News")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NewsAgregator.DAL.Entities.Entity.News.RssSource", "Source")
+                    b.HasOne("Entities.Entity.News.RssSource", "Source")
                         .WithMany("News")
                         .HasForeignKey("SourceId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -424,15 +427,15 @@ namespace Repositories.Migrations
                     b.Navigation("Source");
                 });
 
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.ContactDetails", b =>
+            modelBuilder.Entity("Entities.Entity.Users.ContactDetails", b =>
                 {
-                    b.HasOne("NewsAgregator.DAL.Entities.Entity.Users.City", "City")
+                    b.HasOne("Entities.Entity.Users.City", "City")
                         .WithMany()
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NewsAgregator.DAL.Entities.Entity.Users.Country", "Country")
+                    b.HasOne("Entity.Users.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -443,9 +446,9 @@ namespace Repositories.Migrations
                     b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.EMail", b =>
+            modelBuilder.Entity("Entities.Entity.Users.Phone", b =>
                 {
-                    b.HasOne("NewsAgregator.DAL.Entities.Entity.Users.ContactDetails", "ContactDetails")
+                    b.HasOne("Entities.Entity.Users.ContactDetails", "ContactDetails")
                         .WithMany()
                         .HasForeignKey("ContactDetailsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -454,20 +457,9 @@ namespace Repositories.Migrations
                     b.Navigation("ContactDetails");
                 });
 
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.Phone", b =>
+            modelBuilder.Entity("Entities.Entity.Users.Photo", b =>
                 {
-                    b.HasOne("NewsAgregator.DAL.Entities.Entity.Users.ContactDetails", "ContactDetails")
-                        .WithMany()
-                        .HasForeignKey("ContactDetailsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ContactDetails");
-                });
-
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.Photo", b =>
-                {
-                    b.HasOne("NewsAgregator.DAL.Entities.Entity.Users.User", "User")
+                    b.HasOne("Entities.Entity.Users.User", "User")
                         .WithMany("Photos")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -476,9 +468,20 @@ namespace Repositories.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.User", b =>
+            modelBuilder.Entity("Entities.Entity.Users.User", b =>
                 {
-                    b.HasOne("NewsAgregator.DAL.Entities.Entity.Users.ContactDetails", "ContactDetails")
+                    b.HasOne("Entities.Entity.Users.ContactDetails", "ContactDetails")
+                        .WithMany()
+                        .HasForeignKey("ContactDetailsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ContactDetails");
+                });
+
+            modelBuilder.Entity("Entity.Users.EMail", b =>
+                {
+                    b.HasOne("Entities.Entity.Users.ContactDetails", "ContactDetails")
                         .WithMany()
                         .HasForeignKey("ContactDetailsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -489,35 +492,35 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("RoleUser", b =>
                 {
-                    b.HasOne("NewsAgregator.DAL.Entities.Entity.Users.Role", null)
+                    b.HasOne("Entities.Entity.Users.Role", null)
                         .WithMany()
                         .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NewsAgregator.DAL.Entities.Entity.Users.User", null)
+                    b.HasOne("Entities.Entity.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.Category", b =>
+            modelBuilder.Entity("Entities.Entity.News.Category", b =>
                 {
                     b.Navigation("News");
                 });
 
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.News", b =>
+            modelBuilder.Entity("Entities.Entity.News.News", b =>
                 {
                     b.Navigation("Comments");
                 });
 
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.News.RssSource", b =>
+            modelBuilder.Entity("Entities.Entity.News.RssSource", b =>
                 {
                     b.Navigation("News");
                 });
 
-            modelBuilder.Entity("NewsAgregator.DAL.Entities.Entity.Users.User", b =>
+            modelBuilder.Entity("Entities.Entity.Users.User", b =>
                 {
                     b.Navigation("Comments");
 

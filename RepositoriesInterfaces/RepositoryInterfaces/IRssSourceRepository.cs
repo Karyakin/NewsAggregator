@@ -1,4 +1,4 @@
-﻿using Entities.Entity.News;
+﻿using Entities.Entity.NewsEnt;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +7,15 @@ using System.Threading.Tasks;
 
 namespace Contracts.RepositoryInterfaces
 {
-   public interface IRssSourceRepository
+   public interface IRssSourceRepository 
     {
-        Task<IEnumerable<RssSource>> GetAllCategoryAsync(bool trackChanges);
-        void CreateOneCategory(RssSource rssSource);
+        Task<IEnumerable<RssSource>> GetAllRssSourceAsync(bool trackChanges);
+        void CreateOneRssSource(RssSource rssSource);
+        void CreateManyRssSource(IEnumerable<RssSource> rssSource);
+
+        Task<RssSource> FindRssSourceById(Guid rssSourceId);
+        Task<RssSource> FindRssSourceByName(string rssSourceName);
+      
+
     }
 }

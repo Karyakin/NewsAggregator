@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Entities.Entity.News
+namespace Entities.Entity.NewsEnt
 {
-    public class Author
+    public class Category
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public IEnumerable<RssSource> Sources{ get; set; }
+        public string Description { get; set; }
 
+        public IEnumerable<News> News { get; set; }
     }
 }

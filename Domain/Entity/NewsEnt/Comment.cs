@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using System.Text;
 
 
-namespace Entities.Entity.News
+namespace Entities.Entity.NewsEnt
 {
     public class Comment
     {
         public Guid Id { get; set; }
         public string Text { get; set; }
         public DateTime CreateDate { get; set; } = DateTime.Now;
-        public DateTime RemoveDate { get; set; }
+        public DateTime? RemoveDate { get; set; }
 
         public News News { get; set; }
         public Guid NewsId { get; set; }

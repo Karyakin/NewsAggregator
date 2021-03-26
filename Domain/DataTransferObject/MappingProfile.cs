@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Entities.Entity.News;
+using Entities.Entity.NewsEnt;
 using System;
 using System.Collections.Generic;
 using System.Linq;

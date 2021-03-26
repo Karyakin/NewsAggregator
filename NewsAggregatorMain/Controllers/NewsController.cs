@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Contracts.WrapperInterface;
 using Entities.DataTransferObject;
-using Entities.Entity.News;
+using Entities.Entity.NewsEnt;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;

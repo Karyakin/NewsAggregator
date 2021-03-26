@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Entities.Entity.News;
+using Entities.Entity.NewsEnt;
 using Entities.Entity.Users;
 using Entity.Users;
 
@@ -20,7 +20,7 @@ namespace Repositories.Context
         private DbSet<Role> Roles { get; set; }
         private DbSet<Photo> Photos { get; set; }
         private DbSet<Author> Authors { get; set; }
-        private DbSet<RssSource> Sources { get; set; }
+        private DbSet<RssSource> RssSource { get; set; }
         private DbSet<Category> Categories{ get; set; }
         private DbSet<Comment> Comments{ get; set; }
 

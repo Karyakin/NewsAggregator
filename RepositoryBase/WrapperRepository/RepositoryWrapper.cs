@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using Contracts.RepositoryInterfaces;
 using Repositories.Context;
 using Repositories.Categories;
+using Repositories.RssSources;
+using Repositories.NewsRep;
 
 namespace Repositories.WrapperRepository
 {
@@ -39,7 +41,6 @@ namespace Repositories.WrapperRepository
                 return _newsRepository;
             }
         }
-
         public ICategoryRepository Category
         {
             get
@@ -50,19 +51,16 @@ namespace Repositories.WrapperRepository
                 return _categoryRepository;
             }
         }
-
         public IRssSourceRepository RssSource
         {
             get
             {
                 if (_rssSourceRepository == null)
-                    _rssSourceRepository = new CategoryRepository(_newsDataContextWrapper);
+                    _rssSourceRepository = new RssSourceRepository(_newsDataContextWrapper);
 
                 return _rssSourceRepository;
             }
         }
-
-       
 
 
 

@@ -1,4 +1,4 @@
-﻿using Entities.Entity.News;
+﻿using Entities.Entity.NewsEnt;
 using Contracts;
 using System;
 using System.Collections.Generic;

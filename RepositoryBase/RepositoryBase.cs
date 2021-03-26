@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Contracts.RepositoryInterfaces;
 using Repositories.Context;
+using System.Collections.Generic;
 
 namespace Repositories
 {
@@ -17,25 +18,22 @@ namespace Repositories
             _newsDataContext = newsDataContext;
         }
 
-
-
         public IQueryable<T> FindAll(bool trackChanges) =>
         !trackChanges 
             ?
               _newsDataContext.Set<T>().AsNoTracking()
             : 
                 _newsDataContext.Set<T>();
-
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges) =>
         !trackChanges
             ?
              _newsDataContext.Set<T>().Where(expression).AsNoTracking()
             :
             _newsDataContext.Set<T>().Where(expression);
-
-        public void Create(T entity) => _newsDataContext.Set<T>().AddRangeAsync(entity);
+        public void Create(T entity) => _newsDataContext.Set<T>().Add(entity);
         public void Update(T entity) => _newsDataContext.Set<T>().Update(entity); 
         public void Delete(T entity) => _newsDataContext.Set<T>().Remove(entity);
+        public void CreateMany(IEnumerable<T> entitis)=>_newsDataContext.Set<T>().AddRange(entitis);
     }
 
 }

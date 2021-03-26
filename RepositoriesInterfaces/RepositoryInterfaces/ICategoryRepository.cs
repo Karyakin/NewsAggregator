@@ -1,4 +1,4 @@
-﻿using Entities.Entity.News;
+﻿using Entities.Entity.NewsEnt;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +11,6 @@ namespace Contracts.RepositoryInterfaces
     {
         Task<IEnumerable<Category>> GetAllCategoryAsync(bool trackChanges);
         void CreateOneCategory(Category category);
+        void CreateManyCategories(IEnumerable<Category> categories);
     }
 }

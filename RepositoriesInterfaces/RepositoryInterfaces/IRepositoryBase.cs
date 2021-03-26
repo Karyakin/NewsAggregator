@@ -16,7 +16,9 @@ namespace Contracts.RepositoryInterfaces
         void Create(T entity);
         void Update(T entity);
         void Delete(T entity);
-      
+        void CreateMany(IEnumerable<T> entitis);
+
+
         IQueryable<T> FindAll(bool trackChanges);
         IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges);
     }

@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Entities.Entity.News;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Contracts.RepositoryInterfaces;
 using Repositories.Context;
+using Entities.Entity.NewsEnt;
 
-namespace Repositories.Migrations
+namespace Repositories.NewsRep
 {
     public class NewsRepository : RepositoryBase<News>, INewsRepository
     {

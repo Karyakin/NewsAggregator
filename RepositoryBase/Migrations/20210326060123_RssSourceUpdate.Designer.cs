@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repositories.Context;
 
 namespace Repositories.Migrations
 {
     [DbContext(typeof(NewsDataContext))]
-    partial class NewsDataContextModelSnapshot : ModelSnapshot
+    [Migration("20210326060123_RssSourceUpdate")]
+    partial class RssSourceUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,7 +79,7 @@ namespace Repositories.Migrations
                     b.Property<Guid>("NewsId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("RemoveDate")
+                    b.Property<DateTime>("RemoveDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Text")
@@ -208,7 +210,7 @@ namespace Repositories.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("RemovedDate")
+                    b.Property<DateTime>("RemovedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -255,7 +257,7 @@ namespace Repositories.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("RemovedDate")
+                    b.Property<DateTime>("RemovedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -302,7 +304,7 @@ namespace Repositories.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<DateTime?>("RemovedDate")
+                    b.Property<DateTime>("RemovedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -344,7 +346,7 @@ namespace Repositories.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("RemovedDate")
+                    b.Property<DateTime>("RemovedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserEMail")

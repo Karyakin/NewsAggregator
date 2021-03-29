@@ -20,12 +20,10 @@ namespace Repositories.Categories
         {
             CreateMany(categories);
         }
-
         public void CreateOneCategory(Category category)
         {
             Create(category);
         }
-
         public async Task<IEnumerable<Category>> GetAllCategoryAsync(bool trackChanges)
         {
             var res = await FindAll(trackChanges).ToListAsync();
@@ -33,7 +31,12 @@ namespace Repositories.Categories
             return res1;
         }
 
-      
+        public async Task<Category> FindRssSourceByName(string categoryName) =>
+           await FindByCondition(x => x.Name.Equals(categoryName), true).FirstOrDefaultAsync();
+
+        public async Task<Category> FindCategoryByName(string categoryName)=>
+            await FindByCondition(x => x.Name.Equals(categoryName), true).FirstOrDefaultAsync();
+
 
         /*  public async Task<IEnumerable<Category>> GetAllCategoryAsync(bool trackChanges)
           {

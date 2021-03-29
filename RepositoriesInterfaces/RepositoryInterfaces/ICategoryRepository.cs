@@ -12,5 +12,6 @@ namespace Contracts.RepositoryInterfaces
         Task<IEnumerable<Category>> GetAllCategoryAsync(bool trackChanges);
         void CreateOneCategory(Category category);
         void CreateManyCategories(IEnumerable<Category> categories);
+        Task<Category> FindCategoryByName(string categoryName);
     }
 }

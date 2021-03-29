@@ -12,7 +12,8 @@ namespace Entities.DataTransferObject
     {
         public MappingProfile()
         {
-            CreateMap<News, NewsGetDTO>().ReverseMap();
+            CreateMap<News, NewsGetDTO>().ReverseMap(); 
+            CreateMap<News, NewsCategoryRssSourceDTO>().ReverseMap(); 
         }
     }
 }

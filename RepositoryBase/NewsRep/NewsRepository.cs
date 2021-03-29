@@ -28,9 +28,8 @@ namespace Repositories.NewsRep
 
         public async Task<IEnumerable<News>> GetAllNewsAsync(bool trackChanges)
         {
-            var res = await FindAll(trackChanges).ToListAsync();
-            var res1 = res;
-            return res1;
+            var res = await FindAll(trackChanges).Include(x=>x.Category).Include(x=>x.Source).ToListAsync();
+            return res;
         }
         public async Task<News> GetByIdsAsync(Guid ids, bool trackChanges)
         {
@@ -43,7 +42,8 @@ namespace Repositories.NewsRep
             return res;
         }
 
-        public void CreateOneNewsAsync(News news)=>Create(news);
 
+        public void CreateOneNewsAsync(News news) =>  Create(news);
+       
     }
 }

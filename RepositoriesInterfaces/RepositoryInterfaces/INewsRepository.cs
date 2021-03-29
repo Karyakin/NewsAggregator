@@ -15,18 +15,23 @@ namespace Contracts.RepositoryInterfaces
         Все, что мы делаем, это меняем состояние объекта на «Добавлено и удалено».*/
 
 
-        Task<IEnumerable<News>> GetAllNewsAsync(bool trackChanges); 
-        void CreateOneNewsAsync(News news);
+        Task<IEnumerable<News>> GetAllNewsAsync(bool trackChanges);
+         void CreateOneNewsAsync(News news);
+
+       // Task CreateOneNewsAsync(string categoryName, string rssSourceName, News news);
 
 
-       /* Task<News> GetNewsAsync(Guid newsId, bool trackChanges);
-        Task<IEnumerable<News>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges);
 
-        Task CreateAsync(News news);
 
-        // я думаю эти два метода нужно коментировать и они должнв работать из бэйсрепозиторий
-        void DeleteNews(News news);// обязательно проверить если закомитать этот метод подтянется ли все из repositoryBase
-        void UpdateNews(News news);*/
+
+        /* Task<News> GetNewsAsync(Guid newsId, bool trackChanges);
+         Task<IEnumerable<News>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges);
+
+         Task CreateAsync(News news);
+
+         // я думаю эти два метода нужно коментировать и они должнв работать из бэйсрепозиторий
+         void DeleteNews(News news);// обязательно проверить если закомитать этот метод подтянется ли все из repositoryBase
+         void UpdateNews(News news);*/
     }
 }
 

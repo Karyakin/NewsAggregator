@@ -12,6 +12,8 @@ using Repositories.Context;
 using Repositories.Categories;
 using Repositories.RssSources;
 using Repositories.NewsRep;
+using Contracts.ServicesInterfacaces;
+using Services;
 
 namespace Repositories.WrapperRepository
 {
@@ -26,6 +28,7 @@ namespace Repositories.WrapperRepository
         private INewsRepository _newsRepository;
         private ICategoryRepository _categoryRepository;
         private IRssSourceRepository _rssSourceRepository;
+
         public RepositoryWrapper(NewsDataContext newsDataContextWrapper)
         {
             _newsDataContextWrapper = newsDataContextWrapper;

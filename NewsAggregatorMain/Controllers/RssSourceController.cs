@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Contracts.ServicesInterfacaces;
 using Contracts.WrapperInterface;
 using Entities.Entity.NewsEnt;
 using Microsoft.AspNetCore.Mvc;
@@ -11,35 +12,37 @@ namespace NewsAggregatorMain.Controllers
 {
     public class RssSourceController : Controller
     {
-        private readonly IRepositoryWrapper _wrapper;
-        private readonly IMapper _mapper;
+        /*private readonly IRepositoryWrapper _wrapper;
+        private readonly IMapper _mapper;*/
 
-        public RssSourceController(IRepositoryWrapper wrapper, IMapper mapper)
+        private readonly IRssSourceService _rssSourceService;
+        public RssSourceController(IRssSourceService rssSourceService)
         {
-            _wrapper = wrapper;
-            _mapper = mapper;
+            _rssSourceService = rssSourceService;
         }
 
         public async Task<IActionResult> Index()
         {
             
-            var rssSource = await _wrapper.RssSource.GetAllRssSourceAsync(false);
+            var rssSource = await _rssSourceService.GetAllRssSourceAsync(false);
 
             return Ok(rssSource);
         }
 
         public async Task<IActionResult> AddOneRssSource()
         {
-            RssSource TutBy = new RssSource()
+            RssSource SportExpress = new RssSource()
             {
                 Id = Guid.NewGuid(),
-                Name = "TutBy",
-                Link = "https://news.tut.by/rss/all.rss",
+                Name = "Спорт-экспресс",
+                Link = "https://www.sport-express.ru/services/materials/news/se/",
                // DateOfReceiving = DateTime.Now;
             };
 
-            _wrapper.RssSource.CreateOneRssSource(TutBy);
-            await _wrapper.SaveAsync();
+           await _rssSourceService.CreateOneRssSource(SportExpress);
+
+          /*  _wrapper.RssSource.CreateOneRssSource(TutBy);
+            await _wrapper.SaveAsync();*/
 
             return  Ok();
         }

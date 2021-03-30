@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Contracts.RepositoryInterfaces;
+using Contracts.ServicesInterfacaces;
 using Contracts.WrapperInterface;
 using Entities.DataTransferObject;
 using Entities.Entity.NewsEnt;
@@ -15,27 +16,32 @@ namespace NewsAggregatorMain.Controllers
     //[Route("[controller]")]
     public class NewsController : Controller
     {
-        private readonly IRepositoryWrapper _wrapper;
-        private readonly IMapper _mapper;
-        public NewsController(IRepositoryWrapper wrapper, IMapper mapper)
+        private readonly INewsService _newsService;
+        private readonly ICategoryService _categoryService;
+        private readonly IRssSourceService _rssSourceService;
+        public NewsController(INewsService newsService, ICategoryService categoryService, IRssSourceService rssSourceService)
         {
-            _wrapper = wrapper;
-            _mapper = mapper;
+            _newsService = newsService;
+            _categoryService = categoryService;
+            _rssSourceService = rssSourceService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-           // var companies = await _wrapper.News.FindAll(trackChanges: false).ToListAsync();
-            var companies = await _wrapper.News.GetAllNewsAsync(trackChanges: false);
+            var allCompanies = await _newsService.FindAllNews();
+            #region Через ркпу
+            /*
+                       // var companies = await _wrapper.News.FindAll(trackChanges: false).ToListAsync();
+                        var companies = await _wrapper.News.GetAllNewsAsync(trackChanges: false);
 
-            var getCompanyDTO = _mapper.Map<IEnumerable<NewsGetDTO>>(companies).ToList();
-           // var getCompanyDTO = _mapper.Map<IEnumerable<NewsCategoryRssSourceDTO>>(companies).ToList();
+                        var getCompanyDTO = _mapper.Map<IEnumerable<NewsGetDTO>>(companies).ToList();
+                       // var getCompanyDTO = _mapper.Map<IEnumerable<NewsCategoryRssSourceDTO>>(companies).ToList()*/
 
-
-
-            return Ok(getCompanyDTO);
+            #endregion
+            return Ok(allCompanies);
         }
+
 
         [HttpPut("AddNews")]
         public async Task<IActionResult> AddNews(string categoryName, string rssSourceName, News news)
@@ -43,24 +49,18 @@ namespace NewsAggregatorMain.Controllers
             categoryName = "Искуство";
             rssSourceName = "TutBy";
 
-          /*  var catgory = await _wrapper.Category.FindCategoryByName(categoryName);
-            var rssSource = await _wrapper.RssSource.FindRssSourceByName(rssSourceName);*/
-
             News news1 = new News()
             {
-                CategoryId =/* catgory.Id,*/(await _wrapper.Category.FindCategoryByName(categoryName)).Id,
-                SourceId = /*rssSource.Id,*/(await _wrapper.RssSource.FindRssSourceByName(rssSourceName)).Id,
+                CategoryId = (await _categoryService.FindCategoryByName(categoryName)).Id,
+                SourceId = (await _rssSourceService.RssSourceByName(rssSourceName)).Id,
                 Content = "Описывается сама новость и что произошло",
                 Rating = 2,
                 Title = "А вы знали что...",
                 Url = "https://news.tut.by/society/724224.html"
             };
 
+            await _newsService.CreateOneNewsAsync(news1);
 
-           
-
-            _wrapper.News.Create(news1);
-            await _wrapper.SaveAsync();
             return Ok();
         }
     }

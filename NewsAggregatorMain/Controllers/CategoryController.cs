@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Contracts.ServicesInterfacaces;
 using Contracts.WrapperInterface;
 using Entities.Entity.NewsEnt;
 using Microsoft.AspNetCore.Mvc;
@@ -13,32 +14,28 @@ namespace NewsAggregatorMain.Controllers
 
     public class CategoryController : Controller
     {
-        private readonly IRepositoryWrapper _wrapper;
-        private readonly IMapper _mapper;
+       /* private readonly IRepositoryWrapper _wrapper;
+        private readonly IMapper _mapper;*/
+        private readonly ICategoryService _categoryService;
 
-        public CategoryController(IRepositoryWrapper repositoryWrapper, IMapper mapper)
+        public CategoryController(IRepositoryWrapper repositoryWrapper, IMapper mapper, ICategoryService categoryService)
         {
-            _wrapper = repositoryWrapper;
-            _mapper = mapper;
+          /*  _wrapper = repositoryWrapper;
+            _mapper = mapper;*/
+            _categoryService = categoryService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-
-            var res = await _wrapper.Category.GetAllCategoryAsync(false);
-
-
+            var res = await _categoryService.GetAllCategoryAsync(false);
             return Ok(res);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-
-            var res = await _wrapper.Category.GetAllCategoryAsync(false);
-
-
+            var res = await _categoryService.GetAllCategoryAsync(false);
             return Ok(res);
         }
 
@@ -48,13 +45,11 @@ namespace NewsAggregatorMain.Controllers
             Category category = new Category()
             {
                 Id = Guid.NewGuid(),
-                Name = "Экономика",
-                Description = "Все о больших и маленьких деньгах"
+                Name = "Музыка",
+                Description = "Пляски гулянки"
             };
 
-
-            _wrapper.Category.CreateOneCategory(category);
-            await _wrapper.SaveAsync();
+           await _categoryService.CreateOneCategory(category);
 
             return Ok($"Новая категория {category.Name} была успешно дабавлена");
         }
@@ -63,19 +58,19 @@ namespace NewsAggregatorMain.Controllers
         public async Task<IActionResult> AddCategories()
         {
 
-            Category political = new Category()
+            Category medical = new Category()
             {
                 Id = Guid.NewGuid(),
-                Name = "Политика",
-                Description = "Наиболее заметные новости в мире политики"
+                Name = "Медицина",
+                Description = "Все о медицине"
             };
-            Category social = new Category()
+            Category worl = new Category()
             {
                 Id = Guid.NewGuid(),
-                Name = "Общество",
-                Description = "Наиболее заметные новости в обществе"
+                Name = "Мир",
+                Description = "Че там в мире"
             };
-            Category sport = new Category()
+           /* Category sport = new Category()
             {
                 Id = Guid.NewGuid(),
                 Name = "Спорт",
@@ -86,18 +81,19 @@ namespace NewsAggregatorMain.Controllers
                 Id = Guid.NewGuid(),
                 Name = "Искуство",
                 Description = "Наиболее актуальное из мира исскуства"
-            };
+            };*/
 
             List<Category> categories = new List<Category>()
             {
-              political,
-              social,
-              sport,
-              art
+              medical,
+              worl,
+             /* sport,
+              art*/
             };
 
-            _wrapper.Category.CreateManyCategories(categories);
-            await _wrapper.SaveAsync();
+            await _categoryService.CreateManyCategories(categories);
+            /*_wrapper.Category.CreateManyCategories(categories);
+            await _wrapper.SaveAsync();*/
             return Ok();
 
         }

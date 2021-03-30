@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Entities.csproj" />
+    <ProjectReference Include="..\NewsServices\Services.csproj" />
     <ProjectReference Include="..\RepositoriesInterfaces\Contracts.csproj" />
   </ItemGroup>
 

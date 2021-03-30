@@ -12,6 +12,6 @@ namespace Entities.Models
         public string Name { get; set; }
         public string Link { get; set; } 
         public DateTime DateOfReceiving { get; set; } = DateTime.Now;
-        public IEnumerable<NewsModel> News { get; set; }
+       
     }
 }

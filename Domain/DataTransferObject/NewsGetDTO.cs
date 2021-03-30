@@ -18,7 +18,7 @@ namespace Entities.DataTransferObject
         /*public Guid CategoryId { get; set; }
         public Guid SourceId { get; set; }*/
 
-        public Category Category { get; set; }
-        public RssSource RssSource { get; set; }
+        public CategoryModel Category { get; set; }
+        public RssSourceModel Source { get; set; }
     }
 }

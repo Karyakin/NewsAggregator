@@ -12,6 +12,7 @@ namespace Contracts.ServicesInterfacaces
     {
         public Task<IEnumerable<NewsGetDTO>> FindAllNews();
         Task CreateOneNewsAsync(News news);
+        Task<NewsGetDTO> GetNewsBiId(Guid? newsId);
         Task SaveAsync();
         void Save();
     }

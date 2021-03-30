@@ -32,6 +32,12 @@ namespace NewsAggregatorMain.Controllers
             return Ok(res);
         }
 
+       /* [HttpGet]
+        public async Task<IActionResult> GetOneNews()
+        {
+            return  await _
+        }*/
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Contracts.RepositoryInterfaces
 {
-    public interface IRepositoryBase<T>
+    public interface IRepositoryBase<T> : IDisposable
     {
         /*В Create а также Delete сигнатуры методов остаются синхронными.
         Это потому, что в этих методах мы не вносим никаких изменений в базу данных.

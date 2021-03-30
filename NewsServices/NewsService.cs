@@ -4,6 +4,7 @@ using Contracts.ServicesInterfacaces;
 using Contracts.WrapperInterface;
 using Entities.DataTransferObject;
 using Entities.Entity.NewsEnt;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,13 +17,14 @@ namespace Services
         private readonly IRepositoryWrapper _wrapper;
         private readonly IMapper _mapper;
 
-
-
         public NewsService(IRepositoryWrapper wrapper, IMapper mapper)
         {
             _wrapper = wrapper;
             _mapper = mapper;
         }
+
+
+
 
         public async Task CreateOneNewsAsync(News news)
         {
@@ -35,6 +37,27 @@ namespace Services
             var companies = await _wrapper.News.GetAllNewsAsync(false);
             var getCompanyDTO = _mapper.Map<IEnumerable<NewsGetDTO>>(companies).ToList();
             return getCompanyDTO;
+        }
+
+       /* public async Task FindNewsBiId(Guid? newsId)
+        {
+            if (newsId.HasValue)
+            {
+                await _wrapper.News.FindAll(false).Where(x => x.Id.Equals(newsId)).FirstOrDefaultAsync();
+            }
+            else
+            {
+                await _wrapper.News.FindAll(false).ToListAsync();
+            }
+        }*/
+
+        public async Task<NewsGetDTO> GetNewsBiId(Guid? newsId)
+        {
+
+           var news = await _wrapper.News.GetByIdsAsync(newsId.Value, false);
+
+            return _mapper.Map<NewsGetDTO>(news);
+
         }
 
         public void Save() => _wrapper.Save();

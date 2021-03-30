@@ -31,11 +31,17 @@ namespace Repositories.NewsRep
             var res = await FindAll(trackChanges).Include(x=>x.Category).Include(x=>x.Source).ToListAsync();
             return res;
         }
+
         public async Task<News> GetByIdsAsync(Guid ids, bool trackChanges)
         {
-            var res = await FindByCondition(news => news.Id.Equals(ids), trackChanges).FirstOrDefaultAsync();
+            var res = await FindByCondition(news => news.Id.Equals(ids), trackChanges)
+                .Include(x => x.Category)
+                .Include(x => x.Source)
+                .FirstOrDefaultAsync();
             return res;
         }
+
+
         public async Task<IEnumerable<News>> GetNewsAsync(IEnumerable<Guid> newsId, bool trackChanges)
         {
             var res = await FindByCondition(x => x.Id.Equals(newsId), trackChanges).ToListAsync();

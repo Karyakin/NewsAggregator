@@ -42,6 +42,18 @@ namespace NewsAggregatorMain.Controllers
             return Ok(allCompanies);
         }
 
+        [HttpGet("oneNews")]
+        public async Task<IActionResult> GetOneNews()
+        {
+            var guid = (await _newsService.FindAllNews()).FirstOrDefault();// это метод на удаление потом, он чисто для получения гуида
+            var test = guid.Id;
+            
+           var res = await _newsService.GetNewsBiId(test);
+
+            return Ok(res);
+        }
+
+
 
         [HttpPut("AddNews")]
         public async Task<IActionResult> AddNews(string categoryName, string rssSourceName, News news)

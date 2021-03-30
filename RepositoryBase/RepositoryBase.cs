@@ -34,6 +34,12 @@ namespace Repositories
         public void Update(T entity) => _newsDataContext.Set<T>().Update(entity); 
         public void Delete(T entity) => _newsDataContext.Set<T>().Remove(entity);
         public void CreateMany(IEnumerable<T> entitis)=>_newsDataContext.Set<T>().AddRange(entitis);
+
+        public void Dispose()
+        {
+            _newsDataContext.Dispose();// прекращает работу интерфейсов, чтобы при отключении базы запросы не выполнялись
+            GC.SuppressFinalize(this);// Уборка мусора
+        }
     }
 
 }

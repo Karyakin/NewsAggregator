@@ -17,6 +17,7 @@ namespace Contracts.RepositoryInterfaces
 
         Task<IEnumerable<News>> GetAllNewsAsync(bool trackChanges);
          void CreateOneNewsAsync(News news);
+        Task<News> GetByIdsAsync(Guid ids, bool trackChanges);
 
        // Task CreateOneNewsAsync(string categoryName, string rssSourceName, News news);
 

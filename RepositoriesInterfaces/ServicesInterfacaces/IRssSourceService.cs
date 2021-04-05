@@ -1,4 +1,5 @@
 ﻿using Entities.Entity.NewsEnt;
+using Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,11 @@ namespace Contracts.ServicesInterfacaces
 {
    public interface IRssSourceService
     {
-        Task<IEnumerable<RssSource>> GetAllRssSourceAsync(bool trackChanges);
-        Task CreateOneRssSource(RssSource rssSource);
+        Task<IEnumerable<RssSourceModel>> GetAllRssSourceAsync(bool trackChanges);
+        Task CreateOneRssSource(RssSourceModel rssSourceModel);
         Task CreateManyRssSource(IEnumerable<RssSource> rssSource);
 
-        Task<RssSource> RssSourceById(Guid rssSourceId);
+        Task<RssSourceModel> RssSourceById(Guid? rssSourceId);
         Task<RssSource> RssSourceByName(string rssSourceName);
     }
 }

@@ -75,5 +75,11 @@ namespace NewsAggregatorMain.Controllers
 
             return Ok();
         }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
     }
 }

@@ -75,12 +75,12 @@ namespace NewsAggregatorMain.Controllers
                // DateOfReceiving = DateTime.Now;
             };*/
 
-           await _rssSourceService.CreateOneRssSource(rssSourceModel);
+          // await _rssSourceService.CreateOneRssSource(rssSourceModel);
 
           /*  _wrapper.RssSource.CreateOneRssSource(TutBy);
             await _wrapper.SaveAsync();*/
 
-            return  View();
+            return  RedirectToAction(nameof(Index));
         }
     }
 }

@@ -39,10 +39,10 @@ namespace NewsAggregatorMain.Controllers
                        // var getCompanyDTO = _mapper.Map<IEnumerable<NewsCategoryRssSourceDTO>>(companies).ToList()*/
 
             #endregion
-            return Ok(allCompanies);
+            return View(allCompanies);
         }
 
-        [HttpGet("oneNews")]
+       // [HttpGet("oneNews")]
         public async Task<IActionResult> GetOneNews()
         {
             var guid = (await _newsService.FindAllNews()).FirstOrDefault();// это метод на удаление потом, он чисто для получения гуида
@@ -73,7 +73,7 @@ namespace NewsAggregatorMain.Controllers
 
             await _newsService.CreateOneNewsAsync(news1);
 
-            return Ok();
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]

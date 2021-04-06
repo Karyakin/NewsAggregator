@@ -19,20 +19,6 @@ namespace Contracts.RepositoryInterfaces
          void CreateOneNewsAsync(News news);
         Task<News> GetByIdsAsync(Guid ids, bool trackChanges);
 
-       // Task CreateOneNewsAsync(string categoryName, string rssSourceName, News news);
-
-
-
-
-
-        /* Task<News> GetNewsAsync(Guid newsId, bool trackChanges);
-         Task<IEnumerable<News>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges);
-
-         Task CreateAsync(News news);
-
-         // я думаю эти два метода нужно коментировать и они должнв работать из бэйсрепозиторий
-         void DeleteNews(News news);// обязательно проверить если закомитать этот метод подтянется ли все из repositoryBase
-         void UpdateNews(News news);*/
     }
 }
 

@@ -24,13 +24,12 @@ namespace Services
         }
 
 
-
-
         public async Task CreateOneNewsAsync(News news)
         {
             _wrapper.News.Create(news);
             await _wrapper.SaveAsync();
         }
+
 
         public async Task<IEnumerable<NewsGetDTO>> FindAllNews()
         {

@@ -42,6 +42,9 @@ namespace NewsAggregatorMain.Controllers
             return View(allCompanies);
         }
 
+
+
+
        // [HttpGet("oneNews")]
         public async Task<IActionResult> GetOneNews()
         {

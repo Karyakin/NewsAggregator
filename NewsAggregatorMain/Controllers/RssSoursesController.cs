@@ -50,6 +50,28 @@ namespace NewsAggregatorMain.Controllers
             return View(sourse);
         }
 
+
+        public async Task<IActionResult> DetailsWithNews(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var sourse = await _rssSourceService.RssSourceByIdWithNews(id);
+
+
+            if (sourse == null)
+            {
+                return NotFound();
+            }
+
+            return View(sourse);
+        }
+
+
+
+
         public IActionResult Create(RssSource rssSource)
         {
 

@@ -14,14 +14,10 @@ namespace NewsAggregatorMain.Controllers
 
     public class CategoryController : Controller
     {
-       /* private readonly IRepositoryWrapper _wrapper;
-        private readonly IMapper _mapper;*/
         private readonly ICategoryService _categoryService;
 
-        public CategoryController(IRepositoryWrapper repositoryWrapper, IMapper mapper, ICategoryService categoryService)
+        public CategoryController(ICategoryService categoryService)
         {
-          /*  _wrapper = repositoryWrapper;
-            _mapper = mapper;*/
             _categoryService = categoryService;
         }
 
@@ -76,30 +72,27 @@ namespace NewsAggregatorMain.Controllers
                 Name = "Мир",
                 Description = "Че там в мире"
             };
-           /* Category sport = new Category()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Спорт",
-                Description = "Все, что происходит в мире спорта"
-            };
-            Category art = new Category()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Искуство",
-                Description = "Наиболее актуальное из мира исскуства"
-            };*/
+
+            /* Category sport = new Category()
+             {
+                 Id = Guid.NewGuid(),
+                 Name = "Спорт",
+                 Description = "Все, что происходит в мире спорта"
+             };
+             Category art = new Category()
+             {
+                 Id = Guid.NewGuid(),
+                 Name = "Искуство",
+                 Description = "Наиболее актуальное из мира исскуства"
+             };*/
 
             List<Category> categories = new List<Category>()
             {
               medical,
               worl,
-             /* sport,
-              art*/
             };
 
             await _categoryService.CreateManyCategories(categories);
-            /*_wrapper.Category.CreateManyCategories(categories);
-            await _wrapper.SaveAsync();*/
             return Ok();
 
         }

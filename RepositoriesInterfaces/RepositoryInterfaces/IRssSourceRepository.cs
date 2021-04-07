@@ -14,8 +14,9 @@ namespace Contracts.RepositoryInterfaces
         void CreateManyRssSource(IEnumerable<RssSource> rssSource);
 
         Task<RssSource> FindRssSourceById(Guid rssSourceId);
+        Task<RssSource> FindNewsForSourse(Guid rssSourceId);
         Task<RssSource> FindRssSourceByName(string rssSourceName);
-      
+
 
     }
 }

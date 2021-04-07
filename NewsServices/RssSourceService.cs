@@ -4,6 +4,7 @@ using Contracts.WrapperInterface;
 using Entities.DataTransferObject;
 using Entities.Entity.NewsEnt;
 using Entities.Models;
+using Entities.Models.AssembledModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +50,14 @@ namespace Services
             var rssmodel = await _wrapper.RssSource.FindRssSourceById(rssSourceId.Value);
             var res = _mapper.Map<RssSourceModel>(rssmodel);
             return res;
+        }
+
+        public async Task<NewForSourse> RssSourceByIdWithNews(Guid? rssSourceId)
+        {
+            var rssSource = await _wrapper.RssSource.FindNewsForSourse(rssSourceId.Value);
+            var rssSourceWithNews = _mapper.Map<NewForSourse>(rssSource);
+
+            return rssSourceWithNews;
         }
 
         public async Task<RssSource> RssSourceByName(string rssSourceName) =>

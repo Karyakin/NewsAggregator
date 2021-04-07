@@ -14,12 +14,12 @@ namespace Services
     public class CategoryService : ICategoryService
     {
         private readonly IRepositoryWrapper _wrapper;
-        private readonly IMapper _mapper;
+       // private readonly IMapper _mapper;
 
         public CategoryService(IRepositoryWrapper wrapper, IMapper mapper)
         {
             _wrapper = wrapper;
-            _mapper = mapper;
+         //   _mapper = mapper;
         }
 
         public async Task CreateManyCategories(IEnumerable<Category> categories)

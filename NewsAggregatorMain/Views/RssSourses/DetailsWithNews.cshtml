@@ -1,4 +1,4 @@
-﻿@model Entities.Models.RssSourceModel
+﻿@model Entities.Models.AssembledModel.NewForSourse
 
 @{
     ViewData["Title"] = "Details";
@@ -37,9 +37,55 @@
         </dd>
 
     </dl>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    NewsId
+                </th>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Content
+                </th>
+                <th>
+                    Date of resived
+                </th>
+                <th>
+                    Raiting
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.News)
+            {
+            <tr>
+                <td>
+                    @item.Id
+                </td>
+                <td>
+                    @item.Title
+                </td>
+                <td>
+                    @item.Content
+                </td>
+                <td>
+                    @item.StartDate
+                </td>
+                <td>
+                    @item.Rating
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
 </div>
+
 <div>
     <a asp-controller="News" asp-action="Index" asp-route-sourseId="@Model.Id">News</a> |
-    <a asp-action="DetailsWithNews" asp-route-id="@Model.Id">News for RssSourse</a> |
     <a asp-action="Index">Back to List</a>
 </div>

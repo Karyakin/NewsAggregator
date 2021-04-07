@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Entities.Entity.NewsEnt;
 using Entities.Models;
+using Entities.Models.AssembledModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Entities.DataTransferObject
     {
         public MappingProfile()
         {
-            CreateMap<News, NewsGetDTO>().ReverseMap(); 
+            CreateMap<News, NewsGetDTO>().ReverseMap();
             //CreateMap<News, NewsCategoryRssSourceDTO>().ReverseMap(); 
 
             CreateMap<News, NewsModel>().ReverseMap();
@@ -24,6 +25,7 @@ namespace Entities.DataTransferObject
             CreateMap<RssSourceModel, RssSource>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(s => Guid.NewGuid()));
 
+            CreateMap<RssSource, NewForSourse>().ReverseMap();
 
 
 
@@ -31,7 +33,11 @@ namespace Entities.DataTransferObject
 
 
 
-           
+
+
+
+
+
         }
     }
 }

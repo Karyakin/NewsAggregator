@@ -19,9 +19,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
-            @* <th>
-                    @Html.DisplayNameFor(model=>model.DateOfReceiving)
-                </th>*@
+             <th>
+                    @Html.DisplayNameFor(model=>model.Content)
+                </th>
             <th></th>
         </tr>
     </thead>
@@ -35,9 +35,9 @@
                 <td>
                     @item.Title
                 </td>
-                @*  <td>
-                        @item.DateOfReceiving
-                    </td>*@
+                  <td>
+                        @item.Content
+                    </td>
                 <td>
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 </td>

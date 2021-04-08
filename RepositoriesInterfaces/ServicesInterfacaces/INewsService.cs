@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace Contracts.ServicesInterfacaces
 {
+
+    /// <summary>
+    /// Сой вариант зависимостей и наследований
+    /// </summary>
     public interface INewsService
     {
         public Task<IEnumerable<NewsGetDTO>> FindAllNews();

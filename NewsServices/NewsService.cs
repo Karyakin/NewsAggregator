@@ -26,14 +26,14 @@ namespace Services
 
         public async Task CreateOneNewsAsync(News news)
         {
-            _wrapper.News.Create(news);
+            await _wrapper.News.Add(news);
             await _wrapper.SaveAsync();
         }
 
 
         public async Task<IEnumerable<NewsGetDTO>> FindAllNews()
         {
-            var companies = await _wrapper.News.GetAllNewsAsync(false);
+            var companies = await _wrapper.News.GetAll(false).ToListAsync();
             var getCompanyDTO = _mapper.Map<IEnumerable<NewsGetDTO>>(companies).ToList();
             return getCompanyDTO;
         }
@@ -53,7 +53,7 @@ namespace Services
         public async Task<NewsGetDTO> GetNewsBiId(Guid? newsId)
         {
 
-           var news = await _wrapper.News.GetByIdsAsync(newsId.Value, false);
+           var news = await _wrapper.News.GetById(newsId.Value, false);
 
             return _mapper.Map<NewsGetDTO>(news);
 

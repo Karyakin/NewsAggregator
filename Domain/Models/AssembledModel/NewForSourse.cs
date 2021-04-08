@@ -15,6 +15,6 @@ namespace Entities.Models.AssembledModel
         public DateTime DateOfReceiving { get; set; }
        // public IEnumerable<Guid> NewsId { get; set; }
         public IEnumerable<News> News{ get; set; }
-       // public IEnumerable<Category> Categories { get; set; }
+       // public Category Categories { get; set; }
     }
 }

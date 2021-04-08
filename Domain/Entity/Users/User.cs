@@ -1,11 +1,12 @@
-﻿using Entities.Entity.NewsEnt;
+﻿using Contracts.Interfaces;
+using Entities.Entity.NewsEnt;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Entities.Entity.Users
 {
-    public class User
+    public class User : IBaseEntity
     {
         public Guid Id { get; set; }
         public string Login { get; set; }

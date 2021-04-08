@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Contracts.WrapperInterface
 {
-   public interface IRepositoryWrapper
+    public interface IRepositoryWrapper
     {
         public INewsRepository News { get; }
         public ICategoryRepository Category { get; }

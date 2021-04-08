@@ -9,7 +9,11 @@ using System.Threading.Tasks;
 
 namespace Contracts.ServicesInterfacaces
 {
-   public interface IRssSourceService// : IRssSourceService
+
+    /// <summary>
+    /// Сой вариант зависимостей и наследований
+    /// </summary>
+    public interface IRssSourceService// : IRssSourceService
     {
         Task<IEnumerable<RssSourceModel>> GetAllRssSourceAsync(bool trackChanges);
         Task CreateOneRssSource(RssSourceModel rssSourceModel);

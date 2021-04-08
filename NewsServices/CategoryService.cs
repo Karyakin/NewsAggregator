@@ -24,22 +24,22 @@ namespace Services
 
         public async Task CreateManyCategories(IEnumerable<Category> categories)
         {
-           _wrapper.Category.CreateMany(categories);
+           await _wrapper.Category.AddRange(categories);
             await _wrapper.SaveAsync();
 
         }
         public async Task CreateOneCategory(Category category)
         {
-           _wrapper.Category.Create(category);
+           await _wrapper.Category.Add(category);
             await _wrapper.SaveAsync();
         }
         public async Task<IEnumerable<Category>> GetAllCategoryAsync(bool trackChanges)
         {
-            var categories = await _wrapper.Category.FindAll(trackChanges).ToListAsync();
+            var categories = await _wrapper.Category.GetAll(trackChanges).ToListAsync();
             return categories;
         }
 
         public async Task<Category> FindCategoryByName(string categoryName) =>
-            await _wrapper.Category.FindByCondition(x => x.Name.Equals(categoryName), true).FirstOrDefaultAsync();
+            await _wrapper.Category.GetByCondition(x => x.Name.Equals(categoryName), true).FirstOrDefaultAsync();
     }
 }

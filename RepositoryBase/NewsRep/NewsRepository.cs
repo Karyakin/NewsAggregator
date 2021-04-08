@@ -8,12 +8,17 @@ using Entities.Entity.NewsEnt;
 
 namespace Repositories.NewsRep
 {
-    public class NewsRepository : RepositoryBase<News>, INewsRepository
+    public class NewsRepository : RepositoryBases<News>, INewsRepository
     {
         public NewsRepository(NewsDataContext newsDataContext)
             : base(newsDataContext)
         {
         }
+
+
+
+
+
       //  https://www.youtube.com/watch?v=S4YDarQBkiM&ab_channel=CodeMaze
 
         /// <summary>
@@ -22,6 +27,17 @@ namespace Repositories.NewsRep
         /// что ему не нужно отслеживать изменения для требуемых сущностей. Это значительно увеличивает скорость запроса.
         /// </summary>
 
+      /*  public async Task<News> GetByIdsAsync(Guid id, bool trackChanges)
+        {
+            var res = await GetById(id, trackChanges);
+            return res;
+
+            *//* var res = await FindByCondition(news => news.Id.Equals(ids), trackChanges)
+                 .Include(x => x.Category)
+                 .Include(x => x.Source)
+                 .FirstOrDefaultAsync();
+             return res;*//*
+        }
 
         public void UpdateNews(News news) => Update(news);
         public void DeleteNews(News news) =>  Delete(news);
@@ -32,14 +48,6 @@ namespace Repositories.NewsRep
             return res;
         }
 
-        public async Task<News> GetByIdsAsync(Guid ids, bool trackChanges)
-        {
-            var res = await FindByCondition(news => news.Id.Equals(ids), trackChanges)
-                .Include(x => x.Category)
-                .Include(x => x.Source)
-                .FirstOrDefaultAsync();
-            return res;
-        }
 
 
         public async Task<IEnumerable<News>> GetNewsAsync(IEnumerable<Guid> newsId, bool trackChanges)
@@ -50,6 +58,6 @@ namespace Repositories.NewsRep
 
 
         public void CreateOneNewsAsync(News news) =>  Create(news);
-       
+       */
     }
 }

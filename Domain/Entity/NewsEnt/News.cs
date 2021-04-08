@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Contracts.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,7 +8,7 @@ using System.Text;
 namespace Entities.Entity.NewsEnt
 {
     [Table("News")]
-    public class News
+    public class News : IBaseEntity
     {
         public Guid Id { get; set; }
 

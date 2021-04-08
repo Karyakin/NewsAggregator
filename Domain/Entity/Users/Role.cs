@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Contracts.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Entities.Entity.Users
 {
-    public class Role
+    public class Role : IBaseEntity
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

@@ -58,8 +58,8 @@ namespace NewsAggregatorMain.Controllers
 
 
 
-        [HttpPut("AddNews")]
-        public async Task<IActionResult> AddNews(string categoryName, string rssSourceName, News news)
+
+        public async Task<IActionResult> Create(string categoryName, string rssSourceName, News news)
         {
             categoryName = "Искуство";
             rssSourceName = "TutBy";

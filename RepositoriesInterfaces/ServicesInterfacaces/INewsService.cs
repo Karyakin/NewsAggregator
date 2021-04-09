@@ -1,4 +1,5 @@
-﻿using Entities.DataTransferObject;
+﻿using Contracts.Interfaces;
+using Entities.DataTransferObject;
 using Entities.Entity.NewsEnt;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Contracts.ServicesInterfacaces
     /// <summary>
     /// Сой вариант зависимостей и наследований
     /// </summary>
-    public interface INewsService
+    public interface INewsService //: IRepositoryBases<News>
     {
         public Task<IEnumerable<NewsGetDTO>> FindAllNews();
         Task CreateOneNewsAsync(News news);

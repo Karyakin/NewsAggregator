@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Contracts.ServicesInterfacaces;
-using Contracts.WrapperInterface;
+using Contracts.UnitOfWorkInterface;
 using Entities.DataTransferObject;
 using Entities.Entity.NewsEnt;
 using Entities.Models;
@@ -17,30 +17,30 @@ namespace Services
     public class RssSourceService : IRssSourceService
     {
 
-        private readonly IRepositoryWrapper _wrapper;
+        private readonly IUnitOfWork  _unitOfWork;
         private readonly IMapper _mapper;
 
-        public RssSourceService(IRepositoryWrapper wrapper, IMapper mapper)
+        public RssSourceService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _wrapper = wrapper;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
         public async Task CreateManyRssSource(IEnumerable<RssSource> rssSource)
         {
-            await _wrapper.RssSource.AddRange(rssSource);
-            await _wrapper.SaveAsync();
+            await _unitOfWork.RssSource.AddRange(rssSource);
+            await _unitOfWork.SaveAsync();
         }
 
         public async Task CreateOneRssSource(RssSourceModel rssSourceModel)
         {
             var rssSourceEntity= _mapper.Map<RssSource>(rssSourceModel);
-            await _wrapper.RssSource.Add(rssSourceEntity);
-            await _wrapper.SaveAsync();
+            await _unitOfWork.RssSource.Add(rssSourceEntity);
+            await _unitOfWork.SaveAsync();
         }
 
         public async Task<IEnumerable<RssSourceModel>> GetAllRssSourceAsync(bool trackChanges)
         {
-            var rssSourse = await _wrapper.RssSource.GetAll(false).ToListAsync();
+            var rssSourse = await _unitOfWork.RssSource.GetAll(false).ToListAsync();
             var rssSourseDto = _mapper.Map<IEnumerable<RssSourceModel>>(rssSourse).ToList();
             return rssSourseDto;
 
@@ -48,20 +48,27 @@ namespace Services
 
         public async Task<RssSourceModel> RssSourceById(Guid? rssSourceId)
         {
-            var rssmodel = await _wrapper.RssSource.GetById(rssSourceId.Value, false);
+            var rssmodel = await _unitOfWork.RssSource.GetById(rssSourceId.Value, false);
             var res = _mapper.Map<RssSourceModel>(rssmodel);
             return res;
         }
 
-        public async Task<NewForSourse> RssSourceByIdWithNews(Guid? rssSourceId)
+        public async Task<SourseWithNewsCategory> RssSourceByIdWithNews(Guid? rssSourceId)
         {
 
-          /*  var resoult =_wrapper.RssSource.GetBy(sourse=>sourse.Id)
+           // var resoult =  _unitOfWork.RssSource.GetBy(n => n.Id.Equals(rssSourceId.Value), n => n.News);
 
-            var rssSource = await _wrapper.RssSource.FindNewsForSourse(rssSourceId.Value);
-            var rssSourceWithNews = _mapper.Map<NewForSourse>(rssSource);*/
 
-            return null;
+            var rssSourseWithNews = await _unitOfWork.RssSource.GetByCondition(x => x.Id.Equals(rssSourceId), true)
+               .Include(news => news.News)
+               .ThenInclude(z=>z.Category)
+               .Include(x=>x.News)//-- отсюда можно не делать, это тут не нужно и чисто для примера инклудов
+               .ThenInclude(x=>x.Comments).SingleOrDefaultAsync();
+
+
+            var rssSourceWithNews = _mapper.Map<SourseWithNewsCategory>(rssSourseWithNews);
+
+            return rssSourceWithNews;
         }
 
         public async Task<RssSource> RssSourceByName(string rssSourceName)

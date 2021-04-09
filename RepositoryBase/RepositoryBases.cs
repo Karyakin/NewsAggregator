@@ -14,7 +14,7 @@ namespace Repositories
     public abstract class RepositoryBases<T> : IRepositoryBases<T> where T : class, IBaseEntity
     {
         protected readonly NewsDataContext _Db;
-        protected readonly DbSet<T> _Table;
+        protected readonly DbSet<T> _Table;// тупо делаем переменную, чтобы каждый раз не писать DbSet<T>
 
         public RepositoryBases(NewsDataContext newsDataContext)
         {
@@ -36,7 +36,7 @@ namespace Repositories
             if (includes.Any())
             {
                 result = includes
-                    .Aggregate(result,//Aggregate = выполнили запрос => результат ставим .Aggregate и над полученным результатом еще обработка
+                    .Aggregate(result,//Aggregate = выполнили запрос => результат ставим .Aggregate и над полученным результатом еще обработка. Каждый раз берем результат и выполняем над ним какие-то операции
                         (current, include)
                             => current.Include(include));
             }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Contracts.ServicesInterfacaces;
-using Contracts.WrapperInterface;
+using Contracts.UnitOfWorkInterface;
 using Entities.Entity.NewsEnt;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,10 +13,10 @@ namespace Services
 {
     public class CategoryService : ICategoryService
     {
-        private readonly IRepositoryWrapper _wrapper;
+        private readonly IUnitOfWork _wrapper;
        // private readonly IMapper _mapper;
 
-        public CategoryService(IRepositoryWrapper wrapper, IMapper mapper)
+        public CategoryService(IUnitOfWork wrapper, IMapper mapper)
         {
             _wrapper = wrapper;
          //   _mapper = mapper;

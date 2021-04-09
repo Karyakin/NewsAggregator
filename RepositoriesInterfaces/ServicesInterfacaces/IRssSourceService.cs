@@ -20,7 +20,7 @@ namespace Contracts.ServicesInterfacaces
         Task CreateManyRssSource(IEnumerable<RssSource> rssSource);
 
         Task<RssSourceModel> RssSourceById(Guid? rssSourceId);
-        Task<NewForSourse> RssSourceByIdWithNews(Guid? rssSourceId);
+        Task<SourseWithNewsCategory> RssSourceByIdWithNews(Guid? rssSourceId);
         Task<RssSource> RssSourceByName(string rssSourceName);
     }
 }

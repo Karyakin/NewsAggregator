@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Contracts.RepositoryInterfaces;
 using Contracts.ServicesInterfacaces;
-using Contracts.WrapperInterface;
+using Contracts.UnitOfWorkInterface;
 using Entities.DataTransferObject;
 using Entities.Entity.NewsEnt;
 using Microsoft.AspNetCore.Mvc;
@@ -16,20 +16,17 @@ namespace NewsAggregatorMain.Controllers
     //[Route("[controller]")]
     public class NewsController : Controller
     {
-        private readonly INewsService _newsService;
-        private readonly ICategoryService _categoryService;
-        private readonly IRssSourceService _rssSourceService;
-        public NewsController(INewsService newsService, ICategoryService categoryService, IRssSourceService rssSourceService)
+      
+        private readonly IUnitOfWork _unitOfWork;
+        public NewsController(IUnitOfWork unitOfWork)
         {
-            _newsService = newsService;
-            _categoryService = categoryService;
-            _rssSourceService = rssSourceService;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var allCompanies = await _newsService.FindAllNews();
+            var allCompanies = await _unitOfWork.News.GetAll(false).ToListAsync();
             #region Через ркпу
             /*
                        // var companies = await _wrapper.News.FindAll(trackChanges: false).ToListAsync();
@@ -44,37 +41,27 @@ namespace NewsAggregatorMain.Controllers
 
 
 
-
-       // [HttpGet("oneNews")]
-        public async Task<IActionResult> GetOneNews()
-        {
-            var guid = (await _newsService.FindAllNews()).FirstOrDefault();// это метод на удаление потом, он чисто для получения гуида
-            var test = guid.Id;
-            
-           var res = await _newsService.GetNewsBiId(test);
-
-            return Ok(res);
-        }
-
-
-
-
+        [HttpPost]
         public async Task<IActionResult> Create(string categoryName, string rssSourceName, News news)
         {
             categoryName = "Искуство";
             rssSourceName = "TutBy";
 
+            var aa = await _unitOfWork.Category.GetByCondition(n => n.Name.Equals(categoryName), false).SingleOrDefaultAsync();
+            var bb = await _unitOfWork.RssSource.GetByCondition(n=>n.Name.Equals(rssSourceName), false).SingleOrDefaultAsync();
+
             News news1 = new News()
             {
-                CategoryId = (await _categoryService.FindCategoryByName(categoryName)).Id,
-                SourceId = (await _rssSourceService.RssSourceByName(rssSourceName)).Id,
+                CategoryId = aa.Id,
+                SourceId = bb.Id,
                 Content = "Описывается сама новость и что произошло",
                 Rating = 2,
                 Title = "А вы знали что...",
                 Url = "https://news.tut.by/society/724224.html"
             };
 
-            await _newsService.CreateOneNewsAsync(news1);
+            await _unitOfWork.News.Add(news1);
+            await _unitOfWork.SaveAsync();
 
             return RedirectToAction(nameof(Index));
         }

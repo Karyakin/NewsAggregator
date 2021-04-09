@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Repositories.WrapperRepository;
-using Contracts.WrapperInterface;
+using Repositories.UnitOfWorkRepository;
+using Contracts.UnitOfWorkInterface;
 using Entities.DataTransferObject;
 using Repositories.Context;
 using Contracts.ServicesInterfacaces;
@@ -32,7 +32,7 @@ namespace NewsAggregatorMain
             {
                 options.UseSqlServer(Configuration.GetConnectionString("SqlConnectionStr"));
             });
-            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+            services.AddScoped<IUnitOfWork, RepositoryUnitOfWork>();
             services.AddScoped<INewsService, NewsService>(); 
             services.AddScoped<ICategoryService, CategoryService>(); 
             services.AddScoped<IRssSourceService, RssSourceService>(); 

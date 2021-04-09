@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Contracts.RepositoryInterfaces;
 using Contracts.ServicesInterfacaces;
-using Contracts.WrapperInterface;
+using Contracts.UnitOfWorkInterface;
 using Entities.DataTransferObject;
 using Entities.Entity.NewsEnt;
 using Microsoft.EntityFrameworkCore;
@@ -14,10 +14,10 @@ namespace Services
 {
     public class NewsService : INewsService
     {
-        private readonly IRepositoryWrapper _wrapper;
+        private readonly IUnitOfWork _wrapper;
         private readonly IMapper _mapper;
 
-        public NewsService(IRepositoryWrapper wrapper, IMapper mapper)
+        public NewsService(IUnitOfWork wrapper, IMapper mapper)
         {
             _wrapper = wrapper;
             _mapper = mapper;

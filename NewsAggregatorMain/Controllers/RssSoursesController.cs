@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Contracts.ServicesInterfacaces;
-using Contracts.WrapperInterface;
+using Contracts.UnitOfWorkInterface;
 using Entities.Entity.NewsEnt;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;

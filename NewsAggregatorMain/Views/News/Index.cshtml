@@ -1,5 +1,5 @@
-﻿@*@using NewsAggregator.HtmlHelpers*@
-@model IEnumerable<Entities.DataTransferObject.NewsGetDTO>
+﻿@using NewsAggregatorMain.HtmlHelpers
+@model NewsAggregatorMain.Models.ViewModel.NewsVM.NewsListWithPaginationInfo
 
 @{
     ViewData["Title"] = "View";
@@ -10,38 +10,21 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-             <th>
-                    @Html.DisplayNameFor(model=>model.Content)
-                </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @item.Id
-                </td>
-                <td>
-                    @item.Title
-                </td>
-                  <td>
-                        @item.Content
-                    </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+<tbody>
+    @foreach (var item in Model.News)
+    {
+        // @Html.RenderPartialAsync("ShortNewsPreview", item)
+        await Html.RenderPartialAsync("ShortNewsPreview", item);
+
+        <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+        <hr/>
+    }
+
+</tbody>
+<div class="btn-group">
+    @Html.CreatePagination(Model.PageInfo, i => 
+Url.Action("Index", new { page = i, sourseId = Model.News.FirstOrDefault().Id @*. ?.RssSourseId *@}))
+</div>
+
+<pagination page-model="Model.PageInfo" page-action="Index"></pagination>

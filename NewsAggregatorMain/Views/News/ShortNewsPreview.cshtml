@@ -1,0 +1,13 @@
+﻿@model Entities.DataTransferObject.NewsGetDTO
+
+<div>
+    <h2>@Model.Title</h2>
+    <div>@Model.Content</div>
+    <div>
+        <a asp-action="Details" asp-route-Id="@Model.Id">Читать на агрегаторе</a>
+    </div>
+    <div>
+        <a href="@Model.Url">Читать в источнике</a>
+    </div>
+</div>
+

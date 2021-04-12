@@ -5,7 +5,10 @@ using Contracts.UnitOfWorkInterface;
 using Entities.DataTransferObject;
 using Entities.Entity.NewsEnt;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NewsAggregatorMain.Models;
+using NewsAggregatorMain.Models.ViewModel.NewsVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,34 +20,54 @@ namespace NewsAggregatorMain.Controllers
     public class NewsController : Controller
     {
       
+        private readonly INewsService _newsService;
         private readonly IUnitOfWork _unitOfWork;
-        public NewsController(IUnitOfWork unitOfWork)
+        private readonly IRssSourceService _rssSourceService;
+        public NewsController(INewsService newsService, IUnitOfWork unitOfWork, IRssSourceService rssSourceService)
         {
+            _newsService = newsService;
             _unitOfWork = unitOfWork;
+            _rssSourceService = rssSourceService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Index()
+       // [HttpGet]
+        public async Task<IActionResult> Index(int page=1)
         {
-            var allCompanies = await _unitOfWork.News.GetAll(false).ToListAsync();
-            #region Через ркпу
-            /*
-                       // var companies = await _wrapper.News.FindAll(trackChanges: false).ToListAsync();
-                        var companies = await _wrapper.News.GetAllNewsAsync(trackChanges: false);
+            var allNews =  (await _newsService.FindAllNews()).ToList();
 
-                        var getCompanyDTO = _mapper.Map<IEnumerable<NewsGetDTO>>(companies).ToList();
-                       // var getCompanyDTO = _mapper.Map<IEnumerable<NewsCategoryRssSourceDTO>>(companies).ToList()*/
 
-            #endregion
-            return View(allCompanies);
+           // int page = 2;
+
+            var pageSize = 4;
+            var newsPerPages = allNews.Skip((page - 1) * pageSize).Take(pageSize);
+            var pageInfo = new PageInfo()
+            {
+                PageNumber = page,
+                PageSize = pageSize,
+                TotalItems = allNews.Count
+            };
+
+            return View(new NewsListWithPaginationInfo()
+            {
+                News = newsPerPages,
+                PageInfo = pageInfo
+            });
         }
 
 
 
         [HttpPost]
-        public async Task<IActionResult> Create(string categoryName, string rssSourceName, News news)
+        public async Task<IActionResult> Create(CreateNewsViewModel createNewsViewModel)
         {
-            categoryName = "Искуство";
+           // var a = await _rssSourceService.GetAllRssSourceAsync(false);//
+          
+
+
+           
+
+
+
+           /* categoryName = "Искуство";
             rssSourceName = "TutBy";
 
             var aa = await _unitOfWork.Category.GetByCondition(n => n.Name.Equals(categoryName), false).SingleOrDefaultAsync();
@@ -63,13 +86,22 @@ namespace NewsAggregatorMain.Controllers
             await _unitOfWork.News.Add(news1);
             await _unitOfWork.SaveAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index));*/
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var model = new CreateNewsViewModel()
+            {
+                Sources = new SelectList(await _rssSourceService.GetAllRssSourceAsync(false),
+               "Id",
+               "Name")
+            };
+
+
+
+            return View(model);
         }
     }
 }

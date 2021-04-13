@@ -65,12 +65,12 @@ namespace NewsAggregatorMain
             {
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                app.UseHsts();//проверяет достоверность системы и следит, чтобы обменные пакеты были не подменены на случай если кто-то влинится в канал между клиентом и серверо
             }
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.UseHttpsRedirection();//автоматически делает редирект с Http на Https
+            app.UseStaticFiles();//позволяеть использовать статические файлы из wwwroot
 
-            app.UseRouting();
+            app.UseRouting();// отвечает за маршрутизацию
 
             app.UseAuthorization();
 

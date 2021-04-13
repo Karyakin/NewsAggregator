@@ -11,20 +11,22 @@
     <a asp-action="Create">Create New</a>
 </p>
 
-<tbody>
+
+<div class="row" >
+
     @foreach (var item in Model.News)
     {
-        // @Html.RenderPartialAsync("ShortNewsPreview", item)
         await Html.RenderPartialAsync("ShortNewsPreview", item);
-
-        <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-        <hr/>
     }
 
-</tbody>
-<div class="btn-group">
-    @Html.CreatePagination(Model.PageInfo, i => 
-Url.Action("Index", new { page = i, sourseId = Model.News.FirstOrDefault().Id @*. ?.RssSourseId *@}))
 </div>
 
-<pagination page-model="Model.PageInfo" page-action="Index"></pagination>
+<div class="btn-group">
+    @Html.CreatePagination(Model.PageInfo, i =>
+Url.Action("Index", new { page = i, sourseId = Model.News.FirstOrDefault().Id @*. ?.RssSourseId *@}))
+
+</div>
+
+
+@* <pagination page-model="Model.PageInfo" page-action="Index"></pagination>*@
+

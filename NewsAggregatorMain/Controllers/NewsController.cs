@@ -38,7 +38,7 @@ namespace NewsAggregatorMain.Controllers
 
            // int page = 2;
 
-            var pageSize = 4;
+            var pageSize = 9;
             var newsPerPages = allNews.Skip((page - 1) * pageSize).Take(pageSize);
             var pageInfo = new PageInfo()
             {
@@ -59,7 +59,7 @@ namespace NewsAggregatorMain.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateNewsViewModel createNewsViewModel)
         {
-           // var a = await _rssSourceService.GetAllRssSourceAsync(false);//
+            var a = await _rssSourceService.GetAllRssSourceAsync(false);//
           
 
 
@@ -84,9 +84,9 @@ namespace NewsAggregatorMain.Controllers
             };
 
             await _unitOfWork.News.Add(news1);
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveAsync();*/
 
-            return RedirectToAction(nameof(Index));*/
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]

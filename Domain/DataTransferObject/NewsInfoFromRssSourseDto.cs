@@ -1,9 +1,12 @@
 ﻿using System;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace NewsAggregatorMain.Models.ViewModel.NewsVM
+namespace Entities.DataTransferObject
 {
-    public class CreateNewsViewModel 
+   public class NewsInfoFromRssSourseDto
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
@@ -12,7 +15,8 @@ namespace NewsAggregatorMain.Models.ViewModel.NewsVM
         public float Rating { get; set; }
 
         public Guid? RssSourseId { get; set; }
+        public Guid? CategoryId { get; set; }
 
-        public SelectList Sources { get; set; }
+        // public SelectList Sources { get; set; }
     }
 }

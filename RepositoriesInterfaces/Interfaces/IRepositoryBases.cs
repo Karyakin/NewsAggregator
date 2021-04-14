@@ -15,7 +15,7 @@ namespace Contracts.Interfaces
         IQueryable<T> GetBy(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
 
         Task Add(T entity);
-        Task AddRange(IEnumerable<T> entity);
+        void AddRange(IEnumerable<T> entity);
 
         Task Update(T entity);
         Task Remove(Guid id);

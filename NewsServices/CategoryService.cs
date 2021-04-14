@@ -24,7 +24,7 @@ namespace Services
 
         public async Task CreateManyCategories(IEnumerable<Category> categories)
         {
-           await _wrapper.Category.AddRange(categories);
+            _wrapper.Category.AddRange(categories);
             await _wrapper.SaveAsync();
 
         }

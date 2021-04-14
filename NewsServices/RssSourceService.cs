@@ -27,7 +27,7 @@ namespace Services
         }
         public async Task CreateManyRssSource(IEnumerable<RssSource> rssSource)
         {
-            await _unitOfWork.RssSource.AddRange(rssSource);
+             _unitOfWork.RssSource.AddRange(rssSource);
             await _unitOfWork.SaveAsync();
         }
 

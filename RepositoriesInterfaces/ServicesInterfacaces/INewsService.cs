@@ -1,6 +1,7 @@
 ﻿using Contracts.Interfaces;
 using Entities.DataTransferObject;
 using Entities.Entity.NewsEnt;
+using Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,9 @@ namespace Contracts.ServicesInterfacaces
     {
         public Task<IEnumerable<NewsGetDTO>> FindAllNews();
         Task CreateOneNewsAsync(News news);
+        Task CreateManyNewsAsync(IEnumerable<NewsInfoFromRssSourseDto> news);
         Task<NewsGetDTO> GetNewsBiId(Guid? newsId);
+        Task<IEnumerable<NewsInfoFromRssSourseDto>> GetNewsInfoFromRssSourse(RssSourceModel rssSourceDto);
         Task SaveAsync();
         void Save();
     }

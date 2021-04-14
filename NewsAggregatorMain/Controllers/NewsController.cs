@@ -4,15 +4,18 @@ using Contracts.ServicesInterfacaces;
 using Contracts.UnitOfWorkInterface;
 using Entities.DataTransferObject;
 using Entities.Entity.NewsEnt;
+using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NewsAggregatorMain.Models;
 using NewsAggregatorMain.Models.ViewModel.NewsVM;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace NewsAggregatorMain.Controllers
 {
@@ -30,7 +33,39 @@ namespace NewsAggregatorMain.Controllers
             _rssSourceService = rssSourceService;
         }
 
-       // [HttpGet]
+        public IActionResult Aggregate()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Aggregate(RssSourceModel  rssSourceModel)
+        {
+
+
+            var rsssouses = await _rssSourceService.GetAllRssSourceAsync(false);
+            var newInfos = new List<NewsInfoFromRssSourseDto>(); // without any duplicate
+
+            foreach (var item in rsssouses)
+            {
+                var newsList = await _newsService.GetNewsInfoFromRssSourse(item);
+                newInfos.AddRange(newsList);
+            };
+
+            await _newsService.CreateManyNewsAsync(newInfos);
+   
+         
+
+
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
+
+
+        // [HttpGet]
         public async Task<IActionResult> Index(int page=1)
         {
             var allNews =  (await _newsService.FindAllNews()).ToList();

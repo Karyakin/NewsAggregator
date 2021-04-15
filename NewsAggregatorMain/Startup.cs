@@ -13,6 +13,10 @@ using Services;
 
 /*PS C:\Users\d.karyakin\Desktop\NewsAggregator\RepositoryBase> dotnet ef --startup-project ../NewsAggregatorMain/ migration
 s add Initial*/
+
+/*PS C:\Users\d.karyakin\Desktop\NewsAggregator\RepositoryBase > dotnet ef--startup - project.. / NewsAggregatorMain / databas
+e update*/
+
 namespace NewsAggregatorMain
 {
     public class Startup
@@ -27,11 +31,13 @@ namespace NewsAggregatorMain
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
             services.AddDbContext<NewsDataContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("SqlConnectionStr"));
+                options.UseSqlServer(Configuration.GetConnectionString("SqlConnectionStr"), 
+                    x=>x.MigrationsAssembly(typeof(NewsDataContext).Assembly.FullName));
             });
+
+            services.AddControllersWithViews();
             services.AddScoped<IUnitOfWork, RepositoryUnitOfWork>();
             services.AddScoped<INewsService, NewsService>(); 
             services.AddScoped<ICategoryService, CategoryService>(); 
@@ -63,7 +69,7 @@ namespace NewsAggregatorMain
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Home/Error"); //Repositories.Migrations
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();//проверяет достоверность системы и следит, чтобы обменные пакеты были не подменены на случай если кто-то влинится в канал между клиентом и серверо
             }

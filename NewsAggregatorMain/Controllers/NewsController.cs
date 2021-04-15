@@ -41,8 +41,6 @@ namespace NewsAggregatorMain.Controllers
         [HttpPost]
         public async Task<IActionResult> Aggregate(RssSourceModel  rssSourceModel)
         {
-
-
             var rsssouses = await _rssSourceService.GetAllRssSourceAsync(false);
             var newInfos = new List<NewsInfoFromRssSourseDto>(); // without any duplicate
 
@@ -53,25 +51,12 @@ namespace NewsAggregatorMain.Controllers
             };
 
             await _newsService.CreateManyNewsAsync(newInfos);
-   
-         
-
-
-
             return RedirectToAction(nameof(Index));
         }
 
-
-
-
-
-        // [HttpGet]
         public async Task<IActionResult> Index(int page=1)
         {
             var allNews =  (await _newsService.FindAllNews()).ToList();
-
-
-           // int page = 2;
 
             var pageSize = 9;
             var newsPerPages = allNews.Skip((page - 1) * pageSize).Take(pageSize);
@@ -89,37 +74,10 @@ namespace NewsAggregatorMain.Controllers
             });
         }
 
-
-
         [HttpPost]
         public async Task<IActionResult> Create(CreateNewsViewModel createNewsViewModel)
         {
             var a = await _rssSourceService.GetAllRssSourceAsync(false);//
-          
-
-
-           
-
-
-
-           /* categoryName = "Искуство";
-            rssSourceName = "TutBy";
-
-            var aa = await _unitOfWork.Category.GetByCondition(n => n.Name.Equals(categoryName), false).SingleOrDefaultAsync();
-            var bb = await _unitOfWork.RssSource.GetByCondition(n=>n.Name.Equals(rssSourceName), false).SingleOrDefaultAsync();
-
-            News news1 = new News()
-            {
-                CategoryId = aa.Id,
-                SourceId = bb.Id,
-                Content = "Описывается сама новость и что произошло",
-                Rating = 2,
-                Title = "А вы знали что...",
-                Url = "https://news.tut.by/society/724224.html"
-            };
-
-            await _unitOfWork.News.Add(news1);
-            await _unitOfWork.SaveAsync();*/
 
             return RedirectToAction(nameof(Index));
         }
@@ -137,6 +95,14 @@ namespace NewsAggregatorMain.Controllers
 
 
             return View(model);
+        }
+
+        public async Task<IActionResult> Details(NewsGetDTO newsGetDTO)
+        {
+           var newsWithDetails= await _newsService.GetNewsBiId(newsGetDTO.Id);
+
+            return View(newsWithDetails);
+
         }
     }
 }

@@ -61,14 +61,14 @@ namespace Repositories
          }*/
 
 
-        public Task Add(T entity)
+        public void Add(T entity)
         {
-            throw new NotImplementedException();
+            _Table.Add(entity);
         }
 
         public void AddRange(IEnumerable<T> entity)
         {
-            _Table.AddRange();
+            _Table.AddRange(entity);
         }
 
 

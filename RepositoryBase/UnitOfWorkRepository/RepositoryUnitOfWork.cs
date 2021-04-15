@@ -1,19 +1,11 @@
-﻿
-using Repositories.Migrations;
-using Contracts;
-using Contracts.UnitOfWorkInterface;
+﻿using Contracts.UnitOfWorkInterface;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Contracts.RepositoryInterfaces;
 using Repositories.Context;
 using Repositories.Categories;
 using Repositories.RssSources;
 using Repositories.NewsRep;
-using Contracts.ServicesInterfacaces;
-using Services;
 
 namespace Repositories.UnitOfWorkRepository
 {

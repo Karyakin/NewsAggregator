@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Contracts.RepositoryInterfaces;
 using Contracts.ServicesInterfacaces;
 using Contracts.UnitOfWorkInterface;
 using Entities.DataTransferObject;
@@ -20,44 +19,36 @@ namespace Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ICategoryService _categoryService;
 
-        public NewsService(IUnitOfWork wrapper, IMapper mapper)
+        public NewsService(IUnitOfWork wrapper, IMapper mapper, ICategoryService categoryService)
         {
             _unitOfWork = wrapper;
             _mapper = mapper;
+            _categoryService = categoryService;
         }
 
         public async Task CreateManyNewsAsync(IEnumerable<NewsInfoFromRssSourseDto> newsInfoFromRssSourseDtos)
         {
             try
             {
-                //var news =  _mapper.Map<IEnumerable<News>>(newsInfoFromRssSourseDtos);
-
                 var test = newsInfoFromRssSourseDtos;
-
                 var news = _mapper.Map<IEnumerable<News>>(newsInfoFromRssSourseDtos);
-
 
                 _unitOfWork.News.AddRange(news);
                 await _unitOfWork.SaveAsync();
-
             }
             catch (Exception ex)
             {
-
                 Log.Error(ex.Message);
             }
-
-
-
         }
 
         public async Task CreateOneNewsAsync(News news)
         {
-            await _unitOfWork.News.Add(news);
+            _unitOfWork.News.Add(news);
             await _unitOfWork.SaveAsync();
         }
-
 
         public async Task<IEnumerable<NewsGetDTO>> FindAllNews()
         {
@@ -70,13 +61,21 @@ namespace Services
             }
             var getCompanyDTO = _mapper.Map<IEnumerable<NewsGetDTO>>(companies).ToList();
 
-
             return getCompanyDTO;
         }
 
-
         public async Task<NewsGetDTO> GetNewsBiId(Guid? newsId)
         {
+
+
+            var rssSourseWithNews = await _unitOfWork.News.GetByCondition(x => x.Id.Equals(newsId), true)
+               .Include(x => x.Category)
+               .Include(x => x.RssSource)
+               .SingleOrDefaultAsync();
+
+            /* .ThenInclude(z => z.Category)*/
+            //-- отсюда можно не делать, это тут не нужно и чисто для примера инклудов
+            /*.ThenInclude(x => x.Comments)*/
 
             var news = await _unitOfWork.News.GetById(newsId.Value, false);
 
@@ -87,72 +86,63 @@ namespace Services
         public async Task<IEnumerable<NewsInfoFromRssSourseDto>> GetNewsInfoFromRssSourse(RssSourceModel rssSourceModel)
         {
             var news = new List<NewsInfoFromRssSourseDto>();
-            var categories = new List<Category>();
+            var newCategories = new List<Category>();
 
-            using (var reader = XmlReader.Create(rssSourceModel.Link))
+            using (var reader = XmlReader.Create(rssSourceModel.Url))
             {
                 var feed = SyndicationFeed.Load(reader);
                 reader.Close();
 
+                newCategories = await _categoryService.CheckCategoriesForDublication(feed);// чекаем дубликаты
+                await _categoryService.CreateManyCategories(newCategories);//после того, как мы чекнули название категорий, те, которых нет в базе туда заносятся
 
-
-
-                if (feed.Items.Any())
+                try
                 {
-                    var rssSoursesId = await _unitOfWork.Category.GetAll(false).Select(z => z.Name).ToListAsync();
-
-                    foreach (var item in feed.Items)
+                    if (feed.Items.Any())
                     {
-                        if (!rssSoursesId.Any(x=>x.Equals(item.Categories)))
+                        foreach (var syndicationItem in feed.Items)
                         {
-
-                            foreach (var item1 in item.Categories)
+                            string categoryName = null;
+                            foreach (var category in syndicationItem.Categories)
                             {
-                                var a = item1.Name;
-                            };
+                                categoryName = category.Name;
+                            }
 
+                            var currentNewsUrls = await _unitOfWork.News
+                            .GetAll(false)//rssSourseId must be not nullable
+                            .Select(n => n.Url)
+                            .ToListAsync();
 
-                            var newCategory = new Category()
+                            try
                             {
-                                Id = Guid.NewGuid(),
-                               // Name = item.Categories,
-                            };
+                                if (!currentNewsUrls.Any(url => url.Equals(syndicationItem.Id)))
+                                {
+                                    var newsDto = new NewsInfoFromRssSourseDto()
+                                    {
+                                        Id = Guid.NewGuid(),
+                                        RssSourseId = rssSourceModel.Id,
+                                        Url = syndicationItem.Id,
+                                        Title = syndicationItem.Title.Text,
+                                        Content = syndicationItem.Summary.Text, //clean from html(?)
+
+                                        CategoryId = (await _categoryService.FindCategoryByName(categoryName))?.Id
+                                    };
+                                    news.Add(newsDto);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Log.Error($"Something went wrong when trying to gave news from Message: {ex.Message}");
+                            }
                         }
                     }
                 }
-
-
-
-                if (feed.Items.Any())
+                catch (Exception ex)
                 {
-                    var currentNewsUrls = await _unitOfWork.News
-                        .GetAll(false)//rssSourseId must be not nullable
-                        .Select(n => n.Url)
-                        .ToListAsync();
-
-                    foreach (var syndicationItem in feed.Items)
-                    {
-                        if (!currentNewsUrls.Any(url => url.Equals(syndicationItem.Id)))
-                        {
-                            var newsDto = new NewsInfoFromRssSourseDto()
-                            {
-                                Id = Guid.NewGuid(),
-                                RssSourseId = rssSourceModel.Id,
-                                Url = syndicationItem.Id,
-                                Title = syndicationItem.Title.Text,
-                                Content = syndicationItem.Summary.Text //clean from html(?)
-                            };
-                            news.Add(newsDto);
-                        }
-                    }
+                    Log.Error($"Something went wrong when trying to gave news from Message: {ex.Message}");
                 }
-
             }
-
-
-
             return news;
-
         }
 
         public void Save() => _unitOfWork.Save();

@@ -20,10 +20,11 @@ namespace Entities.Entity.NewsEnt
         public DateTime StartDate { get; set; } = DateTime.Now;
         public DateTime? EndDate { get; set; }
 
-        public Guid? SourceId { get; set; }
-        public RssSource Source { get; set; }
+        public Guid? RssSourceId { get; set; }
+        public RssSource RssSource { get; set; }
 
         public Guid? CategoryId { get; set; }
+
         public Category Category { get; set; }
 
         public IEnumerable<Comment> Comments { get; set; }

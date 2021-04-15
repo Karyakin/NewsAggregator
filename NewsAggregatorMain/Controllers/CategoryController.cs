@@ -41,7 +41,7 @@ namespace NewsAggregatorMain.Controllers
             return Ok(res);
         }
 
-        [HttpPut]
+        [HttpGet]
         public async Task<IActionResult> AddCategory()
         {
             Category category = new Category()

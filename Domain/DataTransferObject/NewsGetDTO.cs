@@ -21,5 +21,8 @@ namespace Entities.DataTransferObject
 
         public CategoryModel Category { get; set; }
         public RssSourceModel Source { get; set; }
+
+        public DateTime StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 }

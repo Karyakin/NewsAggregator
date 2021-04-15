@@ -14,7 +14,7 @@ namespace Contracts.Interfaces
         IQueryable<T> GetByCondition(Expression<Func<T, bool>> expression, bool trackChanges);
         IQueryable<T> GetBy(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
 
-        Task Add(T entity);
+        void Add(T entity);
         void AddRange(IEnumerable<T> entity);
 
         Task Update(T entity);

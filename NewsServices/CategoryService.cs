@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel.Syndication;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,7 +23,41 @@ namespace Services
          //   _mapper = mapper;
         }
 
-        public async Task CreateManyCategories(IEnumerable<Category> categories)
+        /// <summary>
+        /// Метода проводит проверку на наличие в базе названия категории и возвращает все категории без дубликатов
+        /// </summary>
+        /// <param name="syndicationFeed"></param>
+        /// <returns></returns>
+        public async Task<List<Category>> CheckCategoriesForDublication(SyndicationFeed syndicationFeed)
+        {
+            var categories = new List<Category>();
+
+            if (syndicationFeed.Items.Any())
+            {
+                var category = await _wrapper.Category.GetAll(false).Select(z => z.Name).ToListAsync();
+
+                foreach (var item in syndicationFeed.Items)
+                {
+                    foreach (var categoryName in item.Categories)
+                    {
+                        if (!category.Any(x => x.Equals(categoryName.Name)))
+                        {
+                            var catName = new Category()
+                            {
+                                Id = Guid.NewGuid(),
+                                Name = categoryName.Name,
+                            };
+                            categories.Add(catName);
+                        }
+                    };
+                }
+                categories = categories.GroupBy(x => x.Name).Select(x => x.First()).ToList();
+            }
+            return categories;
+        }
+
+
+        public async Task CreateManyCategories(List<Category> categories)
         {
             _wrapper.Category.AddRange(categories);
             await _wrapper.SaveAsync();
@@ -30,7 +65,7 @@ namespace Services
         }
         public async Task CreateOneCategory(Category category)
         {
-           await _wrapper.Category.Add(category);
+            _wrapper.Category.Add(category);
             await _wrapper.SaveAsync();
         }
         public async Task<IEnumerable<Category>> GetAllCategoryAsync(bool trackChanges)

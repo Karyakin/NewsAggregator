@@ -15,6 +15,7 @@ namespace NewsAggregatorMain
     {
         public static void Main(string[] args)
         {
+
             Log.Logger = new LoggerConfiguration()
                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)//мы хотим использовать логи от минимального левела и выше(Debug and trace не попадут)
                .WriteTo.Console(LogEventLevel.Debug)

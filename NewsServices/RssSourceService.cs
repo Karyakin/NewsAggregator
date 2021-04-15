@@ -6,18 +6,21 @@ using Entities.Entity.NewsEnt;
 using Entities.Models;
 using Entities.Models.AssembledModel;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel.Syndication;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Services
 {
     public class RssSourceService : IRssSourceService
     {
 
-        private readonly IUnitOfWork  _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
         public RssSourceService(IUnitOfWork unitOfWork, IMapper mapper)
@@ -27,15 +30,30 @@ namespace Services
         }
         public async Task CreateManyRssSource(IEnumerable<RssSource> rssSource)
         {
-             _unitOfWork.RssSource.AddRange(rssSource);
+            _unitOfWork.RssSource.AddRange(rssSource);
             await _unitOfWork.SaveAsync();
         }
 
         public async Task CreateOneRssSource(RssSourceModel rssSourceModel)
         {
-            var rssSourceEntity= _mapper.Map<RssSource>(rssSourceModel);
-            await _unitOfWork.RssSource.Add(rssSourceEntity);
-            await _unitOfWork.SaveAsync();
+
+            if (rssSourceModel is null)
+            {
+                throw new ArgumentNullException("Incorrect date for creation RssSourse");
+            }
+
+            try
+            {
+                var rssSourceEntity = _mapper.Map<RssSource>(rssSourceModel);
+
+                _unitOfWork.RssSource.Add(rssSourceEntity);
+                await _unitOfWork.SaveAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Something went wrong when trying to add to the source. Message: {ex.Message}");
+                throw new ArgumentException("Incorrect Rss Sourse adress!");
+            }
         }
 
         public async Task<IEnumerable<RssSourceModel>> GetAllRssSourceAsync(bool trackChanges)
@@ -56,14 +74,14 @@ namespace Services
         public async Task<SourseWithNewsCategory> RssSourceByIdWithNews(Guid? rssSourceId)
         {
 
-           // var resoult =  _unitOfWork.RssSource.GetBy(n => n.Id.Equals(rssSourceId.Value), n => n.News);
+            // var resoult =  _unitOfWork.RssSource.GetBy(n => n.Id.Equals(rssSourceId.Value), n => n.News);
 
 
             var rssSourseWithNews = await _unitOfWork.RssSource.GetByCondition(x => x.Id.Equals(rssSourceId), true)
                .Include(news => news.News)
-               .ThenInclude(z=>z.Category)
-               .Include(x=>x.News)//-- отсюда можно не делать, это тут не нужно и чисто для примера инклудов
-               .ThenInclude(x=>x.Comments).SingleOrDefaultAsync();
+               .ThenInclude(z => z.Category)
+               .Include(x => x.News)//-- отсюда можно не делать, это тут не нужно и чисто для примера инклудов
+               .ThenInclude(x => x.Comments).SingleOrDefaultAsync();
 
 
             var rssSourceWithNews = _mapper.Map<SourseWithNewsCategory>(rssSourseWithNews);

@@ -8,7 +8,7 @@ using System.Text;
 namespace Entities.Entity.NewsEnt
 {
     [Table("News")]
-    public class News : IBaseEntity
+    public class News : IBaseEntity 
     { 
         public Guid Id { get; set; }
 

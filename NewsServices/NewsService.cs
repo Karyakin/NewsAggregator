@@ -50,6 +50,11 @@ namespace Services
             await _unitOfWork.SaveAsync();
         }
 
+        public Task<NewsInfoFromRssSourseDto> Delete()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<NewsGetDTO>> FindAllNews()
         {
             var companies = await _unitOfWork.News.GetAll(false).ToListAsync();
@@ -73,14 +78,11 @@ namespace Services
                .Include(x => x.RssSource)
                .SingleOrDefaultAsync();
 
-            /* .ThenInclude(z => z.Category)*/
-            //-- отсюда можно не делать, это тут не нужно и чисто для примера инклудов
-            /*.ThenInclude(x => x.Comments)*/
-
             var news = await _unitOfWork.News.GetById(newsId.Value, false);
 
-            return _mapper.Map<NewsGetDTO>(news);
+            var test = _mapper.Map<NewsGetDTO>(news);
 
+            return test;
         }
 
         public async Task<IEnumerable<NewsInfoFromRssSourseDto>> GetNewsInfoFromRssSourse(RssSourceModel rssSourceModel)
@@ -120,7 +122,7 @@ namespace Services
                                     var newsDto = new NewsInfoFromRssSourseDto()
                                     {
                                         Id = Guid.NewGuid(),
-                                        RssSourseId = rssSourceModel.Id,
+                                        RssSourceId = rssSourceModel?.Id,
                                         Url = syndicationItem.Id,
                                         Title = syndicationItem.Title.Text,
                                         Content = syndicationItem.Summary.Text, //clean from html(?)
@@ -145,7 +147,13 @@ namespace Services
             return news;
         }
 
+        
+
+
         public void Save() => _unitOfWork.Save();
         public Task SaveAsync() => _unitOfWork.SaveAsync();
+
+       
+
     }
 }

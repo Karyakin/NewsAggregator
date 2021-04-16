@@ -39,7 +39,7 @@ namespace NewsAggregatorMain.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Aggregate(RssSourceModel  rssSourceModel)
+        public async Task<IActionResult> Aggregate(CreateNewsViewModel  createNewsViewModel)
         {
             var rsssouses = await _rssSourceService.GetAllRssSourceAsync(false);
             var newInfos = new List<NewsInfoFromRssSourseDto>(); // without any duplicate
@@ -53,6 +53,9 @@ namespace NewsAggregatorMain.Controllers
             await _newsService.CreateManyNewsAsync(newInfos);
             return RedirectToAction(nameof(Index));
         }
+
+
+
 
         public async Task<IActionResult> Index(int page=1)
         {
@@ -103,6 +106,11 @@ namespace NewsAggregatorMain.Controllers
 
             return View(newsWithDetails);
 
+        }
+
+        void Delete(News news)
+        {
+            throw new NotImplementedException();
         }
     }
 }

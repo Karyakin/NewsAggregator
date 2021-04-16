@@ -11,25 +11,25 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
+            News Id
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Id)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Category.Name)
+            Category
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Category.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Source.Name)
+            Source
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Source.Name)
+            @Html.DisplayFor(model => model.RssSource.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Url)
+            Url
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Url)
@@ -41,12 +41,12 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.StartDate)
         </dd>
-        <dt class="col-sm-2">
+       @* <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.EndDate)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.EndDate)
-        </dd>
+        </dd>*@
 
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
@@ -73,5 +73,8 @@
 </div>
 <div>
     <a asp-controller="News" asp-action="Index" asp-route-sourseId="@Model.Id">News</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back to List</a> |
+    <a asp-action="Delete">Delete</a>
+
+
 </div>

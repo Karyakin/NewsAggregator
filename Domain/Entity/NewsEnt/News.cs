@@ -14,8 +14,10 @@ namespace Entities.Entity.NewsEnt
 
         [Required(ErrorMessage = "Name is required")]
         public string Title { get; set; }
-        public string Content { get; set; }
+        public string Summary { get; set; }
         public string Url { get; set; }
+        public string Body { get; set; }
+
         public float Rating { get; set; }
         public DateTime StartDate { get; set; } = DateTime.Now;
         public DateTime? EndDate { get; set; }

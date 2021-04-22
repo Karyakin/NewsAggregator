@@ -22,7 +22,7 @@ namespace NewsAggregatorMain.Controllers
     //[Route("[controller]")]
     public class NewsController : Controller
     {
-      
+
         private readonly INewsService _newsService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRssSourceService _rssSourceService;
@@ -39,15 +39,20 @@ namespace NewsAggregatorMain.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Aggregate(CreateNewsViewModel  createNewsViewModel)
+        public async Task<IActionResult> Aggregate(CreateNewsViewModel createNewsViewModel)
         {
             var rsssouses = await _rssSourceService.GetAllRssSourceAsync(false);
             var newInfos = new List<NewsInfoFromRssSourseDto>(); // without any duplicate
 
             foreach (var item in rsssouses)
             {
-                var newsList = await _newsService.GetNewsInfoFromRssSourse(item);
-                newInfos.AddRange(newsList);
+                /*if (item.Name.Equals("TUT.by"))
+                {
+
+                }*/
+                    var newsList = await _newsService.GetNewsInfoFromRssSourse(item);
+                    newInfos.AddRange(newsList);
+
             };
 
             await _newsService.CreateManyNewsAsync(newInfos);
@@ -57,9 +62,9 @@ namespace NewsAggregatorMain.Controllers
 
 
 
-        public async Task<IActionResult> Index(int page=1)
+        public async Task<IActionResult> Index(int page = 1)
         {
-            var allNews =  (await _newsService.FindAllNews()).ToList();
+            var allNews = (await _newsService.FindAllNews()).ToList();
 
             var pageSize = 9;
             var newsPerPages = allNews.Skip((page - 1) * pageSize).Take(pageSize);
@@ -102,12 +107,13 @@ namespace NewsAggregatorMain.Controllers
 
         public async Task<IActionResult> Details(NewsGetDTO newsGetDTO)
         {
-           var newsWithDetails= await _newsService.GetNewsBiId(newsGetDTO.Id);
+            var newsWithDetails = await _newsService.GetNewsBiId(newsGetDTO.Id);
 
             return View(newsWithDetails);
 
         }
 
+        [HttpPost]
         void Delete(News news)
         {
             throw new NotImplementedException();

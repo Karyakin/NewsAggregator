@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AngleSharp;
+using AutoMapper;
 using Contracts.ServicesInterfacaces;
 using Contracts.UnitOfWorkInterface;
 using Entities.DataTransferObject;
@@ -90,6 +91,13 @@ namespace Services
             var news = new List<NewsInfoFromRssSourseDto>();
             var newCategories = new List<Category>();
 
+            //Use the default configuration for AngleSharp
+            var config = Configuration.Default;// для парсинга страницы
+
+            //Create a new context for evaluating webpages with the given config
+            var context = BrowsingContext.New(config);// для парсинга страницы
+
+
             using (var reader = XmlReader.Create(rssSourceModel.Url))
             {
                 var feed = SyndicationFeed.Load(reader);
@@ -115,6 +123,11 @@ namespace Services
                             .Select(n => n.Url)
                             .ToListAsync();
 
+                            //Create a virtual request to specify the document to load (here from our fixed string)
+                            var document = await context.OpenAsync(req => req.Content(syndicationItem.Summary.Text));// для парсинга страницы
+                            // var title = document.DocumentElement.TextContent;
+
+
                             try
                             {
                                 if (!currentNewsUrls.Any(url => url.Equals(syndicationItem.Id)))
@@ -125,23 +138,24 @@ namespace Services
                                         RssSourceId = rssSourceModel?.Id,
                                         Url = syndicationItem.Id,
                                         Title = syndicationItem.Title.Text,
-                                        Content = syndicationItem.Summary.Text, //clean from html(?)
+                                        Summary = document.DocumentElement.TextContent, //syndicationItem.Summary.Text, //clean from html(?)
+                                        Authors = syndicationItem.Authors.Select(x=>x.Name),
 
-                                        CategoryId = (await _categoryService.FindCategoryByName(categoryName))?.Id
+                                    CategoryId = (await _categoryService.FindCategoryByName(categoryName))?.Id
                                     };
                                     news.Add(newsDto);
                                 }
                             }
                             catch (Exception ex)
                             {
-                                Log.Error($"Something went wrong when trying to gave news from Message: {ex.Message}");
+                                Log.Error($"Something went wrong when trying to gave news from {rssSourceModel.Name}. Message: {ex.Message}");
                             }
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    Log.Error($"Something went wrong when trying to gave news from Message: {ex.Message}");
+                    Log.Error($"Something went wrong when trying to gave news from {rssSourceModel.Name}. Message: {ex.Message}");
                 }
             }
             return news;

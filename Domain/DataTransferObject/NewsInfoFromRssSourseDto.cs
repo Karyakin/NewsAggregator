@@ -11,9 +11,12 @@ namespace Entities.DataTransferObject
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
-        public string Content { get; set; }
+        public string Summary { get; set; }
+        public string Body { get; set; }
         public string Url { get; set; }
+        public IEnumerable<string> Authors { get; set; }
         public float Rating { get; set; }
+        
 
         public Guid? RssSourceId { get; set; }
         public RssSource RssSource { get; set; }

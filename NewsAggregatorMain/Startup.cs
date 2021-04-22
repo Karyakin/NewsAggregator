@@ -11,6 +11,8 @@ using Repositories.Context;
 using Contracts.ServicesInterfacaces;
 using Services;
 
+/*cd C:\Users\d.karyakin\Desktop\NewsAggregator\RepositoryBase*/
+
 /*PS C:\Users\d.karyakin\Desktop\NewsAggregator\RepositoryBase> dotnet ef --startup-project ../NewsAggregatorMain/ migration
 s add Initial*/
 

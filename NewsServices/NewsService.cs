@@ -10,6 +10,7 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
 using System.Xml;
@@ -132,6 +133,25 @@ namespace Services
                             {
                                 if (!currentNewsUrls.Any(url => url.Equals(syndicationItem.Id)))
                                 {
+                                    var httpClient = new HttpClient();
+                                    var request = await httpClient.GetAsync(syndicationItem.Id);
+                                    var response = await request.Content.ReadAsStringAsync(); 
+                                    int start = response.IndexOf("<div id=\"article_body\"");
+                                    string startEnd = response.Substring(start);
+                                    int end = startEnd.IndexOf("<div class");
+                                    string listGroup = startEnd.Substring(0, end);
+                                    var lastText = listGroup
+                                       .Replace("&nbsp;", " ")
+                                       .Replace("&mdash;", " ")
+                                       .Replace("&amp;", " ")
+                                       .Replace("&nbsp;", " ")
+                                       .Replace("&laquo;", " ")
+                                       .Replace("&raquo;", " ");
+
+
+
+
+
                                     var newsDto = new NewsInfoFromRssSourseDto()
                                     {
                                         Id = Guid.NewGuid(),
@@ -140,8 +160,8 @@ namespace Services
                                         Title = syndicationItem.Title.Text,
                                         Summary = document.DocumentElement.TextContent, //syndicationItem.Summary.Text, //clean from html(?)
                                         Authors = syndicationItem.Authors.Select(x=>x.Name),
-
-                                    CategoryId = (await _categoryService.FindCategoryByName(categoryName))?.Id
+                                        Body = lastText,
+                                        CategoryId = (await _categoryService.FindCategoryByName(categoryName))?.Id
                                     };
                                     news.Add(newsDto);
                                 }

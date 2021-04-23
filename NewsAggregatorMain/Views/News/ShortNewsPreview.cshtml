@@ -10,7 +10,7 @@
         @*<h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>*@
         <p class="card-text">@Model.Content</p>
         @*<a class="card-link" asp-action="Details" asp-route-id="@Model.Id">Читать на аггрегаторе</a>*@
-        <a asp-action="Details" asp-route-Id="@Model.Id">Читать на агрегаторе</a>
+        <a asp-action="ReadInAgregator" asp-route-Id="@Model.Id">Читать на агрегаторе</a>
         <br />
         <a href="@Model.Url">Читать в источнике</a>
 

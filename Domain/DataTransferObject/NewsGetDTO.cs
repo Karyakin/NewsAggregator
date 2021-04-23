@@ -15,6 +15,8 @@ namespace Entities.DataTransferObject
         public string Title { get; set; }
         public string Content { get; set; }
         public string Url { get; set; }
+        public string Body { get; set; }
+
         public float Rating { get; set; }
 
         public Guid? RssSourceId { get; set; }

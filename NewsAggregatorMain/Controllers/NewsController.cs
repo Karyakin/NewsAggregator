@@ -46,13 +46,11 @@ namespace NewsAggregatorMain.Controllers
 
             foreach (var item in rsssouses)
             {
-                /*if (item.Name.Equals("TUT.by"))
+                if (item.Name.Equals("TUT.by"))
                 {
-
-                }*/
                     var newsList = await _newsService.GetNewsInfoFromRssSourse(item);
                     newInfos.AddRange(newsList);
-
+                }
             };
 
             await _newsService.CreateManyNewsAsync(newInfos);
@@ -112,6 +110,16 @@ namespace NewsAggregatorMain.Controllers
             return View(newsWithDetails);
 
         }
+
+        public async Task<IActionResult> ReadInAgregator(NewsGetDTO newsGetDTO)
+        {
+            var newsWithDetails = await _newsService.GetNewsBiId(newsGetDTO.Id);
+
+            return View(newsWithDetails);
+
+        }
+
+
 
         [HttpPost]
         void Delete(News news)

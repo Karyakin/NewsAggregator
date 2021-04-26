@@ -1,5 +1,6 @@
 ﻿using AngleSharp;
 using AutoMapper;
+using Contracts.ParseInterface;
 using Contracts.ServicesInterfacaces;
 using Contracts.UnitOfWorkInterface;
 using Entities.DataTransferObject;
@@ -22,12 +23,16 @@ namespace Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ICategoryService _categoryService;
+        private readonly ITutByParser _tutByParser;
+        private readonly IOnlinerParser _onlinerParser;
 
-        public NewsService(IUnitOfWork wrapper, IMapper mapper, ICategoryService categoryService)
+        public NewsService(IUnitOfWork wrapper, IMapper mapper, ICategoryService categoryService, ITutByParser tutByParser, IOnlinerParser onlinerParser)
         {
             _unitOfWork = wrapper;
             _mapper = mapper;
             _categoryService = categoryService;
+            _tutByParser = tutByParser;
+            _onlinerParser = onlinerParser;
         }
 
         public async Task CreateManyNewsAsync(IEnumerable<NewsInfoFromRssSourseDto> newsInfoFromRssSourseDtos)
@@ -98,7 +103,6 @@ namespace Services
             //Create a new context for evaluating webpages with the given config
             var context = BrowsingContext.New(config);// для парсинга страницы
 
-
             using (var reader = XmlReader.Create(rssSourceModel.Url))
             {
                 var feed = SyndicationFeed.Load(reader);
@@ -133,23 +137,38 @@ namespace Services
                             {
                                 if (!currentNewsUrls.Any(url => url.Equals(syndicationItem.Id)))
                                 {
-                                    var httpClient = new HttpClient();
-                                    var request = await httpClient.GetAsync(syndicationItem.Id);
-                                    var response = await request.Content.ReadAsStringAsync(); 
-                                    int start = response.IndexOf("<div id=\"article_body\"");
-                                    string startEnd = response.Substring(start);
-                                    int end = startEnd.IndexOf("<div class");
-                                    string listGroup = startEnd.Substring(0, end);
-                                    var lastText = listGroup
-                                       .Replace("&nbsp;", " ")
-                                       .Replace("&mdash;", " ")
-                                       .Replace("&amp;", " ")
-                                       .Replace("&nbsp;", " ")
-                                       .Replace("&laquo;", " ")
-                                       .Replace("&raquo;", " ");
 
+                                    #region MyRegion
+                                    /*var httpClient = new HttpClient();
+                                   var request = await httpClient.GetAsync(syndicationItem.Id);
+                                   var response = await request.Content.ReadAsStringAsync(); 
+                                   int start = response.IndexOf("<div id=\"article_body\"");
+                                   string startEnd = response.Substring(start);
 
+                                   int end = startEnd.Contains("!--POLL--") 
+                                       ? startEnd.IndexOf("!--POLL--") 
+                                       : startEnd.IndexOf("<div class");
 
+                                   string listGroup = startEnd.Substring(0, end);
+                                   var lastText = listGroup
+                                      .Replace("&nbsp;", " ")
+                                      .Replace("&mdash;", " ")
+                                      .Replace("&amp;", " ")
+                                      .Replace("&nbsp;", " ")
+                                      .Replace("&laquo;", " ")
+                                      .Replace("&raquo;", " ");*/
+                                    #endregion
+
+                                    string lastText = null;
+
+                                    if (rssSourceModel.Name.Equals("TUT.by"))
+                                    {
+                                         lastText = await _tutByParser.Parse(syndicationItem);
+                                    }
+                                    else if (rssSourceModel.Name.Equals("Onliner"))
+                                    {
+                                        lastText = await _onlinerParser.Parse(syndicationItem);
+                                    }
 
 
                                     var newsDto = new NewsInfoFromRssSourseDto()
@@ -181,13 +200,7 @@ namespace Services
             return news;
         }
 
-        
-
-
         public void Save() => _unitOfWork.Save();
         public Task SaveAsync() => _unitOfWork.SaveAsync();
-
-       
-
     }
 }

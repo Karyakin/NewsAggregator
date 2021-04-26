@@ -10,6 +10,8 @@ using Entities.DataTransferObject;
 using Repositories.Context;
 using Contracts.ServicesInterfacaces;
 using Services;
+using Services.Parsers;
+using Contracts.ParseInterface;
 
 /*cd C:\Users\d.karyakin\Desktop\NewsAggregator\RepositoryBase*/
 
@@ -44,6 +46,11 @@ namespace NewsAggregatorMain
             services.AddScoped<INewsService, NewsService>(); 
             services.AddScoped<ICategoryService, CategoryService>(); 
             services.AddScoped<IRssSourceService, RssSourceService>(); 
+            services.AddScoped<ITutByParser, TutByParser>(); 
+            services.AddScoped<IOnlinerParser, OnlinerParser>(); 
+
+
+
 
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
 

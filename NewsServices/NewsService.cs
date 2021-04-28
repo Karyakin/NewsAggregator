@@ -137,28 +137,6 @@ namespace Services
                             {
                                 if (!currentNewsUrls.Any(url => url.Equals(syndicationItem.Id)))
                                 {
-
-                                    #region MyRegion
-                                    /*var httpClient = new HttpClient();
-                                   var request = await httpClient.GetAsync(syndicationItem.Id);
-                                   var response = await request.Content.ReadAsStringAsync(); 
-                                   int start = response.IndexOf("<div id=\"article_body\"");
-                                   string startEnd = response.Substring(start);
-
-                                   int end = startEnd.Contains("!--POLL--") 
-                                       ? startEnd.IndexOf("!--POLL--") 
-                                       : startEnd.IndexOf("<div class");
-
-                                   string listGroup = startEnd.Substring(0, end);
-                                   var lastText = listGroup
-                                      .Replace("&nbsp;", " ")
-                                      .Replace("&mdash;", " ")
-                                      .Replace("&amp;", " ")
-                                      .Replace("&nbsp;", " ")
-                                      .Replace("&laquo;", " ")
-                                      .Replace("&raquo;", " ");*/
-                                    #endregion
-
                                     string lastText = null;
 
                                     if (rssSourceModel.Name.Equals("TUT.by"))

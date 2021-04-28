@@ -19,58 +19,58 @@ namespace Services
         {
 
 
-            /*  var httpClient = new HttpClient();
-               var request = await httpClient.GetAsync(syndicationItem.Id);
-               var response = await request.Content.ReadAsStringAsync();
+            var httpClient = new HttpClient();
+            var request = await httpClient.GetAsync(syndicationItem.Id);
+            var response = await request.Content.ReadAsStringAsync();
 
-               #region CutHendlerImage
+            #region CutHendlerImage
 
-               int newsHendlerImageStart = response.IndexOf("<div class=\"news-header__image\"");// еогда нет заголовочной фотки вылетаем
+            int newsHendlerImageStart = response.IndexOf("<div class=\"news-header__image\"");// еогда нет заголовочной фотки вылетаем
 
-               string newsHendlerImageStartToEnd = response.Substring(newsHendlerImageStart);
-               int newsHendlerImageEnd = newsHendlerImageStartToEnd.IndexOf("</div>");
-               string newsHendlerImage = $"{newsHendlerImageStartToEnd.Substring(0, newsHendlerImageEnd)}";
+            string newsHendlerImageStartToEnd = response.Substring(newsHendlerImageStart);
+            int newsHendlerImageEnd = newsHendlerImageStartToEnd.IndexOf("</div>");
+            string newsHendlerImage = $"{newsHendlerImageStartToEnd.Substring(0, newsHendlerImageEnd)}";
 
-               int newsHendlerImageUrlStart = newsHendlerImage.IndexOf("(");
-               int newsHendlerImageUrlEnd = newsHendlerImage.LastIndexOf(")");
+            int newsHendlerImageUrlStart = newsHendlerImage.IndexOf("(");
+            int newsHendlerImageUrlEnd = newsHendlerImage.LastIndexOf(")");
 
-               string imageUrl = newsHendlerImage.Substring(newsHendlerImageUrlStart + 1, newsHendlerImageUrlEnd - 1 - newsHendlerImageUrlStart);
-               imageUrl = imageUrl.Replace("'", "");
-               var imageUrlTeg = $"<img loading=\"lazy\" class=\"alignnone size-820x5616 wp-image-867035 news-media__image\" src=\"{imageUrl}\">";
+            string imageUrl = newsHendlerImage.Substring(newsHendlerImageUrlStart + 1, newsHendlerImageUrlEnd - 1 - newsHendlerImageUrlStart);
+            imageUrl = imageUrl.Replace("'", "");
+            var imageUrlTeg = $"<img loading=\"lazy\" class=\"alignnone size-820x5616 wp-image-867035 news-media__image\" src=\"{imageUrl}\">";
 
-               #endregion
+            #endregion
 
-               int start = response.IndexOf("class=\"news-text\"");
-               string startEnd = response.Substring(start);
+            int start = response.IndexOf("class=\"news-text\"");
+            string startEnd = response.Substring(start);
 
-               int end = startEnd.IndexOf("news-grid__part news-grid__part_2 news-helpers_hide_tablet");
+            int end = startEnd.IndexOf("news-grid__part news-grid__part_2 news-helpers_hide_tablet");
 
-               string listGroup = startEnd.Substring(0, end);
+            string listGroup = startEnd.Substring(0, end);
 
-               listGroup = $"{imageUrlTeg} {listGroup}";
+            listGroup = $"{imageUrlTeg} {listGroup}";
 
-               string text = listGroup.Replace("class=\"news-text\">", "");
+            string text = listGroup.Replace("class=\"news-text\">", "");
 
-               return text;*/
+            return text;
 
+            /*
+                        var html = @"https://auto.onliner.by/2021/04/27/v-minsk-privezli-trexdvernyj-land-rover-defender-90-za-korotysha-prosyat-1956-tysyachi-rublej";
 
-            var html = @"https://auto.onliner.by/2021/04/27/v-minsk-privezli-trexdvernyj-land-rover-defender-90-za-korotysha-prosyat-1956-tysyachi-rublej";
+                        HtmlWeb web = new HtmlWeb();
 
-            HtmlWeb web = new HtmlWeb();
+                        var htmlDoc = web.Load(html);
 
-            var htmlDoc = web.Load(html);
+                        var node = htmlDoc.DocumentNode.SelectSingleNode("//div[@class=\"news-reference\"]");
 
-            var node = htmlDoc.DocumentNode.SelectSingleNode("//div[@class=\"news-reference\"]");
+                        HtmlNode node11 = node.ChildNodes[1];
 
-            HtmlNode node11 = node.ChildNodes[1];
-
-            node11.Remove();
-
-
+                        node11.Remove();
 
 
 
-            return "";
+
+
+                        return "";*/
 
 
 

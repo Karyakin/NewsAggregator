@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using NewsAggregatorMain.Filters;
 using NewsAggregatorMain.Models;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace NewsAggregatorMain.Controllers
             return View();
         }
 
+        [ChromFilterAttribute]
         public IActionResult Privacy()
         {
             return View();

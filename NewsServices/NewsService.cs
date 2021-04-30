@@ -8,6 +8,7 @@ using Entities.Entity.NewsEnt;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Services.Parsers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,10 +24,12 @@ namespace Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ICategoryService _categoryService;
-        private readonly ITutByParser _tutByParser;
-        private readonly IOnlinerParser _onlinerParser;
+        private readonly TutByParser _tutByParser;//Иная записть. Без интерфейса и применения базового типа. При такой записи нужно менять внедрение в Sturtup
+        private readonly OnlinerParser _onlinerParser; //Иная записть. Без интерфейса и базового типа. При такой записи нужно менять внедрение в Sturtup
+        /*private readonly ITutByParser _tutByParser;
+        private readonly IOnlinerParser _onlinerParser;*/
 
-        public NewsService(IUnitOfWork wrapper, IMapper mapper, ICategoryService categoryService, ITutByParser tutByParser, IOnlinerParser onlinerParser)
+        public NewsService(IUnitOfWork wrapper, IMapper mapper, ICategoryService categoryService, TutByParser tutByParser, OnlinerParser onlinerParser)
         {
             _unitOfWork = wrapper;
             _mapper = mapper;

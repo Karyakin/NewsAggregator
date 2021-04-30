@@ -12,6 +12,7 @@ using Contracts.ServicesInterfacaces;
 using Services;
 using Services.Parsers;
 using Contracts.ParseInterface;
+using NewsAggregatorMain.Filters;
 
 /*cd C:\Users\d.karyakin\Desktop\NewsAggregator\RepositoryBase*/
 
@@ -46,10 +47,21 @@ namespace NewsAggregatorMain
             services.AddScoped<INewsService, NewsService>(); 
             services.AddScoped<ICategoryService, CategoryService>(); 
             services.AddScoped<IRssSourceService, RssSourceService>(); 
-            services.AddScoped<ITutByParser, TutByParser>(); 
-            services.AddScoped<IOnlinerParser, OnlinerParser>(); 
+            services.AddScoped<TutByParser>(); //внедрение без привязки к родитель(альтернатива)
+            services.AddScoped<OnlinerParser>();//внедрение без привязки к родитель(альтернатива)
+            //services.AddScoped<IOnlinerParser, OnlinerParser>();
+            //services.AddScoped<ITutByParser, TutByParser>(); 
 
+            services.AddControllersWithViews()
+                .AddMvcOptions(opt =>
+                {
+                    opt.Filters.Add(new ChromFilterAttribute());
+                    opt.Filters.Add(new CustomExceptionFilterAttribite());
+                });// подключаем много фильтров
+               
 
+            services.AddScoped<CheckDataFilterAttribute>();// внедрение зависимостей для фильтра
+           // services.AddScoped<CustomExceptionFilterAttribite>();// внедрение зависимостей для фильтра
 
 
             services.AddAutoMapper(typeof(MappingProfile).Assembly);

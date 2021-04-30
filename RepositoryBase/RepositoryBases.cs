@@ -51,16 +51,6 @@ namespace Repositories
                 :
                 _Table.Where(expression);
 
-
-
-
-        /* public async Task<IQueryable<T>> GetAll(bool trackChanges)
-         {
-             var allEntity = await _Table.FirstOrDefaultAsync();
-             return allEntity;
-         }*/
-
-
         public void Add(T entity)
         {
             _Table.Add(entity);
@@ -70,10 +60,6 @@ namespace Repositories
         {
             _Table.AddRange(entity);
         }
-
-
-
-
 
 
         public Task Remove(Guid id)
@@ -100,52 +86,4 @@ namespace Repositories
 
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*protected NewsDataContext _newsDataContext;
-    public RepositoryBase(NewsDataContext newsDataContext)
-    {
-        _newsDataContext = newsDataContext;
-    }
-
-    public IQueryable<T> FindAll(bool trackChanges) =>
-    !trackChanges
-        ?
-          _newsDataContext.Set<T>().AsNoTracking()
-        :
-            _newsDataContext.Set<T>();
-    public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges) =>
-    !trackChanges
-        ?
-         _newsDataContext.Set<T>().Where(expression).AsNoTracking()
-        :
-        _newsDataContext.Set<T>().Where(expression);
-    public void Create(T entity) => _newsDataContext.Set<T>().Add(entity);
-    public void Update(T entity) => _newsDataContext.Set<T>().Update(entity);
-    public void Delete(T entity) => _newsDataContext.Set<T>().Remove(entity);
-    public void CreateMany(IEnumerable<T> entitis) => _newsDataContext.Set<T>().AddRange(entitis);
-
-    public void Dispose()
-    {
-        _newsDataContext.Dispose();// прекращает работу интерфейсов, чтобы при отключении базы запросы не выполнялись
-        GC.SuppressFinalize(this);// Уборка мусора
-    }*/
-
-
-
-
 }
-/*фактически мы оставляем возможность делать асинхронные и синхронные мотоды. Если нам подходят штатные мы берем их из
- быйсрепозитория, если нужны асинхронные и специфические берем из НьюсРепозитория
-и мы фактически на частных интерфейса оборачиваем в несинхронную реализацию*/

@@ -12,6 +12,8 @@ namespace Contracts.UnitOfWorkInterface
         public INewsRepository News { get; }
         public ICategoryRepository Category { get; }
         public IRssSourceRepository RssSource { get; }
+        public IUserRepository User{ get; }
+
 
         Task SaveAsync();
         void Save();

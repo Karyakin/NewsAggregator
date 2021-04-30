@@ -20,11 +20,25 @@ namespace Repositories.UnitOfWorkRepository
         private INewsRepository _newsRepository;
         private ICategoryRepository _categoryRepository;
         private IRssSourceRepository _rssSourceRepository;
+        private IUserRepository _UserRepository;
 
         public RepositoryUnitOfWork(NewsDataContext newsDataContextWrapper)
         {
             _newsDataContextWrapper = newsDataContextWrapper;
         }
+
+
+        public IUserRepository User 
+        {
+            get
+            {
+                if (_UserRepository == null)
+                    _UserRepository = new UserRepository(_newsDataContextWrapper);
+
+                return _UserRepository;
+            }
+        }
+
 
         public INewsRepository News
         {
@@ -56,6 +70,8 @@ namespace Repositories.UnitOfWorkRepository
                 return _rssSourceRepository;
             }
         }
+
+ 
 
         public void Dispose()
         {

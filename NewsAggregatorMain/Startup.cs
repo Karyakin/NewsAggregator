@@ -13,6 +13,10 @@ using Services;
 using Services.Parsers;
 using Contracts.ParseInterface;
 using NewsAggregatorMain.Filters;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using Contracts.RepositoryInterfaces;
+using Repositories.NewsRep;
 
 /*cd C:\Users\d.karyakin\Desktop\NewsAggregator\RepositoryBase*/
 
@@ -38,15 +42,21 @@ namespace NewsAggregatorMain
         {
             services.AddDbContext<NewsDataContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("SqlConnectionStr"), 
-                    x=>x.MigrationsAssembly(typeof(NewsDataContext).Assembly.FullName));
+                options.UseSqlServer(Configuration.GetConnectionString("SqlConnectionStr"),
+                    x => x.MigrationsAssembly(typeof(NewsDataContext).Assembly.FullName));
             });
 
             services.AddControllersWithViews();
             services.AddScoped<IUnitOfWork, RepositoryUnitOfWork>();
-            services.AddScoped<INewsService, NewsService>(); 
-            services.AddScoped<ICategoryService, CategoryService>(); 
-            services.AddScoped<IRssSourceService, RssSourceService>(); 
+            services.AddScoped<INewsService, NewsService>();
+            services.AddScoped<IRssSourceService, RssSourceService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IUserService, UserService>();
+
+
+            services.AddScoped<IUserRepository, UserRepository>();
+
+
             services.AddScoped<TutByParser>(); //внедрение без привязки к родитель(альтернатива)
             services.AddScoped<OnlinerParser>();//внедрение без привязки к родитель(альтернатива)
             //services.AddScoped<IOnlinerParser, OnlinerParser>();
@@ -58,13 +68,19 @@ namespace NewsAggregatorMain
                     opt.Filters.Add(new ChromFilterAttribute());
                     opt.Filters.Add(new CustomExceptionFilterAttribite());
                 });// подключаем много фильтров
-               
+
 
             services.AddScoped<CheckDataFilterAttribute>();// внедрение зависимостей для фильтра
-           // services.AddScoped<CustomExceptionFilterAttribite>();// внедрение зависимостей для фильтра
-
-
+                                                           // services.AddScoped<CustomExceptionFilterAttribite>();// внедрение зависимостей для фильтра
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                           .AddCookie(opt =>
+                           {
+                               opt.LoginPath = new PathString("/Account/Login");// если пользователь не авторизирован, то он будет переброшен по этому пути
+                               opt.AccessDeniedPath = new PathString("/Account/Login");
+                           });
+
 
 
             #region Disscription AddNewtonsoftJson
@@ -99,6 +115,7 @@ namespace NewsAggregatorMain
 
             app.UseRouting();// отвечает за маршрутизацию
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

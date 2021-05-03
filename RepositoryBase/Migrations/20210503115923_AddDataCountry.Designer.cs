@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repositories.Context;
 
 namespace Repositories.Migrations
 {
     [DbContext(typeof(NewsDataContext))]
-    partial class NewsDataContextModelSnapshot : ModelSnapshot
+    [Migration("20210503115923_AddDataCountry")]
+    partial class AddDataCountry
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -446,7 +448,7 @@ namespace Repositories.Migrations
             modelBuilder.Entity("Entities.Entity.Users.Phone", b =>
                 {
                     b.HasOne("Entities.Entity.Users.ContactDetails", "ContactDetails")
-                        .WithMany("Phones")
+                        .WithMany()
                         .HasForeignKey("ContactDetailsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -479,7 +481,7 @@ namespace Repositories.Migrations
             modelBuilder.Entity("Entity.Users.EMail", b =>
                 {
                     b.HasOne("Entities.Entity.Users.ContactDetails", "ContactDetails")
-                        .WithMany("EMails")
+                        .WithMany()
                         .HasForeignKey("ContactDetailsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -515,13 +517,6 @@ namespace Repositories.Migrations
             modelBuilder.Entity("Entities.Entity.NewsEnt.RssSource", b =>
                 {
                     b.Navigation("News");
-                });
-
-            modelBuilder.Entity("Entities.Entity.Users.ContactDetails", b =>
-                {
-                    b.Navigation("EMails");
-
-                    b.Navigation("Phones");
                 });
 
             modelBuilder.Entity("Entities.Entity.Users.User", b =>

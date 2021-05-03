@@ -11,8 +11,8 @@ namespace Entities.Entity.Users
         public Guid Id { get; set; }
         public string AdditionalInformation { get; set; }
 
-        IEnumerable<Phone> Phones { get; set; }
-        IEnumerable<EMail> EMails { get; set; }
+        public IEnumerable<Phone> Phones { get; set; }
+        public IEnumerable<EMail> EMails { get; set; }
 
         public Country Country { get; set; }
         public Guid CountryId { get; set; }

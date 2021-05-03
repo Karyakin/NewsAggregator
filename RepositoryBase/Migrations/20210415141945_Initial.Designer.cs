@@ -10,7 +10,7 @@ using Repositories.Context;
 namespace Repositories.Migrations
 {
     [DbContext(typeof(NewsDataContext))]
-    [Migration("20210326055647_Initial")]
+    [Migration("20210415141945_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,7 +36,7 @@ namespace Repositories.Migrations
                     b.ToTable("AuthorRssSource");
                 });
 
-            modelBuilder.Entity("Entities.Entity.News.Author", b =>
+            modelBuilder.Entity("Entities.Entity.NewsEnt.Author", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -50,7 +50,7 @@ namespace Repositories.Migrations
                     b.ToTable("Authors");
                 });
 
-            modelBuilder.Entity("Entities.Entity.News.Category", b =>
+            modelBuilder.Entity("Entities.Entity.NewsEnt.Category", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -67,7 +67,7 @@ namespace Repositories.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Entities.Entity.News.Comment", b =>
+            modelBuilder.Entity("Entities.Entity.NewsEnt.Comment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -79,7 +79,7 @@ namespace Repositories.Migrations
                     b.Property<Guid>("NewsId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("RemoveDate")
+                    b.Property<DateTime?>("RemoveDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Text")
@@ -97,13 +97,13 @@ namespace Repositories.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("Entities.Entity.News.News", b =>
+            modelBuilder.Entity("Entities.Entity.NewsEnt.News", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
@@ -115,7 +115,7 @@ namespace Repositories.Migrations
                     b.Property<float>("Rating")
                         .HasColumnType("real");
 
-                    b.Property<Guid>("SourceId")
+                    b.Property<Guid?>("RssSourceId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("StartDate")
@@ -132,12 +132,12 @@ namespace Repositories.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("SourceId");
+                    b.HasIndex("RssSourceId");
 
                     b.ToTable("News");
                 });
 
-            modelBuilder.Entity("Entities.Entity.News.RssSource", b =>
+            modelBuilder.Entity("Entities.Entity.NewsEnt.RssSource", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -146,15 +146,15 @@ namespace Repositories.Migrations
                     b.Property<DateTime>("DateOfReceiving")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Link")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sources");
+                    b.ToTable("RssSource");
                 });
 
             modelBuilder.Entity("Entities.Entity.Users.City", b =>
@@ -210,7 +210,7 @@ namespace Repositories.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("RemovedDate")
+                    b.Property<DateTime?>("RemovedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -257,7 +257,7 @@ namespace Repositories.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("RemovedDate")
+                    b.Property<DateTime?>("RemovedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -304,7 +304,7 @@ namespace Repositories.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<DateTime>("RemovedDate")
+                    b.Property<DateTime?>("RemovedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -346,7 +346,7 @@ namespace Repositories.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("RemovedDate")
+                    b.Property<DateTime?>("RemovedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserEMail")
@@ -376,22 +376,22 @@ namespace Repositories.Migrations
 
             modelBuilder.Entity("AuthorRssSource", b =>
                 {
-                    b.HasOne("Entities.Entity.News.Author", null)
+                    b.HasOne("Entities.Entity.NewsEnt.Author", null)
                         .WithMany()
                         .HasForeignKey("AuthorsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Entity.News.RssSource", null)
+                    b.HasOne("Entities.Entity.NewsEnt.RssSource", null)
                         .WithMany()
                         .HasForeignKey("SourcesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Entities.Entity.News.Comment", b =>
+            modelBuilder.Entity("Entities.Entity.NewsEnt.Comment", b =>
                 {
-                    b.HasOne("Entities.Entity.News.News", "News")
+                    b.HasOne("Entities.Entity.NewsEnt.News", "News")
                         .WithMany("Comments")
                         .HasForeignKey("NewsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -408,23 +408,19 @@ namespace Repositories.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Entities.Entity.News.News", b =>
+            modelBuilder.Entity("Entities.Entity.NewsEnt.News", b =>
                 {
-                    b.HasOne("Entities.Entity.News.Category", "Category")
+                    b.HasOne("Entities.Entity.NewsEnt.Category", "Category")
                         .WithMany("News")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
-                    b.HasOne("Entities.Entity.News.RssSource", "Source")
+                    b.HasOne("Entities.Entity.NewsEnt.RssSource", "RssSource")
                         .WithMany("News")
-                        .HasForeignKey("SourceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RssSourceId");
 
                     b.Navigation("Category");
 
-                    b.Navigation("Source");
+                    b.Navigation("RssSource");
                 });
 
             modelBuilder.Entity("Entities.Entity.Users.ContactDetails", b =>
@@ -505,17 +501,17 @@ namespace Repositories.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Entities.Entity.News.Category", b =>
+            modelBuilder.Entity("Entities.Entity.NewsEnt.Category", b =>
                 {
                     b.Navigation("News");
                 });
 
-            modelBuilder.Entity("Entities.Entity.News.News", b =>
+            modelBuilder.Entity("Entities.Entity.NewsEnt.News", b =>
                 {
                     b.Navigation("Comments");
                 });
 
-            modelBuilder.Entity("Entities.Entity.News.RssSource", b =>
+            modelBuilder.Entity("Entities.Entity.NewsEnt.RssSource", b =>
                 {
                     b.Navigation("News");
                 });

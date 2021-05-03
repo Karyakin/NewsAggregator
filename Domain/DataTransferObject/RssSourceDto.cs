@@ -10,7 +10,7 @@ namespace Entities.DataTransferObject
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string Link { get; set; }
+        public string Url { get; set; }
         public DateTime DateOfReceiving { get; set; } = DateTime.Now;
     }
 }

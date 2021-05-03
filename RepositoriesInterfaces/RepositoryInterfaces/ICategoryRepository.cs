@@ -1,4 +1,5 @@
-﻿using Entities.Entity.NewsEnt;
+﻿using Contracts.Interfaces;
+using Entities.Entity.NewsEnt;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,10 @@ using System.Threading.Tasks;
 
 namespace Contracts.RepositoryInterfaces
 {
-    public interface ICategoryRepository : IRepositoryBase<Category>
+    /// <summary>
+    /// Сой вариант зависимостей и наследований
+    /// </summary>
+    public interface ICategoryRepository : IRepositoryBases<Category>
     {
       /*  Task<IEnumerable<Category>> GetAllCategoryAsync(bool trackChanges);
         void CreateOneCategory(Category category);

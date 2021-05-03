@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Contracts.ServicesInterfacaces;
-using Contracts.WrapperInterface;
+using Contracts.UnitOfWorkInterface;
 using Entities.Entity.NewsEnt;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -41,7 +41,7 @@ namespace NewsAggregatorMain.Controllers
             return Ok(res);
         }
 
-        [HttpPut]
+        [HttpGet]
         public async Task<IActionResult> AddCategory()
         {
             Category category = new Category()

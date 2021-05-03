@@ -1,4 +1,5 @@
-﻿using Entities.Entity.Users;
+﻿using Contracts.Interfaces;
+using Entities.Entity.Users;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace Entities.Entity.NewsEnt
 {
-    public class Comment
+    public class Comment : IBaseEntity
     {
         public Guid Id { get; set; }
         public string Text { get; set; }

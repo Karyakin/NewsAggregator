@@ -1,11 +1,12 @@
-﻿using Entity.Users;
+﻿using Contracts.Interfaces;
+using Entity.Users;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Entities.Entity.Users
 {
-    public class ContactDetails
+    public class ContactDetails : IBaseEntity
     {
         public Guid Id { get; set; }
         public string AdditionalInformation { get; set; }

@@ -1,0 +1,22 @@
+﻿@model Entities.DataTransferObject.NewsGetDTO
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>@Model.Title</h1>
+
+<div>
+    <h4>@Model.Content</h4>
+    
+        <div>
+            @Html.Raw(Model.Body)
+        </div>
+</div>
+<div>
+    <a asp-controller="News" asp-action="Index" asp-route-sourseId="@Model.Id">News</a> |
+    <a asp-action="Index">Back to List</a> |
+    <a asp-action="Delete">Delete</a>
+
+
+</div>

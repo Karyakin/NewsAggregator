@@ -62,17 +62,17 @@ namespace Repositories.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Sources",
+                name: "RssSource",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Link = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateOfReceiving = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sources", x => x.Id);
+                    table.PrimaryKey("PK_RssSource", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -104,9 +104,9 @@ namespace Repositories.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AuthorRssSource_Sources_SourcesId",
+                        name: "FK_AuthorRssSource_RssSource_SourcesId",
                         column: x => x.SourcesId,
-                        principalTable: "Sources",
+                        principalTable: "RssSource",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -116,14 +116,14 @@ namespace Repositories.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Rating = table.Column<float>(type: "real", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    SourceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    RssSourceId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -133,13 +133,13 @@ namespace Repositories.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_News_Sources_SourceId",
-                        column: x => x.SourceId,
-                        principalTable: "Sources",
+                        name: "FK_News_RssSource_RssSourceId",
+                        column: x => x.RssSourceId,
+                        principalTable: "RssSource",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -219,7 +219,7 @@ namespace Repositories.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DayOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DayOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
                     AdditionalInformation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
@@ -347,9 +347,9 @@ namespace Repositories.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_News_SourceId",
+                name: "IX_News_RssSourceId",
                 table: "News",
-                column: "SourceId");
+                column: "RssSourceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Phones_ContactDetailsId",
@@ -408,7 +408,7 @@ namespace Repositories.Migrations
                 name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Sources");
+                name: "RssSource");
 
             migrationBuilder.DropTable(
                 name: "ContactDetails");

@@ -5,13 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Contracts.WrapperInterface
+namespace Contracts.UnitOfWorkInterface
 {
-   public interface IRepositoryWrapper
+    public interface IUnitOfWork
     {
         public INewsRepository News { get; }
         public ICategoryRepository Category { get; }
         public IRssSourceRepository RssSource { get; }
+        public IUserRepository User{ get; }
+
 
         Task SaveAsync();
         void Save();

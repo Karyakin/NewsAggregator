@@ -1,4 +1,4 @@
-﻿@model Entities.Models.AssembledModel.NewForSourse
+﻿@model Entities.Models.AssembledModel.SourseWithNewsCategory
 
 @{
     ViewData["Title"] = "Details";
@@ -48,7 +48,7 @@
                     Title
                 </th>
                 <th>
-                    Content
+                    Category
                 </th>
                 <th>
                     Date of resived
@@ -70,7 +70,7 @@
                     @item.Title
                 </td>
                 <td>
-                    @item.Content
+                    @item.Category.Name
                 </td>
                 <td>
                     @item.StartDate
@@ -86,6 +86,7 @@
 </div>
 
 <div>
-    <a asp-controller="News" asp-action="Index" asp-route-sourseId="@Model.Id">News</a> |
+    <a asp-controller="News" asp-action="Index" asp-route-sourseId="@Model.Id">News</a> 
+    <a asp-action="DetailsWithNews" asp-route-id="@Model.Id">News for RssSourse</a> 
     <a asp-action="Index">Back to List</a>
 </div>

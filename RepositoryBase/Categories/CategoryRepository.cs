@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace Repositories.Categories
 {
-    public class CategoryRepository : RepositoryBase<Category>, ICategoryRepository
+    public class CategoryRepository : RepositoryBases<Category>, ICategoryRepository
     {
         public CategoryRepository(NewsDataContext newsDataContext) : base(newsDataContext)
         {
         }
 
-        public void CreateManyCategories(IEnumerable<Category> categories)
+       /* public void CreateManyCategories(IEnumerable<Category> categories)
         {
             CreateMany(categories);
         }
@@ -36,6 +36,12 @@ namespace Repositories.Categories
 
         public async Task<Category> FindCategoryByName(string categoryName)=>
             await FindByCondition(x => x.Name.Equals(categoryName), true).FirstOrDefaultAsync();
+*/
+
+
+
+
+
 
 
         /*  public async Task<IEnumerable<Category>> GetAllCategoryAsync(bool trackChanges)

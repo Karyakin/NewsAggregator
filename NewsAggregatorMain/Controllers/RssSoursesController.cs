@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
 using Contracts.ServicesInterfacaces;
-using Contracts.WrapperInterface;
+using Contracts.UnitOfWorkInterface;
 using Entities.Entity.NewsEnt;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace NewsAggregatorMain.Controllers
 {
@@ -81,26 +84,24 @@ namespace NewsAggregatorMain.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(RssSourceModel rssSourceModel)
         {
-            
-
             if (ModelState.IsValid)
             {
-               // rssSourceModel.Id = Guid.NewGuid();
-                await _rssSourceService.CreateOneRssSource(rssSourceModel);
+                try
+                {
+                    using (var reader = XmlReader.Create(rssSourceModel.Url))
+                    {
+                        var feed = SyndicationFeed.Load(reader);
+                        reader.Close();
+                    }
+                    await _rssSourceService.CreateOneRssSource(rssSourceModel);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"Something went wrong when trying to add to the source. Message: {ex.Message}");
+                    return BadRequest( $"Something went wrong when trying to add to the source. Incorrect Rss Sourse adress!");
 
+                }
             }
-          /*  RssSource SportExpress = new RssSource()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Спорт-экспресс",
-                Link = "https://www.sport-express.ru/services/materials/news/se/",
-               // DateOfReceiving = DateTime.Now;
-            };*/
-
-          // await _rssSourceService.CreateOneRssSource(rssSourceModel);
-
-          /*  _wrapper.RssSource.CreateOneRssSource(TutBy);
-            await _wrapper.SaveAsync();*/
 
             return  RedirectToAction(nameof(Index));
         }

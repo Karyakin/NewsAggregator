@@ -5,19 +5,20 @@ using Repositories.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Repositories.RssSources
 {
-    public class RssSourceRepository : RepositoryBase<RssSource>, IRssSourceRepository
+    public class RssSourceRepository : RepositoryBases<RssSource>, IRssSourceRepository
     {
 
         public RssSourceRepository(NewsDataContext newsDataContext) : base(newsDataContext)
         {
         }
 
-        public void CreateManyRssSource(IEnumerable<RssSource> rssSource) => CreateMany(rssSource);
+       /* public void CreateManyRssSource(IEnumerable<RssSource> rssSource) => CreateMany(rssSource);
 
         public void CreateOneRssSource(RssSource rssSource) => Create(rssSource);
 
@@ -38,9 +39,11 @@ namespace Repositories.RssSources
         public async Task<RssSource> FindNewsForSourse(Guid rssSourceId)
         {
             var rssSourseWithNews = await FindByCondition(x => x.Id.Equals(rssSourceId), true)
-                .Include(news=>news.News).SingleOrDefaultAsync();
+                .Include(news=>news.News).ThenInclude(categ=>categ.Category).SingleOrDefaultAsync();
 
             return rssSourseWithNews;
-        }
+        }*/
+
+      
     }
 }

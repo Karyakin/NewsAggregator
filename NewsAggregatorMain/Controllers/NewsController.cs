@@ -1,88 +1,130 @@
 ﻿using AutoMapper;
 using Contracts.RepositoryInterfaces;
 using Contracts.ServicesInterfacaces;
-using Contracts.WrapperInterface;
+using Contracts.UnitOfWorkInterface;
 using Entities.DataTransferObject;
 using Entities.Entity.NewsEnt;
+using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NewsAggregatorMain.Models;
+using NewsAggregatorMain.Models.ViewModel.NewsVM;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace NewsAggregatorMain.Controllers
 {
     //[Route("[controller]")]
     public class NewsController : Controller
     {
+
         private readonly INewsService _newsService;
-        private readonly ICategoryService _categoryService;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IRssSourceService _rssSourceService;
-        public NewsController(INewsService newsService, ICategoryService categoryService, IRssSourceService rssSourceService)
+        public NewsController(INewsService newsService, IUnitOfWork unitOfWork, IRssSourceService rssSourceService)
         {
             _newsService = newsService;
-            _categoryService = categoryService;
+            _unitOfWork = unitOfWork;
             _rssSourceService = rssSourceService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Aggregate()
         {
-            var allCompanies = await _newsService.FindAllNews();
-            #region Через ркпу
-            /*
-                       // var companies = await _wrapper.News.FindAll(trackChanges: false).ToListAsync();
-                        var companies = await _wrapper.News.GetAllNewsAsync(trackChanges: false);
-
-                        var getCompanyDTO = _mapper.Map<IEnumerable<NewsGetDTO>>(companies).ToList();
-                       // var getCompanyDTO = _mapper.Map<IEnumerable<NewsCategoryRssSourceDTO>>(companies).ToList()*/
-
-            #endregion
-            return View(allCompanies);
+            return View();
         }
 
-
-
-
-       // [HttpGet("oneNews")]
-        public async Task<IActionResult> GetOneNews()
+        [HttpPost]
+        public async Task<IActionResult> Aggregate(CreateNewsViewModel createNewsViewModel)
         {
-            var guid = (await _newsService.FindAllNews()).FirstOrDefault();// это метод на удаление потом, он чисто для получения гуида
-            var test = guid.Id;
-            
-           var res = await _newsService.GetNewsBiId(test);
+            var rsssouses = await _rssSourceService.GetAllRssSourceAsync(false);
+            var newInfos = new List<NewsInfoFromRssSourseDto>(); // without any duplicate
 
-            return Ok(res);
-        }
-
-
-
-        [HttpPut("AddNews")]
-        public async Task<IActionResult> AddNews(string categoryName, string rssSourceName, News news)
-        {
-            categoryName = "Искуство";
-            rssSourceName = "TutBy";
-
-            News news1 = new News()
+            foreach (var item in rsssouses)
             {
-                CategoryId = (await _categoryService.FindCategoryByName(categoryName)).Id,
-                SourceId = (await _rssSourceService.RssSourceByName(rssSourceName)).Id,
-                Content = "Описывается сама новость и что произошло",
-                Rating = 2,
-                Title = "А вы знали что...",
-                Url = "https://news.tut.by/society/724224.html"
+                if (item.Name.Equals("TUT.by") || item.Name.Equals("Onliner"))
+                {
+                    var newsList = await _newsService.GetNewsInfoFromRssSourse(item);
+                    newInfos.AddRange(newsList);
+                }
             };
 
-            await _newsService.CreateOneNewsAsync(news1);
+            await _newsService.CreateManyNewsAsync(newInfos);
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
+
+        public async Task<IActionResult> Index(int page = 1)
+        {
+            var allNews = (await _newsService.FindAllNews()).ToList();
+
+            var pageSize = 9;
+            var newsPerPages = allNews.Skip((page - 1) * pageSize).Take(pageSize);
+            var pageInfo = new PageInfo()
+            {
+                PageNumber = page,
+                PageSize = pageSize,
+                TotalItems = allNews.Count
+            };
+
+            return View(new NewsListWithPaginationInfo()
+            {
+                News = newsPerPages,
+                PageInfo = pageInfo
+            });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateNewsViewModel createNewsViewModel)
+        {
+            var a = await _rssSourceService.GetAllRssSourceAsync(false);//
 
             return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var model = new CreateNewsViewModel()
+            {
+                Sources = new SelectList(await _rssSourceService.GetAllRssSourceAsync(false),
+               "Id",
+               "Name")
+            };
+
+
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> Details(NewsGetDTO newsGetDTO)
+        {
+            var newsWithDetails = await _newsService.GetNewsBiId(newsGetDTO.Id);
+
+            return View(newsWithDetails);
+
+        }
+
+        public async Task<IActionResult> ReadInAgregator(NewsGetDTO newsGetDTO)
+        {
+            var newsWithDetails = await _newsService.GetNewsBiId(newsGetDTO.Id);
+
+            return View(newsWithDetails);
+
+        }
+
+
+
+        [HttpPost]
+        void Delete(News news)
+        {
+            throw new NotImplementedException();
         }
     }
 }

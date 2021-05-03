@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Models.AssembledModel
 {
-   public class NewForSourse
+   public class SourseWithNewsCategory
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -15,6 +15,6 @@ namespace Entities.Models.AssembledModel
         public DateTime DateOfReceiving { get; set; }
        // public IEnumerable<Guid> NewsId { get; set; }
         public IEnumerable<News> News{ get; set; }
-       // public IEnumerable<Category> Categories { get; set; }
+        public Category Categories { get; set; }
     }
 }

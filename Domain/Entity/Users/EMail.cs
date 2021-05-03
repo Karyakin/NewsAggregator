@@ -1,11 +1,12 @@
-﻿using Entities.Entity.Users;
+﻿using Contracts.Interfaces;
+using Entities.Entity.Users;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Entity.Users
 {
-    public class EMail
+    public class EMail : IBaseEntity
     {
         public Guid Id { get; set; }
         public string UserEMail { get; set; }

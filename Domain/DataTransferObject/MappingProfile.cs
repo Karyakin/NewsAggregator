@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Entities.Entity.NewsEnt;
+using Entities.Entity.Users;
 using Entities.Models;
 using Entities.Models.AssembledModel;
 using System;
@@ -28,6 +29,9 @@ namespace Entities.DataTransferObject
             CreateMap<RssSource, SourseWithNewsCategory>().ReverseMap();
            // CreateMap<IEnumerable<News>, IEnumerable<NewsInfoFromRssSourseDto>>();
             CreateMap<News, NewsInfoFromRssSourseDto>().ReverseMap();
+
+
+            CreateMap<RegisterDto, User>().ReverseMap();
 
 
 

@@ -13,6 +13,7 @@ namespace Contracts.UnitOfWorkInterface
         public ICategoryRepository Category { get; }
         public IRssSourceRepository RssSource { get; }
         public IUserRepository User{ get; }
+        public ICountryRepository Country { get; }
 
 
         Task SaveAsync();

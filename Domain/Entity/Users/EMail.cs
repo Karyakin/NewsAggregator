@@ -8,7 +8,7 @@ namespace Entity.Users
 {
     public class EMail : IBaseEntity
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } 
         public string UserEMail { get; set; }
         public DateTime CreateDate { get; set; } = DateTime.Now;
         public DateTime? RemovedDate { get; set; }

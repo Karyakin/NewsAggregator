@@ -9,7 +9,7 @@ namespace Entities.Entity.Users
     public class ContactDetails : IBaseEntity
     {
         public Guid Id { get; set; }
-        public string AdditionalInformation { get; set; }
+        public string AdditionalInformation { get; set; } 
 
         public IEnumerable<Phone> Phones { get; set; }
         public IEnumerable<EMail> EMails { get; set; }

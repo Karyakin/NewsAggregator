@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using Contracts.Interfaces;
 using Contracts.ServicesInterfacaces;
 using Contracts.UnitOfWorkInterface;
 using Entities.DataTransferObject;
 using Entities.Entity.NewsEnt;
 using Entities.Entity.Users;
 using Entities.Models;
+using Entity.Users;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -19,9 +21,12 @@ namespace Services
     public class UserService : IUserService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public UserService(IUnitOfWork unitOfWork)
+        private readonly ICountryService _countryService;
+       
+        public UserService(IUnitOfWork unitOfWork, ICountryService countryService)
         {
             _unitOfWork = unitOfWork;
+            _countryService = countryService;
         }
 
         public PasswordSoultModel GetPasswordHashSoult(string modelPassword)
@@ -43,10 +48,68 @@ namespace Services
             return rez;
         }
 
-        public Task<User> ArrangeNewUser(PasswordSoultModel model, PasswordSoultModel passwordSoultModel)
+      
+        public async Task<User> ArrangeNewUser(RegisterDto registerDto, PasswordSoultModel passwordSoultModel)
         {
-            throw new NotImplementedException();
+            var cityId = Guid.NewGuid();
+            var countryId = Guid.NewGuid();
+            var contactDetailsId = Guid.NewGuid();
+            var eMailId = Guid.NewGuid();
+            var phoneId = Guid.NewGuid();
+
+
+            var a = await _countryService.CountryExist(registerDto.Country);
+
+            EMail mail = new EMail()
+            {
+                Id = eMailId,
+                UserEMail = registerDto.Email,
+                CreateDate = DateTime.Now,
+                ContactDetailsId = contactDetailsId
+            };
+
+            Phone phone = new Phone()
+            {
+                Id = phoneId,
+                PhoneNumber = registerDto.Phones,
+                CreateDate = DateTime.Now,
+                ContactDetailsId = contactDetailsId
+            };
+
+            List<EMail> emList = new List<EMail>() { mail };
+            List<Phone> phoneList = new List<Phone>() { phone };
+
+            var newUser = new User()
+            {
+                Id = Guid.NewGuid(),
+                Login = registerDto.Login,
+                PasswordHash = passwordSoultModel.PasswordHash,
+                PasswordSalt = passwordSoultModel.PasswordSalt,
+                ContactDetailsId = contactDetailsId,
+                ContactDetails = new ContactDetails()
+                {
+                    Id = contactDetailsId,
+                    City = new City()
+                    {
+                        Id = cityId,
+                        Name = registerDto.City
+                    },
+
+                    Country = new Country()
+                    {
+                        Id = countryId,
+                        Name = registerDto.Country
+                    },
+
+                    EMails = emList,
+                    Phones = phoneList
+                },
+            };
+            return newUser;
         }
+
+
+
 
 
 

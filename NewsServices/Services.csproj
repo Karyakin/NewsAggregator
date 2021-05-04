@@ -16,4 +16,8 @@
     <ProjectReference Include="..\RepositoriesInterfaces\Contracts.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+
 </Project>

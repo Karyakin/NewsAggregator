@@ -1,4 +1,4 @@
-﻿@model NewsAggregatorMain.Models.Account.RegisterViewModel
+﻿@model Entities.DataTransferObject.RegisterDto
 
     <h2>Registration</h2>
 
@@ -24,6 +24,11 @@
             <label asp-for="Email">Email</label>
             <input type="text" asp-for="Email" />
             <span asp-validation-for="Email"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Phones">Phones</label>
+            <input type="text" asp-for="Phones" />
+            <span asp-validation-for="Phones"></span>
         </div>
         <div class="form-group">
             <label asp-for="Password">Password</label>

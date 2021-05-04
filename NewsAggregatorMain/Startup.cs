@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Contracts.RepositoryInterfaces;
 using Repositories.NewsRep;
+using Repositories.CountryRepo;
 
 /*cd C:\Users\d.karyakin\Desktop\NewsAggregator\RepositoryBase*/
 
@@ -52,9 +53,11 @@ namespace NewsAggregatorMain
             services.AddScoped<IRssSourceService, RssSourceService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICountryService, CountryService>();
 
 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ICountryRepository, CountryRepository>();
 
 
             services.AddScoped<TutByParser>(); //внедрение без привязки к родитель(альтернатива)

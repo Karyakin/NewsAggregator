@@ -6,6 +6,9 @@ using Repositories.Context;
 using Repositories.Categories;
 using Repositories.RssSources;
 using Repositories.NewsRep;
+using Contracts.ServicesInterfacaces;
+using Services;
+using Repositories.CountryRepo;
 
 namespace Repositories.UnitOfWorkRepository
 {
@@ -21,12 +24,25 @@ namespace Repositories.UnitOfWorkRepository
         private ICategoryRepository _categoryRepository;
         private IRssSourceRepository _rssSourceRepository;
         private IUserRepository _UserRepository;
+        private ICountryRepository _countryRepository;
 
         public RepositoryUnitOfWork(NewsDataContext newsDataContextWrapper)
         {
             _newsDataContextWrapper = newsDataContextWrapper;
+           
         }
 
+
+        public ICountryRepository Country
+        {
+            get
+            {
+                if (_countryRepository == null)
+                    _countryRepository = new CountryRepository(_newsDataContextWrapper);
+
+                return _countryRepository;
+            }
+        }
 
         public IUserRepository User 
         {

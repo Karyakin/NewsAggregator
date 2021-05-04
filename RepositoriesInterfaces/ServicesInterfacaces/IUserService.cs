@@ -11,10 +11,11 @@ using System.Threading.Tasks;
 
 namespace Contracts.ServicesInterfacaces
 {
-    public interface IUserService
+    public interface IUserService 
     {
         PasswordSoultModel GetPasswordHashSoult(string modelPassword);
         Task<bool> UserExist(string login);
+        public Task<User> ArrangeNewUser(RegisterDto registerDto, PasswordSoultModel passwordSoultModel);
 
 
         /*Task<bool> RegisterUser(UserDto model);

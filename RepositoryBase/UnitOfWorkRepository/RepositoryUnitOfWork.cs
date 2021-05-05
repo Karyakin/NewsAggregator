@@ -25,11 +25,23 @@ namespace Repositories.UnitOfWorkRepository
         private IRssSourceRepository _rssSourceRepository;
         private IUserRepository _UserRepository;
         private ICountryRepository _countryRepository;
+        private ICityRepository _cityRepository;
 
-        public RepositoryUnitOfWork(NewsDataContext newsDataContextWrapper)
+        public RepositoryUnitOfWork(NewsDataContext newsDataContextWrapper, ICityRepository cityService)
         {
             _newsDataContextWrapper = newsDataContextWrapper;
-           
+        }
+
+
+        public ICityRepository City
+        {
+            get
+            {
+                if (_cityRepository == null)
+                    _cityRepository = new CityRepository(_newsDataContextWrapper);
+
+                return _cityRepository;
+            }
         }
 
 
@@ -87,7 +99,6 @@ namespace Repositories.UnitOfWorkRepository
             }
         }
 
- 
 
         public void Dispose()
         {

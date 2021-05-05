@@ -28,5 +28,8 @@ namespace Services
 
 
         }
+
+        public async Task<IEnumerable<Country>> FindAllCountries() => 
+            await _unitOfWork.Country.GetAll(false).ToListAsync();
     }
 }

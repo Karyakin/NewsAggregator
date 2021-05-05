@@ -22,11 +22,13 @@ namespace Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICountryService _countryService;
-       
-        public UserService(IUnitOfWork unitOfWork, ICountryService countryService)
+        private readonly ICityService _cityService;
+
+        public UserService(IUnitOfWork unitOfWork, ICountryService countryService, ICityService cityService)
         {
             _unitOfWork = unitOfWork;
             _countryService = countryService;
+            _cityService = cityService;
         }
 
         public PasswordSoultModel GetPasswordHashSoult(string modelPassword)
@@ -48,17 +50,17 @@ namespace Services
             return rez;
         }
 
-      
+
         public async Task<User> ArrangeNewUser(RegisterDto registerDto, PasswordSoultModel passwordSoultModel)
         {
+            var allCountry = await _countryService.FindAllCountries();
+            var allCities = await _cityService.FindAllCity();
+
             var cityId = Guid.NewGuid();
             var countryId = Guid.NewGuid();
             var contactDetailsId = Guid.NewGuid();
             var eMailId = Guid.NewGuid();
             var phoneId = Guid.NewGuid();
-
-
-            var a = await _countryService.CountryExist(registerDto.Country);
 
             EMail mail = new EMail()
             {

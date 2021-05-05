@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Entities.Entity.Users
 {
-   public class City //: IBaseEntity
+   public class City : IBaseEntity
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

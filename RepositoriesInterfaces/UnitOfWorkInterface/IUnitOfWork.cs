@@ -1,4 +1,5 @@
 ﻿using Contracts.RepositoryInterfaces;
+using Contracts.ServicesInterfacaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace Contracts.UnitOfWorkInterface
         public IRssSourceRepository RssSource { get; }
         public IUserRepository User{ get; }
         public ICountryRepository Country { get; }
+        public ICityRepository City{ get; }
 
 
         Task SaveAsync();

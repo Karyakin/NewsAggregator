@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Contracts.RepositoryInterfaces
 {
-    public interface ICountryRepository : IRepositoryBases<Country>
+    public interface ICountryRepository : IRepositoryBases<Country> 
     {
         
     }

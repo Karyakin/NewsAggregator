@@ -1,5 +1,5 @@
 ﻿using Contracts.Interfaces;
-using Entity.Users;
+using Entities.Entity.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +8,8 @@ using System.Threading.Tasks;
 
 namespace Contracts.ServicesInterfacaces
 {
-   public interface ICountryService 
+   public interface ICityRepository : IRepositoryBases<City>
     {
-        Task<bool> CountryExist(string login);
-        Task<IEnumerable<Country>> FindAllCountries();
+       // Task<bool> CityExist(string login);
     }
 }

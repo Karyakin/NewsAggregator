@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -31,7 +32,10 @@ namespace Entities.DataTransferObject
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Password is incorrect")]// сравниваем со свойством Password
         public string PasswordConfirmation { get; set; }
-      // public PasswordSoultModel PasswordSoultModel { get; set; }
-      
+        // public PasswordSoultModel PasswordSoultModel { get; set; }
+
+        public SelectList SelectListSourse{ get; set; }
+        public Guid? CountrySourseId { get; set; }
+
     }
 }

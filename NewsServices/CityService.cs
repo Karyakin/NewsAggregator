@@ -27,5 +27,11 @@ namespace Services
 
         public async Task<IEnumerable<City>> FindAllCity() => 
             await _unitOfWork.City.GetAll(false).ToListAsync();
+
+        public async Task<City> FindCityById(Guid сityId)
+        {
+            var city = await _unitOfWork.City.GetById(сityId, false);
+            return city;
+        }
     }
 }

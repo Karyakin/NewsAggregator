@@ -7,6 +7,7 @@ using Entities.Entity.NewsEnt;
 using Entities.Entity.Users;
 using Entities.Models;
 using Entity.Users;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -50,14 +51,12 @@ namespace Services
             return rez;
         }
 
-
+        [ValidateAntiForgeryToken]
         public async Task<User> ArrangeNewUser(RegisterDto registerDto, PasswordSoultModel passwordSoultModel)
         {
-            var allCountry = await _countryService.FindAllCountries();
-            var allCities = await _cityService.FindAllCity();
-
-            var cityId = Guid.NewGuid();
-            var countryId = Guid.NewGuid();
+/*
+                var cityId = Guid.NewGuid();
+            var countryId = Guid.NewGuid();*/
             var contactDetailsId = Guid.NewGuid();
             var eMailId = Guid.NewGuid();
             var phoneId = Guid.NewGuid();
@@ -93,14 +92,16 @@ namespace Services
                     Id = contactDetailsId,
                     City = new City()
                     {
-                        Id = cityId,
+                        Id = registerDto.CitySourseId.Value,
                         Name = registerDto.City
                     },
 
                     Country = new Country()
                     {
-                        Id = countryId,
-                        Name = registerDto.Country
+                        Id = registerDto.CountrySourseId.Value,
+                        Name = registerDto.Country,
+                       // CountryCod = registerDto.Country.
+                        
                     },
 
                     EMails = emList,

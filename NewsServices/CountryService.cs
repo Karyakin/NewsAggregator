@@ -31,5 +31,11 @@ namespace Services
 
         public async Task<IEnumerable<Country>> FindAllCountries() => 
             await _unitOfWork.Country.GetAll(false).ToListAsync();
+
+        public async Task<Country> FindCountryById(Guid countryId)
+        {
+            var country = await _unitOfWork.Country.GetById(countryId, false);
+            return country;
+        }
     }
 }

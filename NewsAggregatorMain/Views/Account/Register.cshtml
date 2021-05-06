@@ -10,22 +10,35 @@
             <input type="text" asp-for="Login" />
             <span asp-validation-for="Login"></span>
         </div>
-        <div class="form-group">
+        @* <div class="form-group">
             <label asp-for="City">City</label>
             <input type="text" asp-for="City" />
             <span asp-validation-for="City"></span>
-        </div>
+        </div>*@
         @*<div class="form-group">
             <label asp-for="Country">Country</label>
             <input type="text" asp-for="Country" />
             <span asp-validation-for="Country"></span>
         </div>*@
         <div class="form-group">
-            <label asp-for="CountrySourseId">Country</label>
-            @*   <input type="text" asp-for="Country" />*@
-            <select asp-for="CountrySourseId" asp-items="Model.SelectListSourse"></select>
+            <label asp-for="CitySourseId">City</label>
+
+            <select asp-for="CitySourseId" asp-items="Model.SelectListSourseCity">
+                <option selected="selected" disabled="disabled">Выберите город</option>
+            </select>
             <span asp-validation-for="Country"></span>
         </div>
+
+
+        <div class="form-group">
+            <label asp-for="CountrySourseId">Country</label>
+            <select asp-for="CountrySourseId" asp-items="Model.SelectListSourseCountry">
+                <option selected="selected" disabled="disabled">Выберите страну</option>
+            </select>
+            <span asp-validation-for="Country"></span>
+        </div>
+
+
         <div class="form-group">
             <label asp-for="Email">Email</label>
             <input type="text" asp-for="Email" />

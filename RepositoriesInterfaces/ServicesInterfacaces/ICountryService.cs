@@ -12,5 +12,6 @@ namespace Contracts.ServicesInterfacaces
     {
         Task<bool> CountryExist(string login);
         Task<IEnumerable<Country>> FindAllCountries();
+        Task<Country> FindCountryById(Guid countryId);
     }
 }

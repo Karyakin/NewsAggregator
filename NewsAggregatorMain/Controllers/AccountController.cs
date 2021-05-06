@@ -2,6 +2,7 @@
 using Contracts.UnitOfWorkInterface;
 using Entities.DataTransferObject;
 using Entities.Entity.Users;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NewsAggregatorMain.Models.Account;
@@ -40,7 +41,9 @@ namespace NewsAggregatorMain.Controllers
 
             var model = new RegisterDto()
             {
-                SelectListSourse = new SelectList(countries, "Id", "Name")
+                SelectListSourseCountry = new SelectList(countries, "Id", "Name"),
+                SelectListSourseCity = new SelectList(cities, "Id", "Name")
+
             };
 
 
@@ -53,24 +56,29 @@ namespace NewsAggregatorMain.Controllers
         [ValidateAntiForgeryToken]// страница неявно внутри себя сгенерирует разметку, эта разметак будет передавать с собой соответсвующий токен где на BE он будет проверятся и если токен не сошелся, значет он пришел не со страницы, а откуда-то еще. т.е. если запрос пришел не сайта, то его обробатывать не нужно
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
+            var country = await _countryService.FindCountryById(registerDto.CountrySourseId.Value);
+            var city = await _cityService.FindCityById(registerDto.CitySourseId.Value);
+            registerDto.Country = country.Name;
+            registerDto.City = city.Name;
 
-
-
-
-            if (ModelState.IsValid)
+            if (country is null)
             {
-                var hashSoult = _userService.GetPasswordHashSoult(registerDto.Password);
+                throw new NullReferenceException($"Country can't exist Null value");
+            }
+
+            if (city is null)
+            {
+                throw new NullReferenceException($"City can't exist Null value");
+            }
+
+            var hashSoult = _userService.GetPasswordHashSoult(registerDto.Password);
 
                 if (await _userService.UserExist(registerDto.Login))
                 {
                     return BadRequest("User allredy exist");
                 }
 
-
-
                 var newUser = await _userService.ArrangeNewUser(registerDto, hashSoult);
-
-
 
                 try
                 {
@@ -82,7 +90,6 @@ namespace NewsAggregatorMain.Controllers
                     Log.Error($"Can not compleate greate new User. Details: {ex.Message}");
                     throw;
                 }
-            }
             return View(registerDto);
         }
 

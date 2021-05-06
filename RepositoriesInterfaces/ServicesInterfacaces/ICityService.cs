@@ -11,6 +11,7 @@ namespace Contracts.ServicesInterfacaces
     {
         Task<bool> CityExist(string cityName);
         Task<IEnumerable<City>> FindAllCity();
+        Task<City> FindCityById(Guid сityId);
 
     }
 }

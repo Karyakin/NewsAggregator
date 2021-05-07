@@ -21,9 +21,6 @@ namespace NewsAggregatorMain.Controllers
         private readonly ICountryService _countryService;
         private readonly ICityService _cityService;
 
-
-
-
         public AccountController(IUserService userService, IUnitOfWork unitOfWork, ICountryService countryService, ICityService cityService)
         {
             _userService = userService;
@@ -45,10 +42,6 @@ namespace NewsAggregatorMain.Controllers
                 SelectListSourseCity = new SelectList(cities, "Id", "Name")
 
             };
-
-
-
-
             return View(model);
         }
 
@@ -73,25 +66,68 @@ namespace NewsAggregatorMain.Controllers
 
             var hashSoult = _userService.GetPasswordHashSoult(registerDto.Password);
 
-                if (await _userService.UserExist(registerDto.Login))
-                {
-                    return BadRequest("User allredy exist");
-                }
+            if (await _userService.UserExist(registerDto.Login))
+            {
+                return BadRequest("User allredy exist");
+            }
 
-                var newUser = await _userService.ArrangeNewUser(registerDto, hashSoult);
+            var newUser = await _userService.ArrangeNewUser(registerDto, hashSoult);
+            if (newUser is null)
+            {
+                return BadRequest(newUser);
+            }
+            try
+            {
+                _unitOfWork.User.Add(newUser);
+                await _unitOfWork.SaveAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Can not compleate greate new User. Details: {ex.Message}");
+                throw;
+            }
 
-                try
-                {
-                    _unitOfWork.User.Add(newUser);
-                    await _unitOfWork.SaveAsync();
-                }
-                catch (Exception ex)
-                {
-                    Log.Error($"Can not compleate greate new User. Details: {ex.Message}");
-                    throw;
-                }
-            return View(registerDto);
+            return Ok($"User {registerDto.Login} wos successfully");
         }
 
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginDto loginDto)
+        {
+
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.Login == loginDto.Login);
+            if (user == null)
+                return BadRequest();
+            using (var hmac = new HMACSHA512(user.PasswordSalt))
+            {
+                var computesHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
+                for (int i = 0; i < computesHash.Length; i++)
+                {
+                    if (computesHash[i] != user.PasswordHash[i])
+                        return Unauthorized();//ошибка неавторизации. не смог авторизоваться
+                }
+            }
+
+            return new UserDto// возвращаем ДТО
+            {
+                UserName = user.Login,
+                Country = user.Country,
+                Token = _tokenService.CreateToken(user)// токегн на основе нашего юзера
+            };
+        }
+
+        private bool UserExist(string login) => _context.Users.Any(x => x.Login == login);
+
+
     }
+
+
+}
 }

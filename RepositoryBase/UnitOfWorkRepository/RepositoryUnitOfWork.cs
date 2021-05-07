@@ -26,13 +26,23 @@ namespace Repositories.UnitOfWorkRepository
         private IUserRepository _UserRepository;
         private ICountryRepository _countryRepository;
         private ICityRepository _cityRepository;
+        private IRoleRepository _roleRepository;
 
-        public RepositoryUnitOfWork(NewsDataContext newsDataContextWrapper, ICityRepository cityService)
+        public RepositoryUnitOfWork(NewsDataContext newsDataContextWrapper)
         {
             _newsDataContextWrapper = newsDataContextWrapper;
         }
 
+        public IRoleRepository Role
+        {
+            get
+            {
+                if (_roleRepository == null)
+                    _roleRepository = new RoleRepository(_newsDataContextWrapper);
 
+                return _roleRepository;
+            }
+        }
         public ICityRepository City
         {
             get

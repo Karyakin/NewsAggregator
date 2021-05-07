@@ -16,6 +16,7 @@ namespace Contracts.UnitOfWorkInterface
         public IUserRepository User{ get; }
         public ICountryRepository Country { get; }
         public ICityRepository City{ get; }
+        public IRoleRepository Role{ get; }
 
 
         Task SaveAsync();

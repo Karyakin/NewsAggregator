@@ -22,7 +22,11 @@ namespace Entities.Entity.Users
         public DateTime LastActiv { get; set; } = DateTime.Now;
 
         public IEnumerable<Photo> Photos { get; set; }
-        public IEnumerable<Role> Roles { get; set; }
+        //public IEnumerable<Role> Roles { get; set; }
+
+        public Role Role { get; set; }
+        public Guid RoleId { get; set; }
+
 
         public ContactDetails ContactDetails { get; set; }
         public Guid ContactDetailsId { get; set; }

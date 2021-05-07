@@ -16,9 +16,9 @@ namespace Contracts.ServicesInterfacaces
         PasswordSoultModel GetPasswordHashSoult(string modelPassword);
         Task<bool> UserExist(string login);
         public Task<User> ArrangeNewUser(RegisterDto registerDto, PasswordSoultModel passwordSoultModel);
-
+        Task<User> GetUserByLogin(string login);
 
         /*Task<bool> RegisterUser(UserDto model);
-        Task<UserDto> GetUserByEmail(string email);*/
+        */
     }
 }

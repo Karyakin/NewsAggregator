@@ -308,9 +308,14 @@ namespace Repositories.Migrations
                     b.Property<DateTime?>("RemovedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ContactDetailsId");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -358,21 +363,6 @@ namespace Repositories.Migrations
                     b.HasIndex("ContactDetailsId");
 
                     b.ToTable("EMails");
-                });
-
-            modelBuilder.Entity("RoleUser", b =>
-                {
-                    b.Property<Guid>("RolesId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UsersId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("RolesId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("RoleUser");
                 });
 
             modelBuilder.Entity("AuthorRssSource", b =>
@@ -473,7 +463,15 @@ namespace Repositories.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Entities.Entity.Users.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("ContactDetails");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Entity.Users.EMail", b =>
@@ -485,21 +483,6 @@ namespace Repositories.Migrations
                         .IsRequired();
 
                     b.Navigation("ContactDetails");
-                });
-
-            modelBuilder.Entity("RoleUser", b =>
-                {
-                    b.HasOne("Entities.Entity.Users.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RolesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entities.Entity.Users.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Entities.Entity.NewsEnt.Category", b =>
@@ -522,6 +505,11 @@ namespace Repositories.Migrations
                     b.Navigation("EMails");
 
                     b.Navigation("Phones");
+                });
+
+            modelBuilder.Entity("Entities.Entity.Users.Role", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Entities.Entity.Users.User", b =>

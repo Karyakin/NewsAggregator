@@ -24,12 +24,14 @@ namespace Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICountryService _countryService;
         private readonly ICityService _cityService;
+        private readonly IRoleService _roleService;
 
-        public UserService(IUnitOfWork unitOfWork, ICountryService countryService, ICityService cityService)
+        public UserService(IUnitOfWork unitOfWork, ICountryService countryService, ICityService cityService, IRoleService roleService)
         {
             _unitOfWork = unitOfWork;
             _countryService = countryService;
             _cityService = cityService;
+            _roleService = roleService;
         }
 
         public PasswordSoultModel GetPasswordHashSoult(string modelPassword)
@@ -54,9 +56,6 @@ namespace Services
         [ValidateAntiForgeryToken]
         public async Task<User> ArrangeNewUser(RegisterDto registerDto, PasswordSoultModel passwordSoultModel)
         {
-/*
-                var cityId = Guid.NewGuid();
-            var countryId = Guid.NewGuid();*/
             var contactDetailsId = Guid.NewGuid();
             var eMailId = Guid.NewGuid();
             var phoneId = Guid.NewGuid();
@@ -90,45 +89,18 @@ namespace Services
                 ContactDetails = new ContactDetails()
                 {
                     Id = contactDetailsId,
-                    City = new City()
-                    {
-                        Id = registerDto.CitySourseId.Value,
-                        Name = registerDto.City
-                    },
-
-                    Country = new Country()
-                    {
-                        Id = registerDto.CountrySourseId.Value,
-                        Name = registerDto.Country,
-                       // CountryCod = registerDto.Country.
-                        
-                    },
-
+                    CountryId = registerDto.CountrySourseId.Value,
+                    CityId = registerDto.CitySourseId.Value,
                     EMails = emList,
                     Phones = phoneList
                 },
+                RoleId = (await _roleService.GetRoleIdyByName("User")).Id
             };
             return newUser;
         }
 
-
-
-
-
-
-
-
-
-
-        public Task<RegisterDto> GetUserByEmail(string email)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> RegisterUser(RegisterDto model)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<User> GetUserByLogin(string login)=>
+            await _unitOfWork.User.GetByCondition(x => x.Login.Equals(login), false).FirstOrDefaultAsync();
 
     }
 }

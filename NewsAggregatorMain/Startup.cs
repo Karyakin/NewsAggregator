@@ -55,11 +55,13 @@ namespace NewsAggregatorMain
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICountryService, CountryService>();
             services.AddScoped<ICityService, CityService>();
+            services.AddScoped<IRoleService, RoleService>();
 
 
             services.AddScoped<ICityRepository, CityRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
 
 
             services.AddScoped<TutByParser>(); //внедрение без привязки к родитель(альтернатива)

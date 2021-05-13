@@ -1,15 +1,24 @@
 ﻿using Contracts.ServicesInterfacaces;
 using Contracts.UnitOfWorkInterface;
 using Entities.DataTransferObject;
+using Entities.Entity.NewsEnt;
 using Entities.Entity.Users;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using NewsAggregatorMain.Helper;
 using NewsAggregatorMain.Models.Account;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace NewsAggregatorMain.Controllers
@@ -87,22 +96,22 @@ namespace NewsAggregatorMain.Controllers
                 throw;
             }
 
-            return Ok($"User {registerDto.Login} wos successfully");
+            return Ok($"User {registerDto.Login} was successfully");
         }
 
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl)// returnUrl нужна для того, чтобы получать тот Url по которому клацнули изначально. Если пользователь не авторизован и нажал на источники, то после авторизации его перенаправит в источники, если нажал на новости, то после авторизации будет перенаправлен на новости.
         {
-            return View();
+            var model = new LoginDto() { ReturnUrl = returnUrl };
+            return View(model);
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginDto loginDto)
+        public async Task<IActionResult> Login(RegisterDto loginDto)
         {
-
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.Login == loginDto.Login);
+            var user = await _unitOfWork.User.GetByCondition(x => x.Login == loginDto.Login, false).FirstOrDefaultAsync();
             if (user == null)
                 return BadRequest();
             using (var hmac = new HMACSHA512(user.PasswordSalt))
@@ -111,23 +120,52 @@ namespace NewsAggregatorMain.Controllers
                 for (int i = 0; i < computesHash.Length; i++)
                 {
                     if (computesHash[i] != user.PasswordHash[i])
-                        return Unauthorized();//ошибка неавторизации. не смог авторизоваться
+                        return Unauthorized("Пользователь с таким именем не зарегистрирован!");//ошибка авторизации. не смог авторизоваться
                 }
             }
+            await Autointification(user);
+            //  return RedirectToAction(nameof(Index), nameof(News));
 
-            return new UserDto// возвращаем ДТО
-            {
-                UserName = user.Login,
-                Country = user.Country,
-                Token = _tokenService.CreateToken(user)// токегн на основе нашего юзера
-            };
+            return string.IsNullOrEmpty(loginDto.ReturnUrl)
+                           ? (IActionResult)RedirectToAction("Index", "Home")
+                           : Redirect(loginDto.ReturnUrl);
         }
 
-        private bool UserExist(string login) => _context.Users.Any(x => x.Login == login);
+        [HttpGet]
+        public async Task<IActionResult> LogOut()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login", "Account");
+        }
 
+        /// <summary>
+        /// Claim - базовый класс для работы с пользователями, содержит информацию для авторизации пользователя
+        /// issuer - некий издатель, система, которая выдала нашему пользователю Claim. Доверянная система
+        /// type - тип объекта клэйм
+        /// subject - информация про то на основе чего мы будем авторизировать нашего пользователя
+        /// value - Role.Value
+        /// </summary>
+        public async Task  Autointification(User user)
+        {
+            var age = AgeCount.GetAge(user);
 
+            const string authType = "ApplicationCokie";
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
+                new Claim("age", age)
+            };
+            var identity = new ClaimsIdentity(
+                claims,
+                authType,
+                ClaimsIdentity.DefaultRoleClaimType,
+                ClaimsIdentity.DefaultRoleClaimType);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+
+           // return RedirectToAction(nameof(Index), nameof(News));
+        }
+        
+        // private bool UserExist(string login) => _context.Users.Any(x => x.Login == login);
     }
-
-
 }
-}
+

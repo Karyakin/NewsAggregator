@@ -19,7 +19,7 @@ namespace Entities.DataTransferObject
         [DataType(DataType.EmailAddress)] // ___@{}.{}
         public string Email { get; set; }
 
-
+        public DateTime DayOfBirth { get; set; }
 
         [Required(ErrorMessage = "Please fill Country field")]
         public string Country { get; set; }
@@ -42,5 +42,7 @@ namespace Entities.DataTransferObject
         public SelectList SelectListSourseCity{ get; set; }
         public Guid? CountrySourseId { get; set; }
         public Guid? CitySourseId { get; set; }
+
+        public string ReturnUrl { get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace NewsAggregatorMain.Controllers
 
         public IActionResult Index()
         {
-            try
+          /*  try
             {
                 throw new Exception("test");
             }
@@ -31,7 +31,7 @@ namespace NewsAggregatorMain.Controllers
             {
                 Log.Fatal($"все, кабзда работе{e}");
                // throw; // throw выпускает исключение наружу
-            }
+            }*/
 
             return View();
         }

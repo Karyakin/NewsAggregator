@@ -18,6 +18,8 @@ using Microsoft.AspNetCore.Http;
 using Contracts.RepositoryInterfaces;
 using Repositories.NewsRep;
 using Repositories.CountryRepo;
+using Microsoft.AspNetCore.Authorization;
+using NewsAggregatorMain.AuthorizationPolicies;
 
 /*cd C:\Users\d.karyakin\Desktop\NewsAggregator\RepositoryBase*/
 
@@ -88,7 +90,23 @@ namespace NewsAggregatorMain
                                opt.AccessDeniedPath = new PathString("/Account/Login");
                            });
 
+            /*services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("18-Content", policy =>
+                    {
+                        policy.RequireClaim("age", "18");
+                    });
+            });*/
 
+           // Policy - based authorization
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("18+Content", policy =>
+                    {
+                        policy.Requirements.Add(new MinAgeRequirement(18));
+                    });
+            });
+            services.AddSingleton<IAuthorizationHandler, MinAgeHandler>();
 
             #region Disscription AddNewtonsoftJson
             //тут мы прекращаем зацикливание.  огда ентити начинает сериализовать аккаунт он видит оунера, переходит 

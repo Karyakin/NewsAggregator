@@ -5,6 +5,7 @@ using Contracts.UnitOfWorkInterface;
 using Entities.DataTransferObject;
 using Entities.Entity.NewsEnt;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,8 @@ using System.Xml;
 namespace NewsAggregatorMain.Controllers
 {
     //[Route("[controller]")]
+
+    [Authorize(Policy = "18+Content")]
     public class NewsController : Controller
     {
 
@@ -59,7 +62,7 @@ namespace NewsAggregatorMain.Controllers
 
 
 
-
+        //[Authorize("18-Content")]
         public async Task<IActionResult> Index(int page = 1)
         {
             var allNews = (await _newsService.FindAllNews()).ToList();

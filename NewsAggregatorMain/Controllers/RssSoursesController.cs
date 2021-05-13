@@ -3,6 +3,7 @@ using Contracts.ServicesInterfacaces;
 using Contracts.UnitOfWorkInterface;
 using Entities.Entity.NewsEnt;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System;
@@ -14,6 +15,7 @@ using System.Xml;
 
 namespace NewsAggregatorMain.Controllers
 {
+    [Authorize]
     public class RssSoursesController : Controller
     {
         /*private readonly IRepositoryWrapper _wrapper;

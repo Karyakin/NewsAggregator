@@ -73,18 +73,7 @@ namespace NewsAggregatorMain.Controllers
                 Description = "Че там в мире"
             };
 
-            /* Category sport = new Category()
-             {
-                 Id = Guid.NewGuid(),
-                 Name = "Спорт",
-                 Description = "Все, что происходит в мире спорта"
-             };
-             Category art = new Category()
-             {
-                 Id = Guid.NewGuid(),
-                 Name = "Искуство",
-                 Description = "Наиболее актуальное из мира исскуства"
-             };*/
+           
 
             List<Category> categories = new List<Category>()
             {

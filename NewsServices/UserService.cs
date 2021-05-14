@@ -59,6 +59,7 @@ namespace Services
             var contactDetailsId = Guid.NewGuid();
             var eMailId = Guid.NewGuid();
             var phoneId = Guid.NewGuid();
+           // var roleId = (_unitOfWork.Role.GetByCondition(x => x.Name.Equals("User"), false).FirstOrDefault()).Id;
 
             EMail mail = new EMail()
             {
@@ -92,7 +93,7 @@ namespace Services
                     CountryId = registerDto.CountrySourseId.Value,
                     CityId = registerDto.CitySourseId.Value,
                     EMails = emList,
-                    Phones = phoneList
+                    
                 },
                 RoleId = (await _roleService.GetRoleIdyByName("User")).Id
             };
@@ -102,5 +103,17 @@ namespace Services
         public async Task<User> GetUserByLogin(string login)=>
             await _unitOfWork.User.GetByCondition(x => x.Login.Equals(login), false).FirstOrDefaultAsync();
 
+        public async Task<User> GetUserWithDetails(string login)
+        {
+            var user = await _unitOfWork.User.GetByCondition(x => x.Login.Equals(login), false)
+                .Include(x => x.ContactDetails).ThenInclude(x=>x.City)
+                .Include(x=>x.ContactDetails).ThenInclude(x=>x.Country)
+                .Include(x=>x.ContactDetails).ThenInclude(x=>x.EMails)
+                .Include(x=>x.ContactDetails).ThenInclude(x=>x.Phones)
+                .Include(x=>x.Role)
+                .FirstOrDefaultAsync();
+
+            return user;
+        }
     }
 }

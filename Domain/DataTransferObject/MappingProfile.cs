@@ -32,6 +32,8 @@ namespace Entities.DataTransferObject
 
 
             CreateMap<RegisterDto, User>().ReverseMap();
+            CreateMap<RoleDto, Role>().ReverseMap();
+            
 
 
 

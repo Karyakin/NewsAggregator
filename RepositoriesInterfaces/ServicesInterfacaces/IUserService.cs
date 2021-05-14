@@ -17,6 +17,7 @@ namespace Contracts.ServicesInterfacaces
         Task<bool> UserExist(string login);
         public Task<User> ArrangeNewUser(RegisterDto registerDto, PasswordSoultModel passwordSoultModel);
         Task<User> GetUserByLogin(string login);
+        Task<User> GetUserWithDetails(string login);
 
         /*Task<bool> RegisterUser(UserDto model);
         */

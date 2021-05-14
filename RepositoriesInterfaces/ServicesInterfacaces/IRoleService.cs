@@ -1,4 +1,5 @@
-﻿using Entities.Entity.Users;
+﻿using Entities.DataTransferObject;
+using Entities.Entity.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace Contracts.ServicesInterfacaces
     public interface IRoleService
     {
         Task<Role> GetRoleIdyByName(string roleName);
+        Task AddRoleToUser(string roleName, User user);
     }
 }

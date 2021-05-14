@@ -400,3 +400,8 @@ values
 (NEWID(),	N'ўучин'	)
 go
 
+INSERT INTO Roles(Id,[Name], IsMember, CreateDate)
+values
+(NEWID(),	N'User', 1, GETDATE()),
+(NEWID(),	N'Admin', 1, GETDATE()),
+(NEWID(),	N'Guest', 0, GETDATE())

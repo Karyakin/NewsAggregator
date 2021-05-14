@@ -1,4 +1,5 @@
-﻿using Contracts.ServicesInterfacaces;
+﻿using AutoMapper;
+using Contracts.ServicesInterfacaces;
 using Contracts.UnitOfWorkInterface;
 using Entities.DataTransferObject;
 using Entities.Entity.NewsEnt;
@@ -29,13 +30,15 @@ namespace NewsAggregatorMain.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICountryService _countryService;
         private readonly ICityService _cityService;
+        //private readonly IMapper _mapper;
 
-        public AccountController(IUserService userService, IUnitOfWork unitOfWork, ICountryService countryService, ICityService cityService)
+        public AccountController(IUserService userService, IUnitOfWork unitOfWork, ICountryService countryService, ICityService cityService/*, IMapper mapper*/)
         {
             _userService = userService;
             _unitOfWork = unitOfWork;
             _countryService = countryService;
             _cityService = cityService;
+           // _mapper = mapper;
         }
 
 
@@ -164,8 +167,58 @@ namespace NewsAggregatorMain.Controllers
 
            // return RedirectToAction(nameof(Index), nameof(News));
         }
-        
-        // private bool UserExist(string login) => _context.Users.Any(x => x.Login == login);
+
+        [HttpGet]
+        public  IActionResult GetUserInfo()
+        {
+           /* if (string.IsNullOrEmpty(Login))
+            {
+                return BadRequest("Enret user login, please");
+            }
+            var user = await _userService.GetUserByLogin(Login);
+
+
+            var countries = await _countryService.FindAllCountries();
+            var cities = await _cityService.FindAllCity();
+            var model = new UserDto()
+            {
+                SelectListSourseCountry = new SelectList(countries, "Id", "Name"),
+                SelectListSourseCity = new SelectList(cities, "Id", "Name")
+
+            };
+            return View(model);*/
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetUserInfo(UserDto userDto)
+        {
+            /*  var country = await _countryService.FindCountryById(userDto.CountrySourseId.Value);
+              var city = await _cityService.FindCityById(userDto.CitySourseId.Value);
+              userDto.Country = country.Name;
+              userDto.City = city.Name;*/
+            if (string.IsNullOrEmpty(userDto.Login) || string.IsNullOrWhiteSpace(userDto.Login))
+                return BadRequest("Enter valid user login");
+
+            //var user = await _userService.GetUserByLogin(userDto.Login);
+            var userWithDetails = await _userService.GetUserWithDetails(userDto.Login);
+            if (userWithDetails is null)
+                return BadRequest("User with this login does not exist");
+
+
+
+            var filledUserRto = new UserDto()
+            {
+                Login = userWithDetails.Login,
+                Role = userWithDetails.Role,
+                Country = userWithDetails.ContactDetails.Country.Name,
+                City = userWithDetails.ContactDetails.City.Name,
+                
+            };
+
+
+            return View(filledUserRto);
+        }
     }
 }
 

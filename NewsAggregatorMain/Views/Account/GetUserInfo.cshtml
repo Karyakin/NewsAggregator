@@ -9,6 +9,7 @@
         <div class="form-group">
             <label asp-for="Login">Login</label>
             <input type="text" asp-for="Login" />
+           
             <span asp-validation-for="Login"></span>
             <div class="row">
                 <div class="col-md-4">
@@ -43,9 +44,15 @@
                     City
                 </dt>
                 <dd class="col-sm-10">
-                      @Html.TextBoxFor(model => model.City)
-                    <input type="text" @Html.TextBoxFor(model => model.City) />
-                    <input type="text" asp-for="City" />
+
+
+                    @Html.EditorFor(model => model.Login)
+
+
+
+
+                    @* <input type="text" @Html.TextBoxFor(model => model.City) />
+        <input type="text" asp-for="City" />*@
                 </dd>
 
             </dl>

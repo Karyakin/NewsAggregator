@@ -218,6 +218,7 @@ namespace NewsAggregatorMain.Controllers
 
 
             return View(filledUserRto);
+           // return View("GetUserInfo", filledUserRto);
         }
     }
 }

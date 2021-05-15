@@ -30,15 +30,18 @@ namespace NewsAggregatorMain.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICountryService _countryService;
         private readonly ICityService _cityService;
-        //private readonly IMapper _mapper;
+        private readonly IMapper _mapper;
+        private readonly IRoleService _roleService;
 
-        public AccountController(IUserService userService, IUnitOfWork unitOfWork, ICountryService countryService, ICityService cityService/*, IMapper mapper*/)
+        public AccountController(IUserService userService, IUnitOfWork unitOfWork, ICountryService countryService,
+            ICityService cityService, IMapper mapper, IRoleService roleService)
         {
             _userService = userService;
             _unitOfWork = unitOfWork;
             _countryService = countryService;
             _cityService = cityService;
-           // _mapper = mapper;
+            _mapper = mapper;
+            _roleService = roleService;
         }
 
 
@@ -47,11 +50,14 @@ namespace NewsAggregatorMain.Controllers
         {
             var countries = await _countryService.FindAllCountries();
             var cities = await _cityService.FindAllCity();
+            var citiesNameList = cities.Select(x => x.Name); 
 
             var model = new RegisterDto()
             {
                 SelectListSourseCountry = new SelectList(countries, "Id", "Name"),
-                SelectListSourseCity = new SelectList(cities, "Id", "Name")
+                SelectListSourseCity = new SelectList(cities, "Id", "Name"),
+                citiesName = citiesNameList
+
 
             };
             return View(model);
@@ -62,9 +68,10 @@ namespace NewsAggregatorMain.Controllers
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
             var country = await _countryService.FindCountryById(registerDto.CountrySourseId.Value);
-            var city = await _cityService.FindCityById(registerDto.CitySourseId.Value);
+            var city = await _cityService.FindCityByName(registerDto.City);
             registerDto.Country = country.Name;
             registerDto.City = city.Name;
+           
 
             if (country is null)
             {
@@ -148,7 +155,7 @@ namespace NewsAggregatorMain.Controllers
         /// subject - информация про то на основе чего мы будем авторизировать нашего пользователя
         /// value - Role.Value
         /// </summary>
-        public async Task  Autointification(User user)
+        public async Task Autointification(User user)
         {
             var age = AgeCount.GetAge(user);
 
@@ -165,38 +172,21 @@ namespace NewsAggregatorMain.Controllers
                 ClaimsIdentity.DefaultRoleClaimType);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
 
-           // return RedirectToAction(nameof(Index), nameof(News));
+            // return RedirectToAction(nameof(Index), nameof(News));
         }
 
         [HttpGet]
-        public  IActionResult GetUserInfo()
+        public IActionResult GetUserInfo()
         {
-           /* if (string.IsNullOrEmpty(Login))
-            {
-                return BadRequest("Enret user login, please");
-            }
-            var user = await _userService.GetUserByLogin(Login);
-
-
-            var countries = await _countryService.FindAllCountries();
-            var cities = await _cityService.FindAllCity();
-            var model = new UserDto()
-            {
-                SelectListSourseCountry = new SelectList(countries, "Id", "Name"),
-                SelectListSourseCity = new SelectList(cities, "Id", "Name")
-
-            };
-            return View(model);*/
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> GetUserInfo(UserDto userDto)
         {
-            /*  var country = await _countryService.FindCountryById(userDto.CountrySourseId.Value);
-              var city = await _cityService.FindCityById(userDto.CitySourseId.Value);
-              userDto.Country = country.Name;
-              userDto.City = city.Name;*/
+            var role = await _roleService.GetRoles();
+            
+
             if (string.IsNullOrEmpty(userDto.Login) || string.IsNullOrWhiteSpace(userDto.Login))
                 return BadRequest("Enter valid user login");
 
@@ -213,13 +203,96 @@ namespace NewsAggregatorMain.Controllers
                 Role = userWithDetails.Role,
                 Country = userWithDetails.ContactDetails.Country.Name,
                 City = userWithDetails.ContactDetails.City.Name,
-                
+               
+            };
+            return View(filledUserRto);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateUser(UserDto userDto)
+        {
+            var role = await _roleService.GetRoleIdyByName(userDto.Role.Name);
+            var user = await _userService.GetUserWithDetails(userDto.Login);
+            var country = await _countryService.FindCountryByName(userDto.Country);
+            var city = await _cityService.FindCityByName(userDto.City);
+
+            if (country is null)
+                return BadRequest("The specified country does not exist");
+            if (city is null)
+                return BadRequest("The specified city does not exist");
+            if (user is null)
+                return BadRequest("The specified role does not exist");
+            if (role is null)
+                return BadRequest("There is no user with this login");
+
+
+            bool isMemder;
+            if (role.Name.Contains("User") || role.Name.Contains("Admin"))
+            {
+                isMemder = true;
+            }
+            else
+            {
+                isMemder = false;
+            }
+
+            var userEnt = new User()
+            {
+                Id = user.Id,
+                Login = userDto.Login,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Gender = user.Gender,
+                DayOfBirth = user.DayOfBirth,
+                AdditionalInformation = user.AdditionalInformation,
+                PasswordHash = user.PasswordHash,
+                PasswordSalt = user.PasswordSalt,
+                CreateDate = user.CreateDate,
+                RemovedDate = user.RemovedDate,
+                LastActiv = user.LastActiv,
+                RoleId = role.Id,
+                //ContactDetailsId = user.ContactDetailsId,
+
+                ContactDetails = new ContactDetails()
+                {
+                    Id = user.ContactDetailsId,
+                    Country = new Entity.Users.Country() 
+                    { 
+                        Id = country.Id,
+                        Name = country.Name,
+                        CountryCod = country.CountryCod
+                    },
+
+                    City = new City()
+                    {
+                        Id = city.Id,
+                        Name = city.Name
+                    }
+                }
             };
 
+            _unitOfWork.User.Update(userEnt);
+            try
+            {
 
-            return View(filledUserRto);
-           // return View("GetUserInfo", filledUserRto);
+                await _unitOfWork.SaveAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Can not update user{userDto.Login}. Detail: {ex.Message}");
+                throw;
+            }
+
+            return Ok();
         }
+
+        /* [HttpPost]
+       public async Task<IActionResult> UpdateUser(UserDto userDto)
+        {
+
+            return Ok();
+        }*/
     }
 }
 

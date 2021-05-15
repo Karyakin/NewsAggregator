@@ -44,5 +44,11 @@ namespace Entities.DataTransferObject
         public Guid? CitySourseId { get; set; }
 
         public string ReturnUrl { get; set; }
+
+
+        public IEnumerable<string> citiesName{ get; set; }
+
+
+
     }
 }

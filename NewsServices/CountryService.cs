@@ -37,5 +37,8 @@ namespace Services
             var country = await _unitOfWork.Country.GetById(countryId, false);
             return country;
         }
+
+        public async Task<Country> FindCountryByName(string nameCountry)=>
+           await _unitOfWork.Country.GetByCondition(x=>x.Name.Equals(nameCountry), false).SingleOrDefaultAsync();
     }
 }

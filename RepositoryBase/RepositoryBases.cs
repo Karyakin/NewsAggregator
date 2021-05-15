@@ -72,9 +72,9 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
-        public Task Update(T entity)
+        public void Update(T entity)
         {
-            throw new NotImplementedException();
+            _Table.Update(entity);
         }
 
 

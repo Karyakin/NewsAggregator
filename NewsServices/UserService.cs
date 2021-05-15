@@ -93,9 +93,11 @@ namespace Services
                     CountryId = registerDto.CountrySourseId.Value,
                     CityId = registerDto.CitySourseId.Value,
                     EMails = emList,
+                    Phones = phoneList
                     
                 },
-                RoleId = (await _roleService.GetRoleIdyByName("User")).Id
+                RoleId = (await _roleService.GetRoleIdyByName("User")).Id,
+              //DayOfBirth = registerDto.DayOfBirth
             };
             return newUser;
         }

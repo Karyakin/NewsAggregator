@@ -29,17 +29,24 @@ namespace Services
             //  user.RoleId = 
             var role = await GetRoleIdyByName(roleName);
             user.RoleId = role.Id;
-            await _unitOfWork.User.Update(user);
+            _unitOfWork.User.Update(user);
             await _unitOfWork.SaveAsync();
             // return _mapper.Map<UserDto>(user);
         }
 
-
-
-
+        public async Task<Role> GetRoleIdyById(Guid idRole)
+        {
+            var role = await _unitOfWork.Role.GetByCondition(x => x.Id.Equals(idRole), false).SingleOrDefaultAsync();
+            return role;
+        }
 
         public async Task<Role> GetRoleIdyByName(string roleName) =>
             await _unitOfWork.Role.GetByCondition(x => x.Name.Equals(roleName), false).SingleOrDefaultAsync();
 
+        public async Task<IEnumerable<Role>> GetRoles()
+        {
+            var roles = await _unitOfWork.Role.GetAll(false).ToListAsync();
+            return roles;
+        }
     }
 }

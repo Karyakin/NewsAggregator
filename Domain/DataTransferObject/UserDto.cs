@@ -29,9 +29,14 @@ namespace Entities.DataTransferObject
 
         public SelectList SelectListSourseCountry { get; set; }
         public SelectList SelectListSourseCity { get; set; }
+       // public SelectList SelectListSourseRole { get; set; }
 
         public Guid? CountrySourseId { get; set; }
         public Guid? CitySourseId { get; set; }
+       // public Guid? RoleSourseId { get; set; }
+
+
+      //  public string RoleUser { get; set; }
 
         public string Country { get; set; }
 

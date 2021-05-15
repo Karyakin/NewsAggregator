@@ -33,5 +33,8 @@ namespace Services
             var city = await _unitOfWork.City.GetById(сityId, false);
             return city;
         }
+
+        public async Task<City> FindCityByName(string name) =>
+            await _unitOfWork.City.GetByCondition(x => x.Name.Equals(name), false).SingleOrDefaultAsync();
     }
 }

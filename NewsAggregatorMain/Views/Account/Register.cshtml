@@ -10,25 +10,15 @@
             <input type="text" asp-for="Login" />
             <span asp-validation-for="Login"></span>
         </div>
+
         @* <div class="form-group">
-            <label asp-for="City">City</label>
-            <input type="text" asp-for="City" />
-            <span asp-validation-for="City"></span>
-        </div>*@
-        @*<div class="form-group">
-            <label asp-for="Country">Country</label>
-            <input type="text" asp-for="Country" />
-            <span asp-validation-for="Country"></span>
-        </div>*@
-        <div class="form-group">
             <label asp-for="CitySourseId">City</label>
 
             <select asp-for="CitySourseId" asp-items="Model.SelectListSourseCity">
                 <option selected="selected" disabled="disabled">Выберите город</option>
             </select>
-            <span asp-validation-for="Country"></span>
-        </div>
-
+            <span asp-validation-for="City"></span>
+        </div>*@
 
         <div class="form-group">
             <label asp-for="CountrySourseId">Country</label>
@@ -38,6 +28,30 @@
             <span asp-validation-for="Country"></span>
         </div>
 
+        <div class="form-group">
+            <label for="myBrowser">Выберите город</label>
+            <input list="character" name="City" size="55">
+            <datalist id="character">
+                @foreach (var item in Model.citiesName)
+                {
+                    <option value=@item></option>
+                }
+            </datalist>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DayOfBirth, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DayOfBirth, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DayOfBirth, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+      @*  <div class="form-group">
+            <label asp-for="DayOfBirth" class="control-label"></label>
+            <input asp-for="DayOfBirth" class="form-control" />
+            <span asp-validation-for="DayOfBirth" class="text-danger"></span>
+        </div>*@
 
         <div class="form-group">
             <label asp-for="Email">Email</label>
@@ -63,7 +77,7 @@
             <input type="submit" value="Register" />
         </div>
     </div>
-    </form>
+</form>
 
 @section Scripts
     {

@@ -17,11 +17,21 @@ go
 			JOIN EMails on EMails.ContactDetailsId = ContactDetails.Id 
 			JOIN Phones on Phones.ContactDetailsId = ContactDetails.Id
 
+go
 
+
+Select Users.[Login], Roles.Name as [Role], Countries.Name, [—ities].[Name], EMails.UserEMail, Phones.PhoneNumber, Users.DayOfBirth
+from Users
+			JOIN Roles on Users.RoleId = Roles.Id
+			JOIN ContactDetails on ContactDetails.Id = Users.ContactDetailsId
+			JOIN Countries on Countries.Id = ContactDetails.CountryId			
+			JOIN [—ities] on [—ities].Id = ContactDetails.CityId
+			JOIN EMails on EMails.ContactDetailsId = ContactDetails.Id 
+			JOIN Phones on Phones.ContactDetailsId = ContactDetails.Id
 
 			
-INSERT INTO Countries (Id, CountryCod,[Name])
---SELECT SELECT MID(UUID(),1,36) ID
+--INSERT INTO Countries (Id, CountryCod,[Name])
+
 values				
 (NEWID(),895,			N'¿¡’¿«»ﬂ'),
 (NEWID(),036,			N'¿¬—“–¿À»ﬂ'),

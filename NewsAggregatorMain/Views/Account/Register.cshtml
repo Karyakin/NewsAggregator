@@ -1,17 +1,18 @@
 ﻿@model Entities.DataTransferObject.RegisterDto
 
-    <h2>Registration</h2>
+<h2>Registration</h2>
 
-    <form asp-action="Register" asp-controller="Account" asp-antiforgery="true" method="post">  @* antiforgeryбудет - сгенерирован токе который потом на BE будет валидироватся. т.е. теперь с консоли какой-нибудь невозможно будет сгенерит 100000 запросо.*@
-<div class="validation" asp-validation-summary="ModelOnly"></div>@*если на нашей модели RegisterViewModel будут ошибки с валидацией, то они будут отрисованы на форме*@
-    <div>
-        <div class="form-group">
-            <label asp-for="Login">Login</label>
-            <input type="text" asp-for="Login" />
-            <span asp-validation-for="Login"></span>
-        </div>
+<form asp-action="Register" asp-controller="Account" asp-antiforgery="true" method="post">
+    @* antiforgeryбудет - сгенерирован токе который потом на BE будет валидироватся. т.е. теперь с консоли какой-нибудь невозможно будет сгенерит 100000 запросо.*@
+    <div class="validation" asp-validation-summary="ModelOnly"></div>@*если на нашей модели RegisterViewModel будут ошибки с валидацией, то они будут отрисованы на форме*@
+<div>
+    <div class="form-group">
+        <label asp-for="Login">Login</label>
+        <input type="text" asp-for="Login" />
+        <span asp-validation-for="Login"></span>
+    </div>
 
-        @* <div class="form-group">
+    @* <div class="form-group">
             <label asp-for="CitySourseId">City</label>
 
             <select asp-for="CitySourseId" asp-items="Model.SelectListSourseCity">
@@ -20,63 +21,73 @@
             <span asp-validation-for="City"></span>
         </div>*@
 
-        <div class="form-group">
-            <label asp-for="CountrySourseId">Country</label>
-            <select asp-for="CountrySourseId" asp-items="Model.SelectListSourseCountry">
-                <option selected="selected" disabled="disabled">Выберите страну</option>
-            </select>
-            <span asp-validation-for="Country"></span>
-        </div>
+    <div class="form-group">
+        <label asp-for="CountrySourseId">Country</label>
+        <select asp-for="CountrySourseId" asp-items="Model.SelectListSourseCountry">
+            <option selected="selected" disabled="disabled">Выберите страну</option>
+        </select>
+        <span asp-validation-for="Country"></span>
+    </div>
 
-        <div class="form-group">
-            <label for="myBrowser">Выберите город</label>
-            <input list="character" name="City" size="55">
-            <datalist id="character">
-                @foreach (var item in Model.citiesName)
-                {
-                    <option value=@item></option>
-                }
-            </datalist>
-        </div>
+    <div class="form-group">
+        <label for="myBrowser">Выберите город</label>
+        <input list="character" name="City" size="57">
+        <datalist id="character">
+            @foreach (var item in Model.citiesName)
+            {
+                <option value=@item></option>
+            }
+        </datalist>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.DayOfBirth, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+    @*    <div class="form-group">
+            <label for="myBrowser">Дата рождения</label>
                 @Html.EditorFor(model => model.DayOfBirth, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.DayOfBirth, "", new { @class = "text-danger" })
-            </div>
         </div>
 
-      @*  <div class="form-group">
-            <label asp-for="DayOfBirth" class="control-label"></label>
-            <input asp-for="DayOfBirth" class="form-control" />
+    *@
+
+@*    <div >
+            <label class="control-label">Введите дату рождения:</label>
+            <input asp-for="DayOfBirth" class="form-control" value="12-02-2012" type="date" />
             <span asp-validation-for="DayOfBirth" class="text-danger"></span>
+
         </div>*@
 
-        <div class="form-group">
-            <label asp-for="Email">Email</label>
-            <input type="text" asp-for="Email" />
-            <span asp-validation-for="Email"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Phones">Phones</label>
-            <input type="text" asp-for="Phones" />
-            <span asp-validation-for="Phones"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Password">Password</label>
-            <input type="password" asp-for="Password" />
-            <span asp-validation-for="Password"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="PasswordConfirmation">Confirm Password</label>
-            <input type="password" asp-for="PasswordConfirmation" />
-            <span asp-validation-for="PasswordConfirmation"></span>
-        </div>
-        <div>
-            <input type="submit" value="Register" />
-        </div>
+    <div>
+        <label for="DayOfBirth">Введите дату рождения:</label>
+        <input type="date" asp-for="DayOfBirth"  value="12-02-2012" >
+        <span asp-validation-for="DayOfBirth" class="text-danger"></span>
     </div>
+
+
+
+
+    <div class="form-group">
+        <label asp-for="Email">Email</label>
+        <input type="text" asp-for="Email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Phones">Phones</label>
+        <input type="text" asp-for="Phones" />
+        <span asp-validation-for="Phones" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password">Password</label>
+        <input type="password" asp-for="Password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PasswordConfirmation">Confirm Password</label>
+        <input type="password" asp-for="PasswordConfirmation" />
+        <span asp-validation-for="PasswordConfirmation" class="text-danger"></span>
+    </div>
+    <div>
+        <input type="submit" value="Register" />
+    </div>
+</div>
 </form>
 
 @section Scripts

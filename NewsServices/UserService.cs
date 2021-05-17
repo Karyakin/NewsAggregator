@@ -9,6 +9,7 @@ using Entities.Models;
 using Entity.Users;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,14 +60,16 @@ namespace Services
             var contactDetailsId = Guid.NewGuid();
             var eMailId = Guid.NewGuid();
             var phoneId = Guid.NewGuid();
-           // var roleId = (_unitOfWork.Role.GetByCondition(x => x.Name.Equals("User"), false).FirstOrDefault()).Id;
+            var cityId = (await _cityService.FindCityByName(registerDto.City)).Id;
+
+            // var roleId = (_unitOfWork.Role.GetByCondition(x => x.Name.Equals("User"), false).FirstOrDefault()).Id;
 
             EMail mail = new EMail()
             {
                 Id = eMailId,
                 UserEMail = registerDto.Email,
                 CreateDate = DateTime.Now,
-                ContactDetailsId = contactDetailsId
+                ContactDetailsId = contactDetailsId 
             };
 
             Phone phone = new Phone()
@@ -80,26 +83,35 @@ namespace Services
             List<EMail> emList = new List<EMail>() { mail };
             List<Phone> phoneList = new List<Phone>() { phone };
 
-            var newUser = new User()
+            try
             {
-                Id = Guid.NewGuid(),
-                Login = registerDto.Login,
-                PasswordHash = passwordSoultModel.PasswordHash,
-                PasswordSalt = passwordSoultModel.PasswordSalt,
-                ContactDetailsId = contactDetailsId,
-                ContactDetails = new ContactDetails()
+                var newUser = new User()
                 {
-                    Id = contactDetailsId,
-                    CountryId = registerDto.CountrySourseId.Value,
-                    CityId = registerDto.CitySourseId.Value,
-                    EMails = emList,
-                    Phones = phoneList
-                    
-                },
-                RoleId = (await _roleService.GetRoleIdyByName("User")).Id,
-              //DayOfBirth = registerDto.DayOfBirth
-            };
-            return newUser;
+                    Id = Guid.NewGuid(),
+                    Login = registerDto.Login,
+                    PasswordHash = passwordSoultModel.PasswordHash,
+                    PasswordSalt = passwordSoultModel.PasswordSalt,
+                    ContactDetailsId = contactDetailsId,
+                    ContactDetails = new ContactDetails()
+                    {
+                        Id = contactDetailsId,
+                        CountryId = registerDto.CountrySourseId.Value,
+                        CityId = cityId,
+                        EMails = emList,
+                        Phones = phoneList
+
+                    },
+                    RoleId = (await _roleService.GetRoleIdyByName("User")).Id,
+                    DayOfBirth = registerDto.DayOfBirth
+                };
+                return newUser;
+            }
+            catch (Exception ex)
+            {
+
+                Log.Error($"Can't create user. Details: {ex.Message}");
+            }
+            return new User();
         }
 
         public async Task<User> GetUserByLogin(string login)=>

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Entities.Entity.Users
 {
-    public class ContactDetails : IBaseEntity
+    public class ContactDetails : IBaseEntity 
     {
         public Guid Id { get; set; }
         public string AdditionalInformation { get; set; } 

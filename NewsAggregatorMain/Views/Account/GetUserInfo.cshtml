@@ -1,15 +1,17 @@
 ﻿@model Entities.DataTransferObject.UserDto
 
 <h2>Enter user login for searche</h2>
-<form class="row g-3" asp-controller="Account" asp-antiforgery="true" method="post">
-    <div class="form-row">
-
-        <label asp-for="Login">Login</label>
-        <input type="text" asp-for="Login" />
-        <span asp-validation-for="Login"></span>
-
+<form asp-controller="Account" asp-antiforgery="true" method="post">
+            <label asp-for="Login">Login</label>
+    <div class="col-md-5">
 
         <div class="row">
+
+            <input type="text" asp-for="Login" />
+            <span asp-validation-for="Login"></span>
+
+
+
 
             <div class="col-md-4">
                 <input type="submit" value="Find user" class="btn btn-outline-info" asp-action="GetUserInfo" />
@@ -19,20 +21,27 @@
 
     </div>
 
+
+        <hr align="center" color="Blue" />
+
 </form>
 <form class="row g-3">
-    <div class="col-md-6">
+    <div class="col-md-6" hidden="hidden">
         <label for="Login" class="form-label">Login</label>
-        <input asp-for="Login" class="form-control" placeholder="Логин пользователя">
+        <input asp-for="Login" class="form-control" placeholder="Текущий логин">
+    </div>
+    <div class="col-md-6">
+        <label for="LoginNew" class="form-label">New login</label>
+        <input asp-for="LoginNew" class="form-control" placeholder="Изменить логин">
     </div>
     <div class="col-md-6">
         <label for="Role" class="form-label">Role</label>
         <input asp-for="Role.Name" class="form-control" placeholder="Роль пользователя">
     </div>
-     <div class="col-md-6">
-            <label for="Country" class="form-label">Country</label>
-            <input asp-for="Country" class="form-control" placeholder="Страна">
-        </div>
+    <div class="col-md-6">
+        <label for="Country" class="form-label">Country</label>
+        <input asp-for="Country" class="form-control" placeholder="Страна">
+    </div>
     <div class="col-md-6">
         <label for="City" class="form-label">City</label>
         <input asp-for="City" class="form-control" placeholder="Город">
@@ -43,9 +52,28 @@
     </div>
 
     <div class="col-md-2">
-        <label for="inputZip" class="form-label">Zip</label>
-        <input type="text" class="form-control" id="inputZip">
+        <label for="DayOfBirth" class="form-label">Дата рождения</label>
+        <input asp-for="DayOfBirth" class="form-control">
     </div>
+
+    <div class="col-md-7">
+        <div class="row">
+            <div class="col-md-5">
+                <label for="Phone" class="form-label">Phone</label>
+                <input asp-for="Phones" class="form-control" placeholder="Телефон">
+            </div>
+            <div class="col-md-5">
+                <label for="Email" class="form-label">Email</label>
+                <input asp-for="Email" class="form-control" placeholder="Электронная почта">
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
 
 
     <div class="col-md-6">

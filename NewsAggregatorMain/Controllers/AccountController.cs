@@ -4,6 +4,7 @@ using Contracts.UnitOfWorkInterface;
 using Entities.DataTransferObject;
 using Entities.Entity.NewsEnt;
 using Entities.Entity.Users;
+using Entity.Users;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
@@ -50,7 +51,7 @@ namespace NewsAggregatorMain.Controllers
         {
             var countries = await _countryService.FindAllCountries();
             var cities = await _cityService.FindAllCity();
-            var citiesNameList = cities.Select(x => x.Name); 
+            var citiesNameList = cities.Select(x => x.Name);
 
             var model = new RegisterDto()
             {
@@ -71,7 +72,7 @@ namespace NewsAggregatorMain.Controllers
             var city = await _cityService.FindCityByName(registerDto.City);
             registerDto.Country = country.Name;
             registerDto.City = city.Name;
-           
+
 
             if (country is null)
             {
@@ -184,9 +185,7 @@ namespace NewsAggregatorMain.Controllers
         [HttpPost]
         public async Task<IActionResult> GetUserInfo(UserDto userDto)
         {
-            var role = await _roleService.GetRoles();
-            
-
+            //  var role = await _roleService.GetRoles();
             if (string.IsNullOrEmpty(userDto.Login) || string.IsNullOrWhiteSpace(userDto.Login))
                 return BadRequest("Enter valid user login");
 
@@ -195,15 +194,15 @@ namespace NewsAggregatorMain.Controllers
             if (userWithDetails is null)
                 return BadRequest("User with this login does not exist");
 
-
-
             var filledUserRto = new UserDto()
             {
                 Login = userWithDetails.Login,
                 Role = userWithDetails.Role,
+                DayOfBirth = userWithDetails.DayOfBirth,
                 Country = userWithDetails.ContactDetails.Country.Name,
                 City = userWithDetails.ContactDetails.City.Name,
-               
+                Email = (userWithDetails.ContactDetails.EMails.FirstOrDefault()).UserEMail,
+                Phones = (userWithDetails.ContactDetails.Phones.FirstOrDefault()).PhoneNumber,
             };
             return View(filledUserRto);
         }
@@ -213,6 +212,7 @@ namespace NewsAggregatorMain.Controllers
         public async Task<IActionResult> UpdateUser(UserDto userDto)
         {
             var role = await _roleService.GetRoleIdyByName(userDto.Role.Name);
+
             var user = await _userService.GetUserWithDetails(userDto.Login);
             var country = await _countryService.FindCountryByName(userDto.Country);
             var city = await _cityService.FindCityByName(userDto.City);
@@ -222,9 +222,50 @@ namespace NewsAggregatorMain.Controllers
             if (city is null)
                 return BadRequest("The specified city does not exist");
             if (user is null)
-                return BadRequest("The specified role does not exist");
+                return BadRequest("The specified user does not exist");
             if (role is null)
-                return BadRequest("There is no user with this login");
+                return BadRequest("There is no role with this login");
+
+
+            /*var userEmail = user.ContactDetails.EMails;*/
+
+            var email = new List<EMail>();
+
+         //   var em = (user.ContactDetails.EMails.SingleOrDefault()).UserEMail.Contains(userDto.Email);
+
+            if (!(user.ContactDetails.EMails.SingleOrDefault()).UserEMail.Contains(userDto.Email))
+            {
+                var mail = new EMail()
+                {
+                    Id = (user.ContactDetails.EMails.SingleOrDefault()).Id,
+                    ContactDetailsId = user.ContactDetailsId,
+                    CreateDate = DateTime.Now,
+                    UserEMail = userDto.Email
+                };
+                email.Add(mail);
+            }
+            else
+            {
+                email.Add(user.ContactDetails.EMails.FirstOrDefault());
+            }
+
+            var phones = new List<Phone>();
+            if (!(user.ContactDetails.Phones.SingleOrDefault()).PhoneNumber.Contains(userDto.Phones))
+            {
+                var phone = new Phone()
+                {
+                    Id = (user.ContactDetails.Phones.SingleOrDefault()).Id,
+                    ContactDetailsId = user.ContactDetailsId,
+                    CreateDate = DateTime.Now,
+                    PhoneNumber = userDto.Phones
+                };
+                phones.Add(phone);
+            }
+            else
+            {
+                email.Add(user.ContactDetails.EMails.FirstOrDefault());
+            }
+
 
 
             bool isMemder;
@@ -240,11 +281,15 @@ namespace NewsAggregatorMain.Controllers
             var userEnt = new User()
             {
                 Id = user.Id,
-                Login = userDto.Login,
+
+                Login = userDto.LoginNew==null
+                    ? user?.Login
+                    : userDto?.LoginNew,
+
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Gender = user.Gender,
-                DayOfBirth = user.DayOfBirth,
+                DayOfBirth = userDto.DayOfBirth,
                 AdditionalInformation = user.AdditionalInformation,
                 PasswordHash = user.PasswordHash,
                 PasswordSalt = user.PasswordSalt,
@@ -252,13 +297,16 @@ namespace NewsAggregatorMain.Controllers
                 RemovedDate = user.RemovedDate,
                 LastActiv = user.LastActiv,
                 RoleId = role.Id,
+
+
+
                 //ContactDetailsId = user.ContactDetailsId,
 
                 ContactDetails = new ContactDetails()
                 {
                     Id = user.ContactDetailsId,
-                    Country = new Entity.Users.Country() 
-                    { 
+                    Country = new Entity.Users.Country()
+                    {
                         Id = country.Id,
                         Name = country.Name,
                         CountryCod = country.CountryCod
@@ -268,7 +316,12 @@ namespace NewsAggregatorMain.Controllers
                     {
                         Id = city.Id,
                         Name = city.Name
-                    }
+                    },
+
+                    EMails = email,
+                    Phones = phones
+
+
                 }
             };
 
@@ -284,7 +337,7 @@ namespace NewsAggregatorMain.Controllers
                 throw;
             }
 
-            return Ok();
+            return RedirectToAction("GetUserInfo");
         }
 
         /* [HttpPost]

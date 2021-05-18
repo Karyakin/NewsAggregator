@@ -31,7 +31,6 @@ from Users
 
 			
 --INSERT INTO Countries (Id, CountryCod,[Name])
-
 values				
 (NEWID(),895,			N'АБХАЗИЯ'),
 (NEWID(),036,			N'АВСТРАЛИЯ'),
@@ -291,7 +290,7 @@ set Name = upper(left([Name],1)) + lower(substring([Name],2,999))-- первый симво
 go
 
 			
-INSERT INTO [NewsAggregator].[dbo].[Сities] (Id, [Name])
+--INSERT INTO [NewsAggregator].[dbo].[Сities] (Id, [Name])
 values		
 (NEWID(),	N'Барановичи'	),
 (NEWID(),	N'Барань'	),
@@ -410,7 +409,7 @@ values
 (NEWID(),	N'Щучин'	)
 go
 
-INSERT INTO Roles(Id,[Name], IsMember, CreateDate)
+--INSERT INTO Roles(Id,[Name], IsMember, CreateDate)
 values
 (NEWID(),	N'User', 1, GETDATE()),
 (NEWID(),	N'Admin', 1, GETDATE()),

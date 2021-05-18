@@ -45,5 +45,7 @@ namespace Entities.DataTransferObject
 
         public string Email { get; set; }
         public string Phones { get; set; }
+
+        public bool IsMember { get; set; }
     }
 }

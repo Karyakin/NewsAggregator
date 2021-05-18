@@ -1,28 +1,23 @@
 ﻿@model Entities.DataTransferObject.UserDto
 
+
 <h2>Enter user login for searche</h2>
 <form asp-controller="Account" asp-antiforgery="true" method="post">
-            <label asp-for="Login">Login</label>
+    <label asp-for="Login">Login</label>
     <div class="col-md-5">
 
         <div class="row">
 
             <input type="text" asp-for="Login" />
             <span asp-validation-for="Login"></span>
-
-
-
-
             <div class="col-md-4">
                 <input type="submit" value="Find user" class="btn btn-outline-info" asp-action="GetUserInfo" />
             </div>
-
         </div>
-
     </div>
 
 
-        <hr align="center" color="Blue" />
+    <hr align="center" color="Blue" />
 
 </form>
 <form class="row g-3">
@@ -47,8 +42,8 @@
         <input asp-for="City" class="form-control" placeholder="Город">
     </div>
     <div class="col-md-6">
-        <label for="inputCity" class="form-label">???</label>
-        <input type="text" class="form-control" id="inputCity">
+        <label for="LastName" class="form-label">Name</label>
+        <input asp-for="LastName" class="form-control"placeholder="Введите имя">
     </div>
 
     <div class="col-md-2">
@@ -73,14 +68,15 @@
     </div>
 
 
+ 
 
+        <div class="col-md-6">
+            <h1>
+                <input type="submit" value="UpdateUser" class="btn btn-outline-info" asp-action="UpdateUser" />
+            </h1>
+        </div>
+    
 
-
-    <div class="col-md-6">
-        <h1>
-            <input type="submit" value="UpdateUser" class="btn btn-outline-info" asp-action="UpdateUser" />
-        </h1>
-    </div>
 
 
 </form>

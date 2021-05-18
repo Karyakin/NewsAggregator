@@ -22,15 +22,26 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="News" asp-action="Index">AllNews</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="RssSourses" asp-action="Index">RssSources</a>
-                        </li>
+
+                        @if (User.Claims.Any(x => x.Value.Contains("Admin")))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="RssSourses" asp-action="Index">RssSources</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="GetUserInfo">Chenge user info</a>
-                        </li>
+
+                        @if (User.Claims.Any(x => x.Value.Contains("Admin")))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account"
+                                   asp-action="GetUserInfo">Chenge user info</a>
+                            </li>
+                        }
+
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogOut">Log out</a>
                         </li>

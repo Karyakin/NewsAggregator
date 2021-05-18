@@ -23,6 +23,8 @@ namespace Services
             _mapper = mapper;
         }
 
+      
+
         public async Task AddRoleToUser(string roleName, User user)
         {
             //  var user = await _unitOfWork.User.GetByCondition(x => x.Login.Equals(userEnt.Login), false).FirstOrDefaultAsync();

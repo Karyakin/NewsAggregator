@@ -22,7 +22,8 @@ namespace NewsAggregatorMain.Controllers
 {
     //[Route("[controller]")]
 
-    [Authorize(Policy = "18+Content")]
+   // [Authorize(Policy = "18+Content")]
+    [Authorize(Roles ="Admin, User")]
     public class NewsController : Controller
     {
 
@@ -63,6 +64,7 @@ namespace NewsAggregatorMain.Controllers
 
 
         //[Authorize("18-Content")]
+       // [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(int page = 1)
         {
             var allNews = (await _newsService.FindAllNews()).ToList();
@@ -76,11 +78,16 @@ namespace NewsAggregatorMain.Controllers
                 TotalItems = allNews.Count
             };
 
+          //  var aa = HttpContext.User.Claims.Any(x => x.Value.Contains("Admin"));// .Select(x=>x.Value.Contains("Admin")).SingleOrDefault();
+           // var bb = aa.Value.Contains("Admin")?true:false;
+
+
             return View(new NewsListWithPaginationInfo()
             {
                 News = newsPerPages,
-                PageInfo = pageInfo
-            });
+                PageInfo = pageInfo,
+                IsMember = HttpContext.User.Claims.Any(x => x.Value.Contains("Admin"))
+        });
         }
 
         [HttpPost]

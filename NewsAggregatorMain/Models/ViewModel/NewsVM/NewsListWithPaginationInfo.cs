@@ -10,5 +10,6 @@ namespace NewsAggregatorMain.Models.ViewModel.NewsVM
     {
         public IEnumerable<NewsGetDTO> News { get; set; }
         public PageInfo PageInfo { get; set; }
+        public bool IsMember { get; set; }
     }
 }

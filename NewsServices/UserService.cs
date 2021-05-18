@@ -61,6 +61,7 @@ namespace Services
             var eMailId = Guid.NewGuid();
             var phoneId = Guid.NewGuid();
             var cityId = (await _cityService.FindCityByName(registerDto.City)).Id;
+            var countryId = (await _countryService.FindCountryByName(registerDto.Country)).Id;
 
             // var roleId = (_unitOfWork.Role.GetByCondition(x => x.Name.Equals("User"), false).FirstOrDefault()).Id;
 
@@ -89,13 +90,15 @@ namespace Services
                 {
                     Id = Guid.NewGuid(),
                     Login = registerDto.Login,
+                    LastName = registerDto.LastName,
                     PasswordHash = passwordSoultModel.PasswordHash,
                     PasswordSalt = passwordSoultModel.PasswordSalt,
                     ContactDetailsId = contactDetailsId,
+
                     ContactDetails = new ContactDetails()
                     {
                         Id = contactDetailsId,
-                        CountryId = registerDto.CountrySourseId.Value,
+                        CountryId = countryId,
                         CityId = cityId,
                         EMails = emList,
                         Phones = phoneList

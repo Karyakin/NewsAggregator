@@ -17,6 +17,7 @@ namespace Entities.DataTransferObject
 
         [Required(ErrorMessage = "Please fill email field")]
         [DataType(DataType.EmailAddress)] // ___@{}.{}
+
         public string Email { get; set; }
 
         public DateTime DayOfBirth { get; set; }
@@ -26,6 +27,8 @@ namespace Entities.DataTransferObject
 
         [Required(ErrorMessage = "Please fill City field")]
         public string City { get; set; }
+
+        public string LastName { get; set; }
 
 
         public string Phones { get; set; }
@@ -46,7 +49,8 @@ namespace Entities.DataTransferObject
         public string ReturnUrl { get; set; }
 
 
-        public IEnumerable<string> citiesName{ get; set; }
+        public IEnumerable<string> CitiesName{ get; set; }
+        public IEnumerable<string> CountryName{ get; set; }
 
 
 

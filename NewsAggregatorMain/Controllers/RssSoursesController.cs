@@ -15,7 +15,7 @@ using System.Xml;
 
 namespace NewsAggregatorMain.Controllers
 {
-    [Authorize]
+    //[Authorize(Roles ="Admin")]
     public class RssSoursesController : Controller
     {
         /*private readonly IRepositoryWrapper _wrapper;

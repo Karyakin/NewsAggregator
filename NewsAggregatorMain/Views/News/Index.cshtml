@@ -6,10 +6,13 @@
 }
 
 <h1>View</h1>
-
+@if (Model.IsMember)
+{
 <p>
     <a asp-action="Aggregate">Create News</a>
 </p>
+}
+
 
 
 <div class="row" >

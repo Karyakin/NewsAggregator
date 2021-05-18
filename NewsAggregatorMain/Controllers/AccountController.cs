@@ -7,6 +7,7 @@ using Entities.Entity.Users;
 using Entity.Users;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -25,6 +26,7 @@ using System.Threading.Tasks;
 
 namespace NewsAggregatorMain.Controllers
 {
+
     public class AccountController : Controller
     {
         private readonly IUserService _userService;
@@ -43,6 +45,8 @@ namespace NewsAggregatorMain.Controllers
             _cityService = cityService;
             _mapper = mapper;
             _roleService = roleService;
+
+
         }
 
 
@@ -52,12 +56,14 @@ namespace NewsAggregatorMain.Controllers
             var countries = await _countryService.FindAllCountries();
             var cities = await _cityService.FindAllCity();
             var citiesNameList = cities.Select(x => x.Name);
+            var countryNameList = countries.Select(x => x.Name);
 
             var model = new RegisterDto()
             {
                 SelectListSourseCountry = new SelectList(countries, "Id", "Name"),
                 SelectListSourseCity = new SelectList(cities, "Id", "Name"),
-                citiesName = citiesNameList
+                CitiesName = citiesNameList,
+                CountryName = countryNameList
 
 
             };
@@ -68,11 +74,8 @@ namespace NewsAggregatorMain.Controllers
         [ValidateAntiForgeryToken]// страница неявно внутри себя сгенерирует разметку, эта разметак будет передавать с собой соответсвующий токен где на BE он будет проверятся и если токен не сошелся, значет он пришел не со страницы, а откуда-то еще. т.е. если запрос пришел не сайта, то его обробатывать не нужно
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
-            var country = await _countryService.FindCountryById(registerDto.CountrySourseId.Value);
+            var country = await _countryService.FindCountryByName(registerDto.Country);
             var city = await _cityService.FindCityByName(registerDto.City);
-            registerDto.Country = country.Name;
-            registerDto.City = city.Name;
-
 
             if (country is null)
             {
@@ -83,6 +86,9 @@ namespace NewsAggregatorMain.Controllers
             {
                 throw new NullReferenceException($"City can't exist Null value");
             }
+
+            registerDto.Country = country.Name;
+            registerDto.City = city.Name;
 
             var hashSoult = _userService.GetPasswordHashSoult(registerDto.Password);
 
@@ -164,12 +170,13 @@ namespace NewsAggregatorMain.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, (await _userService.GetUserWithDetails(user.Login)).Role.Name),
                 new Claim("age", age)
             };
             var identity = new ClaimsIdentity(
                 claims,
                 authType,
-                ClaimsIdentity.DefaultRoleClaimType,
+                ClaimsIdentity.DefaultNameClaimType,
                 ClaimsIdentity.DefaultRoleClaimType);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
 
@@ -177,11 +184,12 @@ namespace NewsAggregatorMain.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetUserInfo()
         {
             return View();
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> GetUserInfo(UserDto userDto)
         {
@@ -194,15 +202,20 @@ namespace NewsAggregatorMain.Controllers
             if (userWithDetails is null)
                 return BadRequest("User with this login does not exist");
 
+            bool isMember = userWithDetails.Role.IsMember == true ? true : false;
+
+
             var filledUserRto = new UserDto()
             {
                 Login = userWithDetails.Login,
+                LastName = userWithDetails.LastName,
                 Role = userWithDetails.Role,
                 DayOfBirth = userWithDetails.DayOfBirth,
                 Country = userWithDetails.ContactDetails.Country.Name,
                 City = userWithDetails.ContactDetails.City.Name,
                 Email = (userWithDetails.ContactDetails.EMails.FirstOrDefault()).UserEMail,
                 Phones = (userWithDetails.ContactDetails.Phones.FirstOrDefault()).PhoneNumber,
+                IsMember = isMember
             };
             return View(filledUserRto);
         }
@@ -231,7 +244,7 @@ namespace NewsAggregatorMain.Controllers
 
             var email = new List<EMail>();
 
-         //   var em = (user.ContactDetails.EMails.SingleOrDefault()).UserEMail.Contains(userDto.Email);
+            //   var em = (user.ContactDetails.EMails.SingleOrDefault()).UserEMail.Contains(userDto.Email);
 
             if (!(user.ContactDetails.EMails.SingleOrDefault()).UserEMail.Contains(userDto.Email))
             {
@@ -263,13 +276,13 @@ namespace NewsAggregatorMain.Controllers
             }
             else
             {
-                email.Add(user.ContactDetails.EMails.FirstOrDefault());
+                phones.Add(user.ContactDetails.Phones.FirstOrDefault());
             }
 
 
 
             bool isMemder;
-            if (role.Name.Contains("User") || role.Name.Contains("Admin"))
+            if (role.Name.Contains("Admin"))
             {
                 isMemder = true;
             }
@@ -282,12 +295,12 @@ namespace NewsAggregatorMain.Controllers
             {
                 Id = user.Id,
 
-                Login = userDto.LoginNew==null
+                Login = userDto.LoginNew == null
                     ? user?.Login
                     : userDto?.LoginNew,
 
                 FirstName = user.FirstName,
-                LastName = user.LastName,
+                LastName = userDto.LastName,
                 Gender = user.Gender,
                 DayOfBirth = userDto.DayOfBirth,
                 AdditionalInformation = user.AdditionalInformation,
@@ -296,7 +309,14 @@ namespace NewsAggregatorMain.Controllers
                 CreateDate = user.CreateDate,
                 RemovedDate = user.RemovedDate,
                 LastActiv = user.LastActiv,
-                RoleId = role.Id,
+                //   RoleId = role.Id,
+                Role = new Role()
+                {
+                    Id = role.Id,
+                    Name = userDto.Role.Name,
+                    IsMember = isMemder,
+                    CreateDate = DateTime.Now,
+                },
 
 
 

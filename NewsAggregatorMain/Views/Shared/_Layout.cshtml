@@ -29,9 +29,10 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="RssSourses" asp-action="Index">RssSources</a>
                             </li>
                         }
-                        <li class="nav-item">
+                      @*  <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-                        </li>
+                        </li>*@
+
 
                         @if (User.Claims.Any(x => x.Value.Contains("Admin")))
                         {
@@ -42,9 +43,17 @@
                         }
 
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogOut">Log out</a>
-                        </li>
+
+                        <div class="dropdown">
+                            <button class="btn bs-tooltip-top" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Авторизация
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogOut">Log out</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Log In</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                            </div>
+                        </div>
                     </ul>
                 </div>
             </div>

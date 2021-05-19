@@ -11,8 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL(DataAccessLayer)", "DAL
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BusinessLogicLayer", "BusinessLogicLayer", "{170F76CB-F604-4862-8288-C1772F60D4A4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PresintationLayer", "PresintationLayer", "{9D7FB8F2-B0B8-440B-986E-014441944DAD}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "RepositoriesInterfaces\Contracts.csproj", "{FBE84C73-A635-42F5-867E-B33E85AD0D63}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositories", "RepositoryBase\Repositories.csproj", "{48BCDCD3-1E14-4DF3-A083-EA6AE71FBF0D}"
@@ -21,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsAgregator.Services", "N
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "NewsServices\Services.csproj", "{9AC755CC-032C-4463-AD52-50B6C7DCC4B7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{1318A09C-92D1-4108-A8E8-F4C4C361D3A8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsAgregator.Identity", "NewsAgregator.Identity\NewsAgregator.Identity.csproj", "{9F73FC0C-D6DE-4B3C-B90A-130FC3D277FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +51,10 @@ Global
 		{9AC755CC-032C-4463-AD52-50B6C7DCC4B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9AC755CC-032C-4463-AD52-50B6C7DCC4B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9AC755CC-032C-4463-AD52-50B6C7DCC4B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F73FC0C-D6DE-4B3C-B90A-130FC3D277FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F73FC0C-D6DE-4B3C-B90A-130FC3D277FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F73FC0C-D6DE-4B3C-B90A-130FC3D277FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F73FC0C-D6DE-4B3C-B90A-130FC3D277FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

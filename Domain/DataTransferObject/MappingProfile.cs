@@ -37,7 +37,7 @@ namespace Entities.DataTransferObject
 
 
 
-
+            //var res = news.Select(x=> _mapper.Map<NewsDto>(x).ToList())
 
 
 

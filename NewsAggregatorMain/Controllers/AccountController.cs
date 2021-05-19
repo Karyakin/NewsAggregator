@@ -60,8 +60,8 @@ namespace NewsAggregatorMain.Controllers
 
             var model = new RegisterDto()
             {
-                SelectListSourseCountry = new SelectList(countries, "Id", "Name"),
-                SelectListSourseCity = new SelectList(cities, "Id", "Name"),
+              /*  SelectListSourseCountry = new SelectList(countries, "Id", "Name"),
+                SelectListSourseCity = new SelectList(cities, "Id", "Name"),*/
                 CitiesName = citiesNameList,
                 CountryName = countryNameList
 
@@ -89,6 +89,7 @@ namespace NewsAggregatorMain.Controllers
 
             registerDto.Country = country.Name;
             registerDto.City = city.Name;
+
 
             var hashSoult = _userService.GetPasswordHashSoult(registerDto.Password);
 
@@ -360,12 +361,13 @@ namespace NewsAggregatorMain.Controllers
             return RedirectToAction("GetUserInfo");
         }
 
-        /* [HttpPost]
-       public async Task<IActionResult> UpdateUser(UserDto userDto)
+        [AcceptVerbs("Get", "Post")]//допустимые значения
+        public async Task<IActionResult> CheckLogin(string login)
         {
-
-            return Ok();
-        }*/
+            return (await _userService.GetUserByLogin(login)) != null
+                ? Json(false)
+                : Json(true);
+        }
     }
 }
 

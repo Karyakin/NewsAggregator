@@ -1,26 +1,34 @@
 ﻿@model Entities.DataTransferObject.RegisterDto
-@*<h2>Registration</h2>*@
+<h2>Registration</h2>
 
-<!--<form asp-action="Register" asp-controller="Account" asp-antiforgery="true" method="post">-->
-@* antiforgeryбудет - сгенерирован токе который потом на BE будет валидироватся. т.е. теперь с консоли какой-нибудь невозможно будет сгенерит 100000 запросо.*@
-<!--<div class="validation" asp-validation-summary="ModelOnly"></div>-->@*если на нашей модели RegisterViewModel будут ошибки с валидацией, то они будут отрисованы на форме*@
-<!--<div>
+<form asp-action="Register" asp-controller="Account" asp-antiforgery="true" method="post">
+ <!--antiforgeryбудет - сгенерирован токе который потом на BE будет валидироватся. т.е. теперь с консоли какой-нибудь невозможно будет сгенерит 100000 запросо.-->
+<!--<div class="validation" asp-validation-summary="ModelOnly"></div>--><!--если на нашей модели RegisterViewModel будут ошибки с валидацией, то они будут отрисованы на форме-->
+
+    <div>
         <hr align="center" color="Blue" />
         <div class="form-group">
             <label asp-for="Login">Login</label>
             <input type="text" asp-for="Login" />
-            <span asp-validation-for="Login"></span>
+            <span asp-validation-for="Login" class="text-danger"></span>
         </div>
 
-
-
         <div class="form-group">
-            <label asp-for="CountrySourseId">Country</label>
+            <label asp-for="LastName">LastName</label>
+            <input type="text" asp-for="LastName" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
 
-            <select asp-for="CountrySourseId" asp-items="Model.SelectListSourseCountry">
-                <option selected="selected" disabled="disabled">Выберите страну</option>
-            </select>
-            <span asp-validation-for="Country"></span>
+        <div class="form-group has-float-label">
+            <label for="myBrowser">Выберите страну</label>
+            <input list="Country" name="Country" size="45">
+            <datalist id="Country">
+                @foreach (var item1 in Model.CountryName)
+                {
+                    <option value=@item1></option>
+                }
+            </datalist>
+            <span asp-validation-for="Country" class="text-danger"></span>
         </div>
 
         <div class="form-group">
@@ -32,6 +40,7 @@
                     <option value=@item></option>
                 }
             </datalist>
+
         </div>
 
 
@@ -72,9 +81,9 @@
     {
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-}-->
+}
 
-
+@*
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" />
 
@@ -159,9 +168,9 @@
         <legend class="m-b-1 text-xs-center">Регистрация</legend>
         <hr align="center" color="Blue" />
 
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+
         <div class="form-group input-group">
-
-
 
             <span class="has-float-label">
                 <input class="form-control" name="Login" type="text" placeholder="Введите логин" />
@@ -174,7 +183,6 @@
                 <label for="LastName">Имя</label>
             </span>
 
-
         </div>
         <div class="form-group input-group">
             <span class="input-group-addon"></span>
@@ -185,8 +193,6 @@
             </span>
         </div>
 
-
-
         <div class="form-group input-group">
             <span class="input-group-addon"></span>
             <span class="has-float-label">
@@ -196,17 +202,11 @@
             </span>
         </div>
 
-
-
         <div class="form-group has-float-label">
             <label for="DayOfBirth">Дата рождения:</label>
             <input type="date" asp-for="DayOfBirth" value="12-02-2012">
             <span asp-validation-for="DayOfBirth" class="text-danger"></span>
         </div>
-
-
-
-
 
         <div class="form-group has-float-label">
             <label for="myBrowser">Выберите страну</label>
@@ -218,9 +218,7 @@
                 }
             </datalist>
         </div>
-
-
-
+        
         <div class="form-group has-float-label">
             <label for="myBrowser">Выберите город</label>
             <input list="City" name="City" size="45">
@@ -231,10 +229,6 @@
                 }
             </datalist>
         </div>
-
-
-
-
 
         <div class="form-group has-float-label">
             <label asp-for="Password">Password</label>
@@ -247,72 +241,6 @@
             <span asp-validation-for="PasswordConfirmation" class="text-danger"></span>
         </div>
 
-
-
-
-
-        @*
-        <div class="form-group has-float-label">
-            <label for="Password">Пароль</label>
-            <input class="form-control" name="Password" type="password" placeholder="••••••••" />
-            <span asp-validation-for="Password" class="text-danger"></span>
-        </div>
-
-        <div class="form-group has-float-label">
-            <label for="PasswordConfirmation">Confirm Password</label>
-            <input class="form-control" name="PasswordConfirmation" type="password" placeholder="••••••••" />
-            <span asp-validation-for="PasswordConfirmation" class="text-danger"></span>
-        </div>*@
-
-
-
-
-        @*
-        <div class="form-group">
-            <label asp-for="CountrySourseId">Country</label>
-
-            <select asp-for="CountrySourseId" asp-items="Model.SelectListSourseCountry">
-                <option selected="selected" disabled="disabled">Выберите страну</option>
-            </select>
-            <span asp-validation-for="Country"></span>
-        </div>
-        *@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        @*
-        <div class="form-group has-float-label">
-            <select class="form-control custom-select" id="country">
-                <option selected>Россия</option>
-                <option>Казахстан</option>
-                <option>Белоруссия</option>
-            </select>
-            <label for="country">Страна</label>
-        </div>
-
-
-
-        *@
-
-@*
-        <div class="form-group">
-            <label class="custom-control custom-checkbox">
-                <input class="custom-control-input" type="checkbox" />
-                <span class="custom-control-indicator"></span>
-                <span class="custom-control-description">Получать новости</span>
-            </label>
-        </div>*@
         <div class="text-xs-center">
 
             <button class="btn btn-block btn-primary" type="submit" value="Register">Регистрация</button>
@@ -320,3 +248,8 @@
     </form>
 </div>
 
+@section Scripts
+    {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}*@

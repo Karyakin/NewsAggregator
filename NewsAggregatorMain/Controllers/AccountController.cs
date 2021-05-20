@@ -33,20 +33,21 @@ namespace NewsAggregatorMain.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICountryService _countryService;
         private readonly ICityService _cityService;
-        private readonly IMapper _mapper;
         private readonly IRoleService _roleService;
+        private readonly IEmailService _emailService;
+        private readonly IPhoneService _phoneService;
+
 
         public AccountController(IUserService userService, IUnitOfWork unitOfWork, ICountryService countryService,
-            ICityService cityService, IMapper mapper, IRoleService roleService)
+            ICityService cityService, IRoleService roleService, IEmailService emailService, IPhoneService phoneService)
         {
             _userService = userService;
             _unitOfWork = unitOfWork;
             _countryService = countryService;
             _cityService = cityService;
-            _mapper = mapper;
             _roleService = roleService;
-
-
+            _emailService = emailService;
+            _phoneService = phoneService;
         }
 
 
@@ -60,12 +61,8 @@ namespace NewsAggregatorMain.Controllers
 
             var model = new RegisterDto()
             {
-              /*  SelectListSourseCountry = new SelectList(countries, "Id", "Name"),
-                SelectListSourseCity = new SelectList(cities, "Id", "Name"),*/
                 CitiesName = citiesNameList,
                 CountryName = countryNameList
-
-
             };
             return View(model);
         }
@@ -74,49 +71,51 @@ namespace NewsAggregatorMain.Controllers
         [ValidateAntiForgeryToken]// страница неявно внутри себя сгенерирует разметку, эта разметак будет передавать с собой соответсвующий токен где на BE он будет проверятся и если токен не сошелся, значет он пришел не со страницы, а откуда-то еще. т.е. если запрос пришел не сайта, то его обробатывать не нужно
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
-            var country = await _countryService.FindCountryByName(registerDto.Country);
-            var city = await _cityService.FindCityByName(registerDto.City);
-
-            if (country is null)
+            if (ModelState.IsValid)
             {
-                throw new NullReferenceException($"Country can't exist Null value");
-            }
+                var country = await _countryService.FindCountryByName(registerDto.Country);
+                var city = await _cityService.FindCityByName(registerDto.City);
 
-            if (city is null)
-            {
-                throw new NullReferenceException($"City can't exist Null value");
-            }
+                if (country is null)
+                {
+                    return BadRequest($"The country with the name \"{registerDto.Country.ToUpper()}\" does not exist");
+                }
 
-            registerDto.Country = country.Name;
-            registerDto.City = city.Name;
+                if (city is null)
+                {
+                    return BadRequest($"The city with the name \"{registerDto.City.ToUpper()}\" does not exist");
+                }
+
+                registerDto.Country = country.Name;
+                registerDto.City = city.Name;
 
 
-            var hashSoult = _userService.GetPasswordHashSoult(registerDto.Password);
+                var hashSoult = _userService.GetPasswordHashSoult(registerDto.Password);
 
-            if (await _userService.UserExist(registerDto.Login))
-            {
-                return BadRequest("User allredy exist");
-            }
+                if (await _userService.UserExist(registerDto.Login))
+                {
+                    return BadRequest("User allredy exist");
+                }
 
-            var newUser = await _userService.ArrangeNewUser(registerDto, hashSoult);
-            if (newUser is null)
-            {
-                return BadRequest(newUser);
-            }
-            try
-            {
-                _unitOfWork.User.Add(newUser);
-                await _unitOfWork.SaveAsync();
-            }
-            catch (Exception ex)
-            {
-                Log.Error($"Can not compleate greate new User. Details: {ex.Message}");
-                throw;
+                var newUser = await _userService.ArrangeNewUser(registerDto, hashSoult);
+                if (newUser is null)
+                {
+                    return BadRequest(newUser);
+                }
+                try
+                {
+                    _unitOfWork.User.Add(newUser);
+                    await _unitOfWork.SaveAsync();
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"Can not compleate greate new User. Details: {ex.Message}");
+                    throw;
+                }
             }
 
             return Ok($"User {registerDto.Login} was successfully");
         }
-
 
         [HttpGet]
         public IActionResult Login(string returnUrl)// returnUrl нужна для того, чтобы получать тот Url по которому клацнули изначально. Если пользователь не авторизован и нажал на источники, то после авторизации его перенаправит в источники, если нажал на новости, то после авторизации будет перенаправлен на новости.
@@ -124,7 +123,6 @@ namespace NewsAggregatorMain.Controllers
             var model = new LoginDto() { ReturnUrl = returnUrl };
             return View(model);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Login(RegisterDto loginDto)
@@ -190,6 +188,7 @@ namespace NewsAggregatorMain.Controllers
         {
             return View();
         }
+       
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> GetUserInfo(UserDto userDto)
@@ -220,7 +219,6 @@ namespace NewsAggregatorMain.Controllers
             };
             return View(filledUserRto);
         }
-
 
         [HttpGet]
         public async Task<IActionResult> UpdateUser(UserDto userDto)
@@ -367,6 +365,47 @@ namespace NewsAggregatorMain.Controllers
             return (await _userService.GetUserByLogin(login)) != null
                 ? Json(false)
                 : Json(true);
+        }
+
+        [AcceptVerbs("Get", "Post")]//допустимые значения
+        public async Task<IActionResult> CheckEmail(string email)
+        {
+            return (await _emailService.CheckEmailExist(email)) != null
+                ? Json(false)
+                : Json(true);
+        }
+
+        [AcceptVerbs("Get", "Post")]//допустимые значения
+        public async Task<IActionResult> CheckPhone(string phones)
+        {
+            return (await _phoneService.CheckPhoneExist(phones)) != null
+                ? Json(false)
+                : Json(true);
+        }
+
+        [AcceptVerbs("Get", "Post")]//допустимые значения
+        public IActionResult CheckDate(DateTime dayOfBirth)
+        {
+            return dayOfBirth > DateTime.Now
+                ? Json(false)
+                : Json(true);
+        }
+
+        [AcceptVerbs("Get", "Post")]//допустимые значения
+        public async Task<IActionResult> CheckCity(string city)
+        {
+            return (await _cityService.FindCityByName(city)) != null
+               ? Json(true)
+               : Json(false);
+        }
+
+        [AcceptVerbs("Get", "Post")]//допустимые значения
+        public async Task<IActionResult> CheckCountry(string country)
+        {
+            var ss = await _countryService.FindCountryByName(country);
+            return (await _countryService.FindCountryByName(country)) != null
+               ? Json(true)
+               : Json(false);
         }
     }
 }

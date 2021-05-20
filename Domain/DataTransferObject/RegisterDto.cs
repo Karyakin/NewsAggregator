@@ -13,66 +13,57 @@ namespace Entities.DataTransferObject
 {
     public class RegisterDto
     {
-        //[StringLength(20, MinimumLength = 6)] //_@_.ii
-        //[Required(ErrorMessage = "Please fill Login field")] 
-        // [MaxLength(5,ErrorMessage ="максимальная длинна")]
-
-        [Required(ErrorMessage = "asxasxsax")]
-        [Remote("CheckLogin", "Account", ErrorMessage = "Current email already exist")]
+        [Required(ErrorMessage = "Введите имя пользователя")] 
+        [RegularExpression("^[A-Za-z]([.A-Za-z0-9-]{1,18})([A-Za-z0-9])$", ErrorMessage = "Login должен начинаться с латинской буквы, может состоять из латинских букв, цифр, точек, минуса, а заканчиваться буквой или цифрой, пробелы запрещены")]
+        [Remote("CheckLogin", "Account", ErrorMessage = "Пользователь с таким именем уже существует")]
         public string Login { get; set; }
 
-        //[Required(ErrorMessage = "Please fill email field")]
-        //[DataType(DataType.EmailAddress)] // ___@{}.{}
 
-       
-        [EmailAddress(ErrorMessage = "Поле Email должно быть заполнено")]
-        [Remote("CheckEmail", "Account", ErrorMessage = "Current email already exist")]
+        [Required(ErrorMessage = "Введите адрес электронной почты")]
+        [EmailAddress(ErrorMessage = "Некорректно введен адрес электронной почты. Пример: News@mail.com")]
+        [Remote("CheckEmail", "Account", ErrorMessage = "Пользователь с таким Email уже зарегистрирован")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "asxasxsax")]
-        public DateTime DayOfBirth { get; set; }
 
-        //  [Required(ErrorMessage = "Please fill Country field")]
-        [Required(ErrorMessage = "asxasxsax")]
-        public string Country { get; set; }
-
-        //[Required(ErrorMessage = "Please fill City field")]
-        [Required(ErrorMessage = "asxasxsax")]
-        public string City { get; set; }
-        [Required(ErrorMessage = "asxasxsax")]
+        [Required(ErrorMessage = "Заполните поле")]
+        [RegularExpression(@"^[^\s][^!@#$%^&*()_]+[0-9a-zA-Zа-яА-Я\s]*$", ErrorMessage = "Пробелы и одиночные спецсимволы в начале строеи недопустимы")]
         public string LastName { get; set; }
 
-        [Required]
-        // [RegularExpression("^[0-9*#+-()]+$")]
-        [Phone]
+
+        [Required(ErrorMessage = "Введите телефон")]
+        [RegularExpression(@"^\+375\((17|29|33|44|25)\)[0-9]{3}[0-9]{2}[0-9]{2}$", ErrorMessage = "Формат для ввода телефона: +375(**)*********")]
+        [Remote("CheckPhone", "Account", ErrorMessage = "Пользователь с таким номером телефона уже зарегистрирован")]
         public string Phones { get; set; }
-        //[Required(ErrorMessage = "Please fill password field")]
+
+
+        [Required(ErrorMessage = "Введите дату")] 
+        [Remote("CheckDate", "Account", ErrorMessage = "Вы не можете родится в будущем")]
+        public DateTime DayOfBirth { get; set; }
+
+        [Required(ErrorMessage = "Укажите страну")]
+        [Remote("CheckCountry", "Account", ErrorMessage = "Такой траны не существует")]
+        public string Country { get; set; }
+
+        [Required(ErrorMessage = "Укажите город")]
+        [Remote("CheckCity", "Account", ErrorMessage = "Такого города не существует")]
+        public string City { get; set; }
+
+
+        [Required(ErrorMessage = "Придумайте пароль")]
         [DataType(DataType.Password)]// минимально 8 символов, как минимум 1 маленькая буква, 1 большая,1 спецсимвол - это по умолчанию
-        /* [RegularExpression("^[0-9*#+-()]+$",//"^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[.#$^+=!*()@%&]).{8,}$",
-             ErrorMessage = "Password must contain blablabla")]*/
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{3,15}$", 
+            ErrorMessage = "Пароль должен содержать: от 3 до 15 символов на латинице, хотя бы одно число, хотя бы одну заглавную букву и одну строчную букву.")]
         public string Password { get; set; }
 
-
-        // [DataType(DataType.Password)]
-        //[Compare("Password", ErrorMessage = "Password is incorrect")]// сравниваем со свойством Password
-
-        [Required]
-        // [Compare("Password", ErrorMessage = "123123")]
+        [Required(ErrorMessage = "Повторите пароль")]
+        [Compare("Password", ErrorMessage = "Пароли не совпадают")]
         public string PasswordConfirmation { get; set; }
-        // public PasswordSoultModel PasswordSoultModel { get; set; }
 
-        // public SelectList SelectListSourseCountry{ get; set; }
-        // public SelectList SelectListSourseCity{ get; set; }
-        /*   public Guid? CountrySourseId { get; set; }
-           public Guid? CitySourseId { get; set; }*/
 
         public string ReturnUrl { get; set; }
 
-
         public IEnumerable<string> CitiesName { get; set; }
+
         public IEnumerable<string> CountryName { get; set; }
-
-
-
     }
 }

@@ -17,6 +17,10 @@ namespace Contracts.UnitOfWorkInterface
         public ICountryRepository Country { get; }
         public ICityRepository City{ get; }
         public IRoleRepository Role{ get; }
+        public IContactDetailsRepository ContactDetails{ get; }
+        public IPhoneRepository Phone { get; }
+        public IEmailRepository Email{ get; }
+
 
 
         Task SaveAsync();

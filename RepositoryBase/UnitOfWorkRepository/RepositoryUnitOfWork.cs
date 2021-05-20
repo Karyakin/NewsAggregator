@@ -9,6 +9,9 @@ using Repositories.NewsRep;
 using Contracts.ServicesInterfacaces;
 using Services;
 using Repositories.CountryRepo;
+using Repositories.ContactDetailsRepo;
+using Repositories.EmailRepo;
+using Repositories.PhoneRepo;
 
 namespace Repositories.UnitOfWorkRepository
 {
@@ -27,12 +30,45 @@ namespace Repositories.UnitOfWorkRepository
         private ICountryRepository _countryRepository;
         private ICityRepository _cityRepository;
         private IRoleRepository _roleRepository;
+        private IContactDetailsRepository _contactDetails;
+        private IEmailRepository _email;
+        private IPhoneRepository _phone;
 
         public RepositoryUnitOfWork(NewsDataContext newsDataContextWrapper)
         {
             _newsDataContextWrapper = newsDataContextWrapper;
         }
 
+        public IPhoneRepository Phone
+        {
+            get
+            {
+                if (_phone == null)
+                    _phone = new PhoneRepository(_newsDataContextWrapper);
+
+                return _phone;
+            }
+        }
+        public IEmailRepository Email
+        {
+            get
+            {
+                if (_email == null)
+                    _email = new EmailRepository(_newsDataContextWrapper);
+
+                return _email;
+            }
+        }
+        public IContactDetailsRepository ContactDetails
+        {
+            get
+            {
+                if (_contactDetails == null)
+                    _contactDetails = new ContactDetailsRepository(_newsDataContextWrapper);
+
+                return _contactDetails;
+            }
+        }
         public IRoleRepository Role
         {
             get
@@ -53,8 +89,6 @@ namespace Repositories.UnitOfWorkRepository
                 return _cityRepository;
             }
         }
-
-
         public ICountryRepository Country
         {
             get
@@ -65,7 +99,6 @@ namespace Repositories.UnitOfWorkRepository
                 return _countryRepository;
             }
         }
-
         public IUserRepository User 
         {
             get
@@ -76,8 +109,6 @@ namespace Repositories.UnitOfWorkRepository
                 return _UserRepository;
             }
         }
-
-
         public INewsRepository News
         {
             get

@@ -60,6 +60,8 @@ namespace NewsAggregatorMain
             services.AddScoped<ICountryService, CountryService>();
             services.AddScoped<ICityService, CityService>();
             services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IPhoneService, PhoneService>();
 
 
             services.AddScoped<ICityRepository, CityRepository>();

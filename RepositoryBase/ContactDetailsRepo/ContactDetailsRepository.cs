@@ -16,5 +16,7 @@ namespace Repositories.ContactDetailsRepo
            : base(newsDataContext)
         {
         }
+        
+
     }
 }

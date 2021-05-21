@@ -1,6 +1,5 @@
 ﻿@model Entities.DataTransferObject.UserDto
 
-
 <h2>Enter user login for searche</h2>
 <form asp-controller="Account" asp-antiforgery="true" method="post">
     <label asp-for="Login">Login</label>
@@ -43,7 +42,7 @@
     </div>
     <div class="col-md-6">
         <label for="LastName" class="form-label">Name</label>
-        <input asp-for="LastName" class="form-control"placeholder="Введите имя">
+        <input asp-for="LastName" class="form-control" placeholder="Введите имя">
     </div>
 
     <div class="col-md-2">
@@ -61,25 +60,77 @@
                 <label for="Email" class="form-label">Email</label>
                 <input asp-for="Email" class="form-control" placeholder="Электронная почта">
             </div>
-
         </div>
-
-
     </div>
+    <div class="col-md-6">
+        <h1>
+            <input type="submit" value="UpdateUser" class="btn btn-outline-info" asp-action="UpdateUser" />
+        </h1>
+    </div>
+</form>
 
+<hr align="center" color="Blue" />
 
- 
-
-        <div class="col-md-6">
-            <h1>
-                <input type="submit" value="UpdateUser" class="btn btn-outline-info" asp-action="UpdateUser" />
-            </h1>
-        </div>
-    
-
-
+<form>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Login
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Role
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Phone number
+                    </th>
+                </tr>
+            </thead>
+    </div>
+    <tbody>
+        @foreach (var item in Model.Users)
+        {
+        <tr>
+            <td>
+                @item.Login
+            </td>
+            <td>
+                @item.LastName
+            </td>
+            <td>
+                @item.Role.Name
+            </td>
+            <td>
+                @item.ContactDetails.EMails.FirstOrDefault().UserEMail
+            </td>
+            <td>
+                @item.ContactDetails.Phones.FirstOrDefault().PhoneNumber
+            </td>
+            <td>
+                <a asp-action="DeleteUser" asp-route-id="@item.Id">Delete user</a> |
+            </td>
+        </tr>
+        }
+    </tbody>
 
 </form>
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -62,9 +62,9 @@ namespace Repositories
         }
 
 
-        public Task Remove(Guid id)
+        public void Remove(T entity)
         {
-            throw new NotImplementedException();
+            _Table.Remove(entity);
         }
 
         public Task RemoveRange(IEnumerable<T> entity)

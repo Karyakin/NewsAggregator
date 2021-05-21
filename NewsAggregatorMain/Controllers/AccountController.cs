@@ -36,10 +36,11 @@ namespace NewsAggregatorMain.Controllers
         private readonly IRoleService _roleService;
         private readonly IEmailService _emailService;
         private readonly IPhoneService _phoneService;
+        private readonly IContactDetailsService _contactDetailsService;
 
 
         public AccountController(IUserService userService, IUnitOfWork unitOfWork, ICountryService countryService,
-            ICityService cityService, IRoleService roleService, IEmailService emailService, IPhoneService phoneService)
+            ICityService cityService, IRoleService roleService, IEmailService emailService, IPhoneService phoneService, IContactDetailsService contactDetailsService)
         {
             _userService = userService;
             _unitOfWork = unitOfWork;
@@ -48,6 +49,7 @@ namespace NewsAggregatorMain.Controllers
             _roleService = roleService;
             _emailService = emailService;
             _phoneService = phoneService;
+            _contactDetailsService = contactDetailsService;
         }
 
 
@@ -184,9 +186,13 @@ namespace NewsAggregatorMain.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public IActionResult GetUserInfo()
+        public async Task<IActionResult> GetUserInfo()
         {
-            return View();
+            var use = new UserDto()
+            {
+                Users = await _userService.GetAllUsersWithPhoneROleMail()
+            };
+            return View(use);
         }
        
         [Authorize(Roles = "Admin")]
@@ -215,7 +221,8 @@ namespace NewsAggregatorMain.Controllers
                 City = userWithDetails.ContactDetails.City.Name,
                 Email = (userWithDetails.ContactDetails.EMails.FirstOrDefault()).UserEMail,
                 Phones = (userWithDetails.ContactDetails.Phones.FirstOrDefault()).PhoneNumber,
-                IsMember = isMember
+                IsMember = isMember, 
+                Users = await _userService.GetAllUsersWithPhoneROleMail()
             };
             return View(filledUserRto);
         }
@@ -357,6 +364,16 @@ namespace NewsAggregatorMain.Controllers
             }
 
             return RedirectToAction("GetUserInfo");
+        }
+
+        public async Task<IActionResult>  DeleteUser(UserDto userDto)
+        {
+            var user = await _userService.GetUserById(userDto.Id);
+            _userService.DeleteUser(user);
+           await _contactDetailsService.DeleteContacts(user.ContactDetailsId);
+            
+           await _unitOfWork.SaveAsync();
+            return RedirectToAction("GetUserInfo", "Account");
         }
 
         [AcceptVerbs("Get", "Post")]//допустимые значения

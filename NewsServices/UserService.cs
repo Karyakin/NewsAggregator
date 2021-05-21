@@ -132,5 +132,28 @@ namespace Services
 
             return user;
         }
+
+        public async Task<IEnumerable<User>> GetAllUsersWithPhoneROleMail()
+        {
+            var users = await _unitOfWork.User.GetAll(false)
+                .Include(x => x.ContactDetails).ThenInclude(x => x.EMails)
+                .Include(x => x.ContactDetails).ThenInclude(x => x.Phones)
+                .Include(x => x.Role).ToListAsync();
+
+
+            return users;
+        }
+
+        public void DeleteUser(User user)
+        {
+            _unitOfWork.User.Remove(user);
+        }
+
+        public async Task<User> GetUserById(Guid id)
+        {
+            var user = await _unitOfWork.User.GetById(id, false);
+
+            return user;
+        }
     }
 }

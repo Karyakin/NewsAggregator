@@ -47,5 +47,8 @@ namespace Entities.DataTransferObject
         public string Phones { get; set; }
 
         public bool IsMember { get; set; }
+
+
+        public IEnumerable<User> Users{ get; set; }
     }
 }

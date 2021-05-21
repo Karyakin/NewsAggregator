@@ -10,6 +10,6 @@ namespace Contracts.ServicesInterfacaces
 {
     public interface IContactDetailsService
     {
-      
+        public Task DeleteContacts(Guid id);
     }
 }

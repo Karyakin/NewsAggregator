@@ -18,7 +18,7 @@ namespace Contracts.Interfaces
         void AddRange(IEnumerable<T> entity);
 
         void Update(T entity);
-        Task Remove(Guid id);
+        void Remove(T entity);
         Task RemoveRange(IEnumerable<T> entity);
     }
 }

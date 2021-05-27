@@ -12,6 +12,7 @@ using Repositories.CountryRepo;
 using Repositories.ContactDetailsRepo;
 using Repositories.EmailRepo;
 using Repositories.PhoneRepo;
+using Repositories.CommentRepo;
 
 namespace Repositories.UnitOfWorkRepository
 {
@@ -33,10 +34,22 @@ namespace Repositories.UnitOfWorkRepository
         private IContactDetailsRepository _contactDetails;
         private IEmailRepository _email;
         private IPhoneRepository _phone;
+        private ICommentRepository _comment;
 
         public RepositoryUnitOfWork(NewsDataContext newsDataContextWrapper)
         {
             _newsDataContextWrapper = newsDataContextWrapper;
+        }
+
+        public ICommentRepository Comment 
+        {
+            get
+            {
+                if (_comment == null)
+                    _comment = new CommentRepository(_newsDataContextWrapper);
+
+                return _comment;
+            }
         }
 
         public IPhoneRepository Phone

@@ -81,8 +81,6 @@ namespace Services
 
         public async Task<NewsGetDTO> GetNewsBiId(Guid? newsId)
         {
-
-
             var rssSourseWithNews = await _unitOfWork.News.GetByCondition(x => x.Id.Equals(newsId), true)
                .Include(x => x.Category)
                .Include(x => x.RssSource)

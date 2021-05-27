@@ -27,13 +27,17 @@ namespace Entities.DataTransferObject
             .ForMember(dest => dest.Id, opt => opt.MapFrom(s => Guid.NewGuid()));
 
             CreateMap<RssSource, SourseWithNewsCategory>().ReverseMap();
-           // CreateMap<IEnumerable<News>, IEnumerable<NewsInfoFromRssSourseDto>>();
+            // CreateMap<IEnumerable<News>, IEnumerable<NewsInfoFromRssSourseDto>>();
             CreateMap<News, NewsInfoFromRssSourseDto>().ReverseMap();
 
 
             CreateMap<RegisterDto, User>().ReverseMap();
             CreateMap<RoleDto, Role>().ReverseMap();
-            
+            CreateMap<Comment, CommentDto>();
+            CreateMap<CommentDto, Comment>();
+            CreateMap<NewsWithCommentsDTO, NewsGetDTO>();
+            CreateMap<IEnumerable<NewsGetDTO>, IEnumerable<NewsWithCommentsDTO>>();
+
 
 
 

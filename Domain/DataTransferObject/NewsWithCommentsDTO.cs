@@ -1,15 +1,13 @@
 ﻿using Entities.Entity.NewsEnt;
-using Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Entities.DataTransferObject
 {
-    public class NewsGetDTO
+    public class NewsWithCommentsDTO
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
@@ -28,7 +26,8 @@ namespace Entities.DataTransferObject
 
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public IEnumerable<CommentDto> Comments { get; set; }
 
+        public IEnumerable<CommentDto> Comments{get;set;}
+     
     }
 }

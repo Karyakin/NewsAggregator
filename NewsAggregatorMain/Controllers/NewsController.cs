@@ -22,19 +22,24 @@ namespace NewsAggregatorMain.Controllers
 {
     //[Route("[controller]")]
 
-   // [Authorize(Policy = "18+Content")]
-    [Authorize(Roles ="Admin, User")]
+    // [Authorize(Policy = "18+Content")]
+    [Authorize(Roles = "Admin, User")]
     public class NewsController : Controller
     {
 
         private readonly INewsService _newsService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRssSourceService _rssSourceService;
-        public NewsController(INewsService newsService, IUnitOfWork unitOfWork, IRssSourceService rssSourceService)
+        private readonly ICommentService _commentService;
+        private readonly IMapper _mapper;
+        public NewsController(INewsService newsService, IUnitOfWork unitOfWork,
+            IRssSourceService rssSourceService, ICommentService commentService, IMapper mapper)
         {
             _newsService = newsService;
             _unitOfWork = unitOfWork;
             _rssSourceService = rssSourceService;
+            _commentService = commentService;
+            _mapper = mapper;
         }
 
         public IActionResult Aggregate()
@@ -64,7 +69,7 @@ namespace NewsAggregatorMain.Controllers
 
 
         //[Authorize("18-Content")]
-       // [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(int page = 1)
         {
             var allNews = (await _newsService.FindAllNews()).ToList();
@@ -78,16 +83,12 @@ namespace NewsAggregatorMain.Controllers
                 TotalItems = allNews.Count
             };
 
-          //  var aa = HttpContext.User.Claims.Any(x => x.Value.Contains("Admin"));// .Select(x=>x.Value.Contains("Admin")).SingleOrDefault();
-           // var bb = aa.Value.Contains("Admin")?true:false;
-
-
             return View(new NewsListWithPaginationInfo()
             {
                 News = newsPerPages,
                 PageInfo = pageInfo,
                 IsMember = HttpContext.User.Claims.Any(x => x.Value.Contains("Admin"))
-        });
+            });
         }
 
         [HttpPost]
@@ -117,14 +118,30 @@ namespace NewsAggregatorMain.Controllers
         {
             var newsWithDetails = await _newsService.GetNewsBiId(newsGetDTO.Id);
 
+
+
+
             return View(newsWithDetails);
 
         }
 
-        public async Task<IActionResult> ReadInAgregator(NewsGetDTO newsGetDTO)
-        {
-            var newsWithDetails = await _newsService.GetNewsBiId(newsGetDTO.Id);
+        /* public async Task<IActionResult> ReadInAgregator(NewsGetDTO newsGetDTO)
+         {
+             var newsWithDetails = await _newsService.GetNewsBiId(newsGetDTO.Id);
 
+
+             return View(newsWithDetails);
+
+         }*/// рабочий
+
+        public async Task<IActionResult> ReadInAgregator(NewsGetDTO newsWithCommentsDTO)
+        {
+            var newsWithDetails = await _newsService.GetNewsBiId(newsWithCommentsDTO.Id);
+           // var commentsEnt = await _commentService.FindAllCommentsForNews(newsWithCommentsDTO.Id);
+            var comentsDto = _mapper.Map<IEnumerable<CommentDto>>(await _commentService.FindAllCommentsForNews(newsWithCommentsDTO.Id));
+            newsWithDetails.Comments = comentsDto;
+
+         
             return View(newsWithDetails);
 
         }

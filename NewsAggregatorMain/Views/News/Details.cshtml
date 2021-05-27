@@ -42,12 +42,12 @@
             @Html.DisplayFor(model => model.StartDate)
         </dd>
 
-       @* <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>*@
+        @* <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.EndDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.EndDate)
+            </dd>*@
 
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
@@ -70,7 +70,21 @@
             @Html.DisplayFor(model => model.Rating)
         </dd>
 
+
+
     </dl>
+</div>
+
+<div class="row ">
+    <button id="comments-display-switcher" class="btn btn-primary col-sm-12">Display comments</button>
+    <div class="container">
+        <div id="comments-container" class="row">
+            @*@foreach (var comment in Model.Comments)
+                {
+                    @await Html.PartialAsync("CommentPartial", comment)
+                }*@
+        </div>
+    </div>
 </div>
 <div>
     <a asp-controller="News" asp-action="Index" asp-route-sourseId="@Model.Id">News</a> |

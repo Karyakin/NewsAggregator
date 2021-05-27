@@ -20,6 +20,7 @@ using Repositories.NewsRep;
 using Repositories.CountryRepo;
 using Microsoft.AspNetCore.Authorization;
 using NewsAggregatorMain.AuthorizationPolicies;
+using Repositories.CommentRepo;
 
 /*cd C:\Users\d.karyakin\Desktop\NewsAggregator\RepositoryBase*/
 
@@ -63,12 +64,14 @@ namespace NewsAggregatorMain
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IPhoneService, PhoneService>(); 
             services.AddScoped<IContactDetailsService, ContactDetailsService>(); 
+            services.AddScoped<ICommentService, CommentService>(); 
 
 
             services.AddScoped<ICityRepository, CityRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
 
 
             services.AddScoped<TutByParser>(); //внедрение без привязки к родитель(альтернатива)

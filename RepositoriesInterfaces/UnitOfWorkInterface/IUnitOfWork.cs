@@ -20,6 +20,7 @@ namespace Contracts.UnitOfWorkInterface
         public IContactDetailsRepository ContactDetails{ get; }
         public IPhoneRepository Phone { get; }
         public IEmailRepository Email{ get; }
+        public ICommentRepository Comment{ get; }
 
 
 

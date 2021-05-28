@@ -18,10 +18,11 @@
     <button id="comments-display-switcher" class="btn btn-primary col-sm-12">Display comments</button>
     <div class="container">
         <div id="comments-container" class="row">
-            @*@foreach (var comment in Model.Comments)
+            @foreach (var comment in Model.Comments)
                 {
-                    @await Html.PartialAsync("CommentPartial", comment)
-                }*@
+                    
+                    @await Html.PartialAsync("Comment", comment)
+                }
         </div>
     </div>
 </div>

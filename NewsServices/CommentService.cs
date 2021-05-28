@@ -21,7 +21,9 @@ namespace Services
 
         public async Task<IEnumerable<Comment>> FindAllCommentsForNews(Guid newsId)
         {
-            var comments = await _unitOfWork.Comment.GetByCondition(x => x.NewsId.Equals(newsId), false).ToListAsync();
+            var comments = await _unitOfWork.Comment.GetByCondition(x => x.NewsId.Equals(newsId), false)
+                .Include(x=>x.User)
+                .ToListAsync();
             return comments;
         }
 

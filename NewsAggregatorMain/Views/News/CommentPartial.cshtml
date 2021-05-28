@@ -1,0 +1,19 @@
+﻿@*@model Entities.DataTransferObject.NewsGetDTO
+
+
+
+<div class="card col-sm-12 col-md-6 col-lg-3 news-card ">
+    <div class="card-body">
+        @foreach (var item in Model.Comments)
+        {
+            <div class="card-columns">
+                <h6 class="card-title">@item.Text</h6>
+                <h6 class="card-title">@item.User.Login</h6>
+                <h6 class="card-title">@item.CreateDate.ToString("g")</h6>
+            </div>
+        }
+
+
+
+    </div>
+</div>*@

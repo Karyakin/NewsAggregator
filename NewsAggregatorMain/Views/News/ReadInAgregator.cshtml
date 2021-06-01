@@ -8,28 +8,31 @@
 
 <div>
     <h4>@Model.Content</h4>
-    
-        <div>
-            @Html.Raw(Model.Body)
-        </div>
+
+    <div>
+        @Html.Raw(Model.Body)
+    </div>
 </div>
 
+
 <div class="row ">
-    <button id="comments-display-switcher" class="btn btn-primary col-sm-12">Display comments</button>
+    <button id="comments-display-switcher" class="btn btn-primary col-sm-12" onclick="loadComments()">Display comments</button>
     <div class="container">
         <div id="comments-container" class="row">
             @foreach (var comment in Model.Comments)
-                {
-                    
-                    @await Html.PartialAsync("Comment", comment)
-                }
+            {
+
+                @await Html.PartialAsync("Comment", comment)
+            }
         </div>
     </div>
+    <script src="~/js/comments.js"></script>
+
 </div>
 <div>
     <a asp-controller="News" asp-action="Index" asp-route-sourseId="@Model.Id">News</a> |
     <a asp-action="Index">Back to List</a> |
     <a asp-action="Delete">Delete</a>
-
-
 </div>
+
+

@@ -75,17 +75,17 @@
     </dl>
 </div>
 
-<div class="row ">
+<!--<div class="row ">
     <button id="comments-display-switcher" class="btn btn-primary col-sm-12">Display comments</button>
     <div class="container">
-        <div id="comments-container" class="row">
+        <div id="comments-container" class="row">-->
             @*@foreach (var comment in Model.Comments)
                 {
                     @await Html.PartialAsync("CommentPartial", comment)
                 }*@
-        </div>
+        <!--</div>
     </div>
-</div>
+</div>-->
 <div>
     <a asp-controller="News" asp-action="Index" asp-route-sourseId="@Model.Id">News</a> |
     <a asp-action="Index">Back to List</a> |

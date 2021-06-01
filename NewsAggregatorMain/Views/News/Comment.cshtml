@@ -4,7 +4,12 @@
 <div class="card col-sm-12">
     <div class="card-body">
         <p class="card-text">@Model.Text</p>
-        <h6>@Model.CreateDate.ToString("G")</h6>
-        <div class="col-1">@Model.User.Login</div>
+        <h6>
+            <label>Пользователь:</label> @Model.User.Login
+        </h6>
+        <h6>
+            <label>Дата:</label> @Model.CreateDate.ToString("D")
+        </h6>
     </div>
+
 </div>

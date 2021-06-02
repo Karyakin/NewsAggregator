@@ -1,7 +1,9 @@
-﻿@*@model Entities.DataTransferObject.CommentDto
+﻿@*@model NewsAggregator.Core.DataTransferObjects.CommentDto*@
+@model Entities.DataTransferObject.CommentDto
 
 <div class="card col-sm-12">
     <div class="card-body">
+    
         <p class="card-text">@Model.Text</p>
         <h6>
             <label>Пользователь:</label> @Model.User.Login
@@ -12,4 +14,3 @@
     </div>
 
 </div>
-*@

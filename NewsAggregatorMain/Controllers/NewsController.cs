@@ -137,8 +137,8 @@ namespace NewsAggregatorMain.Controllers
         public async Task<IActionResult> ReadInAgregator(NewsGetDTO newsWithCommentsDTO)
         {
             var newsWithDetails = await _newsService.GetNewsBiId(newsWithCommentsDTO.Id);
-           // var commentsEnt = await _commentService.FindAllCommentsForNews(newsWithCommentsDTO.Id);
-            var comentsDto = _mapper.Map<IEnumerable<CommentDto>>(await _commentService.FindAllCommentsForNews(newsWithCommentsDTO.Id));
+            var commentsEnt = await _commentService.FindAllCommentsForNews(newsWithCommentsDTO.Id);
+            var comentsDto = _mapper.Map<IEnumerable<CommentDto>>(commentsEnt);
             newsWithDetails.Comments = comentsDto;
 
          

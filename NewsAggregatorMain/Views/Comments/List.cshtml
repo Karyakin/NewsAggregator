@@ -1,19 +1,24 @@
-﻿@*@using NewsAggregator.Core.DataTransferObjects;*@
-@*@using Entities.DataTransferObject
+﻿@using Entities.DataTransferObject
 @model IEnumerable<CommentDto>
 
-@{
-    Layout = null;
+@{ 
+    Layout = null;@*чтобы в блок с коментариями не лезла вся страница с заголовками и всем остальным*@
 }
 
 <div class="container">
     <div id="comments-container" class="row">
+
+    @*  @if (!Model.Any())
+      {
+
+      }*@
+
         @foreach (var comment in Model)
         {
             @await Html.PartialAsync("Comment", comment)
         }
     </div>
-    <div>
+   @* <div>
         <form>
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Email address</label>
@@ -24,5 +29,5 @@
                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
             </div>
         </form>
-    </div>
-</div>*@
+    </div>*@
+</div>

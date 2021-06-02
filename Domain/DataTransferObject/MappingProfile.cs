@@ -35,6 +35,11 @@ namespace Entities.DataTransferObject
             CreateMap<RoleDto, Role>().ReverseMap();
             CreateMap<Comment, CommentDto>();
             CreateMap<CommentDto, Comment>();
+          /*  CreateMap<IEnumerable<CommentDto>, IEnumerable<Comment>>().ReverseMap();*/
+         /*   CreateMap<IEnumerable<Comment>, IEnumerable<CommentDto>>();*/
+
+
+
             CreateMap<NewsWithCommentsDTO, NewsGetDTO>();
             CreateMap<IEnumerable<NewsGetDTO>, IEnumerable<NewsWithCommentsDTO>>();
 

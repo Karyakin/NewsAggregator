@@ -54,10 +54,12 @@ function loadComments(newsId, commentsContainer) {
        
         if (request.status >= 200 && request.status < 400) {
             let resp = request.responseText;/*сюда пришел весь HTML*/
+            commentsContainer.innerHTML = resp;/*подставляем пришедший HTML в блок*/
 
             if (!resp.includes('card-text')) {
                 let comm = document.getElementById('comments-container');
-                comm.innerHTML = '<h2>Для Данной новости нет коментариев (: </h2>';
+                comm.innerHTML = '<h2>Для этой новости нет коментариев (: </h2>'+resp;
+               /* comm.innerHTML = '<div>@await Html.PartialAsync("CreateCommentPartial")</div>';*/
             }
             else {
 
@@ -66,7 +68,8 @@ function loadComments(newsId, commentsContainer) {
         }
     }
 
-    request.send();/*после чего отправляем запрос*/
+    request.send();
+    /*после чего отправляем запрос*/
     
 }
 

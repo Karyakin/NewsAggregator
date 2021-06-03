@@ -72,3 +72,8 @@ body {
 .news-card{
     margin: 5px;
 }
+
+.comments-block {
+    margin-top: 20px;
+    background-color: red;
+}

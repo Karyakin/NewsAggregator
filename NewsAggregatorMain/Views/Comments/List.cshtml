@@ -1,33 +1,33 @@
 ﻿@using Entities.DataTransferObject
-@model IEnumerable<CommentDto>
+@model CreateCommentDto
 
-@{ 
+@{
     Layout = null;@*чтобы в блок с коментариями не лезла вся страница с заголовками и всем остальным*@
 }
 
-<div class="container">
+<div class="container comments-block">
+    <h3>Comments</h3>
     <div id="comments-container" class="row">
-
-    @*  @if (!Model.Any())
-      {
-
-      }*@
-
-        @foreach (var comment in Model)
+        @foreach (var comment in Model.Comments)
         {
             @await Html.PartialAsync("Comment", comment)
         }
+
     </div>
-   @* <div>
-        <form>
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
-            </div>
-            <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-            </div>
-        </form>
-    </div>*@
+    <hr />
+
+    <form asp-controller="Comments" asp-action="Create" method="post" class="row">
+        <input type="hidden" id="newsId" name="newsId" value="@Model.NewsId" />
+        <div class="col-sm-12">
+            <label for="commentText">Write comment:</label>
+            <textarea name="commentText" class="form-control" id="commentText" rows="3"></textarea>
+        </div>
+
+        <div class="col-sm-12">
+            <button class="btn btn-primary write-comment-btn" id="create-comment-btn">Submit</button>
+        </div>
+    </form>
+
 </div>
+
+     @*    @await Html.PartialAsync("CreateCommentPartial")*@

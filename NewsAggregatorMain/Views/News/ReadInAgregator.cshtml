@@ -20,16 +20,6 @@
             onclick="toggleComments('@Model.Id')">Display comments</button>@* onclick="toggleComments('@Model.Id')- так мы передаем в файл джава скрипт айдишник коментария*@
     <div class="container">
         <div id="comments-container" class="row">
-           @* @if (Model.Comments.Count()==0)
-            {
-                <h3>Коментарии к данной новости отсутсвуют</h3>
-            }*@
-
-          @*  @foreach (var comment in Model.Comments)
-            {
-
-                @await Html.PartialAsync("Comment", comment)
-            }*@
         </div>
     </div>
 

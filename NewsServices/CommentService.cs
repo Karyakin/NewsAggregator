@@ -1,5 +1,6 @@
 ﻿using Contracts.ServicesInterfacaces;
 using Contracts.UnitOfWorkInterface;
+using Entities.DataTransferObject;
 using Entities.Entity.NewsEnt;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -27,5 +28,12 @@ namespace Services
             return comments;
         }
 
+
+        public void CreateComment(Comment comment)
+        {
+            _unitOfWork.Comment.Add(comment);
+        }
+
+        
     }
 }

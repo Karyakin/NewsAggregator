@@ -75,5 +75,10 @@ body {
 
 .comments-block {
     margin-top: 20px;
-    background-color: red;
+    background-color: cadetblue;
+}
+
+.write-comment-btn {
+    margin-top: 10px;
+    margin-bottom:10px;
 }

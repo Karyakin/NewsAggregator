@@ -424,6 +424,14 @@ namespace NewsAggregatorMain.Controllers
                ? Json(true)
                : Json(false);
         }
+
+        [HttpGet]
+        public IActionResult UserInfo()
+        {
+            var user = HttpContext.User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimsIdentity.DefaultNameClaimType));
+
+            return View(user != null ? "LogoutPartial" : "LoginPartial");
+        }
     }
 }
 

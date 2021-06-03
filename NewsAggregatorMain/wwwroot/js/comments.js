@@ -51,26 +51,26 @@ function loadComments(newsId, commentsContainer) {
     request.open('GET', `/Comments/List?newsId=${newsId}`, true); //*1-й парам: тип отправляемого запроса, 2-й: куда будем все отправлять*,3-й: асинхронный ли это запрос*/
 
     request.onload = function () {
-       
+
         if (request.status >= 200 && request.status < 400) {
             let resp = request.responseText;/*сюда пришел весь HTML*/
             commentsContainer.innerHTML = resp;/*подставляем пришедший HTML в блок*/
 
             if (!resp.includes('card-text')) {
                 let comm = document.getElementById('comments-container');
-                comm.innerHTML = '<h2>Для этой новости нет коментариев (: </h2>'+resp;
-               /* comm.innerHTML = '<div>@await Html.PartialAsync("CreateCommentPartial")</div>';*/
+                comm.innerHTML = '<h3>Эту нововсть никто не комментировал (: </h3>' + resp;
+                /* comm.innerHTML = '<div>@await Html.PartialAsync("CreateCommentPartial")</div>';*/
             }
             else {
 
-            commentsContainer.innerHTML = resp;/*подставляем пришедший HTML в блок*/
+                commentsContainer.innerHTML = resp;/*подставляем пришедший HTML в блок*/
             }
         }
     }
 
     request.send();
     /*после чего отправляем запрос*/
-    
+
 }
 
 
@@ -93,7 +93,7 @@ function loadComments(newsId, commentsContainer) {
 
 /*function toggleComments(newsId) {
     /* let url = window.location.pathname;*//*получаем полный урл страницы*//*
- let id = url.substring(url.lastIndexOf('/') + 1)*//*получаем Id из урла
+let id = url.substring(url.lastIndexOf('/') + 1)*//*получаем Id из урла
 
 console.log(id);*//*
 

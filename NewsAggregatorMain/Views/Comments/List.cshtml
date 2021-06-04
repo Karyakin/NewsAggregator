@@ -16,7 +16,7 @@
     </div>
     <hr />
 
-    <form asp-controller="Comments" asp-action="Create" method="post" class="row">
+    <div class="row">
         <input type="hidden" id="newsId" name="newsId" value="@Model.NewsId" />
         <div class="col-sm-12">
             <label for="commentText">Write comment:</label>
@@ -24,9 +24,9 @@
         </div>
 
         <div class="col-sm-12">
-            <button class="btn btn-primary write-comment-btn" id="create-comment-btn">Submit</button>
+            <button class="btn btn-primary write-comment-btn" id="create-comment-btn" @*onclick="createComment()*@">Submit</button>
         </div>
-    </form>
+    </div>
 
 </div>
 

@@ -45,7 +45,7 @@ namespace NewsAggregatorMain.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Create(CreateCommentDto createComment)
+        public async Task<IActionResult> Create([FromBody]CreateCommentDto createComment)
         {
             var user = HttpContext.User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimsIdentity.DefaultNameClaimType));
             var userEmail = user?.Value;

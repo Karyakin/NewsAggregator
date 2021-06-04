@@ -16,14 +16,17 @@
 
 
 <div class="row ">
-    <button id="comments-display-switcher" class="btn btn-primary col-sm-12" 
-            onclick="toggleComments('@Model.Id')">Display comments</button>@* onclick="toggleComments('@Model.Id')- так мы передаем в файл джава скрипт айдишник коментария*@
+    <button id="comments-display-switcher" class="btn btn-primary col-sm-12" onclick="toggleComments('@Model.Id')">Display comments</button>
     <div class="container">
         <div id="comments-container" class="row">
+            @*@foreach (var comment in Model.Comments)
+                {
+                    @await Html.PartialAsync("CommentPartial", comment)
+                }*@
         </div>
     </div>
-
 </div>
+
 <div>
     <a asp-controller="News" asp-action="Index" asp-route-sourseId="@Model.Id">News</a> |
     <a asp-action="Index">Back to List</a> |

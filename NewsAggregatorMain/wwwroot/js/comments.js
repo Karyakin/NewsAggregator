@@ -1,6 +1,4 @@
-﻿
-
-let commentsDisplaySwitcherElement = document.getElementById('comments-display-switcher');
+﻿let commentsDisplaySwitcherElement = document.getElementById('comments-display-switcher');
 
 commentsDisplaySwitcherElement.onmouseover = function () {
     commentsDisplaySwitcherElement.className = commentsDisplaySwitcherElement.className.replace('btn-primary', 'btn-info');
@@ -19,7 +17,10 @@ commentsDisplaySwitcherElement.onmouseup = function () {
 }
 let isCommentsDisplayed = false;
 
+let idFor;
+
 function toggleComments(newsId) {
+    idFor = newsId;
     if (commentsDisplaySwitcherElement != null) {
         if (isCommentsDisplayed == true) {
             commentsDisplaySwitcherElement.innerHTML = 'Display comments';
@@ -28,7 +29,8 @@ function toggleComments(newsId) {
             commentsDisplaySwitcherElement.innerHTML = 'Hide comments';
             let commentsContainer = document.getElementById('comments-container');
             loadComments(newsId, commentsContainer);
-
+            let commentsArea = document.getElementById('comments-area');
+            inputArea(commentsArea);
         }
         isCommentsDisplayed = !isCommentsDisplayed;
     }
@@ -69,17 +71,13 @@ function validateCommentData() {
 function createComment() {
 
     let commentText = document.getElementById('commentText').value;
-    let newsId = document.getElementById('newsId').value;
+    let newsId = idFor; /*document.getElementById('idFor').value;*/
 
     validateCommentData();
 
     var postRequest = new XMLHttpRequest();
     postRequest.open("POST", '/Comments/Create', true);
     postRequest.setRequestHeader('Content-Type', 'application/json');
-
-    //let requestData = new {
-    //    commentText: commentText
-    //}
 
     postRequest.send(JSON.stringify({
         commentText: commentText,
@@ -89,17 +87,42 @@ function createComment() {
     postRequest.onload = function () {
         if (postRequest.status >= 200 && postRequest.status < 400) {
             document.getElementById('commentText').value = '';
-
             //commentsContainer.innerHTML += '';
-
             loadComments(newsId);
         }
     }
+   
+
+    alert('Коментарий успешно добавлен.');
+    updateComments();
 }
 
+
+function inputArea(commentsArea) {
+    let request = new XMLHttpRequest();
+    request.open('GET', `/Comments/InputCommentArea`, true);
+    request.onload = function () {
+            let resp = request.responseText;
+        commentsArea.innerHTML = resp;
+    }
+    request.send();
+}
+
+
 var getCommentsIntervalId = setInterval(function () {
-    loadComments(newsId);
-}, 15000);
+
+    let commentsContainer = document.getElementById('comments-container');
+    loadComments(idFor, commentsContainer);
+}, 10000);
+
+
+function updateComments() {
+    let commentsContainer = document.getElementById('comments-container');
+    loadComments(idFor, commentsContainer);
+}
+
+
+
 
 
 

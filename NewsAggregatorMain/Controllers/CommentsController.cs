@@ -64,5 +64,14 @@ namespace NewsAggregatorMain.Controllers
             await _unitOfWork.SaveAsync();
             return Ok();
         }
+
+
+        [HttpGet]
+        public IActionResult InputCommentArea()
+        {
+            return View();
+        }
+
+        
     }
 }

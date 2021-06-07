@@ -83,4 +83,19 @@ body {
     margin-top: 10px;
     margin-bottom:10px;
 }
+input.input-validation-error:focus {
+    border: 2px solid red;
+    outline: none;
+}
+.input-validation-error {
+    border: 1px solid red !important;
+    /*10000*/
+}
+
+.input-comment-area {
+    margin-top: 20px;
+    background-color: cadetblue;
+}
+
+
 

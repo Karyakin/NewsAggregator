@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 
 namespace Contracts.ServicesInterfacaces
 {
-   public interface ICommentService
+    public interface ICommentService
     {
         Task<IEnumerable<Comment>> FindAllCommentsForNews(Guid newsId);
         void CreateComment(Comment comment);
+        void DeleteComment(Comment comment);
+        Task<Comment> GetCommentById(Guid commentID);
     }
 }

@@ -33,7 +33,7 @@ namespace NewsAggregatorMain.Controllers
         {
             var commentsListEnt = await _commentService.FindAllCommentsForNews(newsId);
             var commentsListDto = _mapper.Map<IEnumerable<CommentDto>>(commentsListEnt)
-                .OrderBy(x=>x.CreateDate);
+                .OrderBy(x => x.CreateDate);
 
 
             return View(new CreateCommentDto
@@ -45,7 +45,7 @@ namespace NewsAggregatorMain.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]CreateCommentDto createComment)
+        public async Task<IActionResult> Create([FromBody] CreateCommentDto createComment)
         {
             var user = HttpContext.User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimsIdentity.DefaultNameClaimType));
             var userEmail = user?.Value;
@@ -53,7 +53,7 @@ namespace NewsAggregatorMain.Controllers
 
             var comment = new Comment
             {
-                Id= Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 NewsId = createComment.NewsId,
                 Text = createComment.CommentText,
                 CreateDate = DateTime.Now,
@@ -72,6 +72,15 @@ namespace NewsAggregatorMain.Controllers
             return View();
         }
 
-        
+        [HttpGet]
+        public async Task<IActionResult> DeleteComment(Guid commentId)
+        {
+            var comment = await _commentService.GetCommentById(commentId);
+            _commentService.DeleteComment(comment);
+            await _unitOfWork.SaveAsync();
+            return Ok();
+        }
+
+
     }
 }

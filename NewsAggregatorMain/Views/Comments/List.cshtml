@@ -11,23 +11,35 @@
         @foreach (var comment in Model.Comments)
         {
             @await Html.PartialAsync("Comment", comment)
+
+
+
+            @if (User.Claims.Any(x => x.Value.Contains("Admin")))
+            {
+                <div class="row">
+                    <input type="hidden" id="commentId" name="commentId" value="@comment.Id" />
+                    <div class="col-sm-12">
+                        <button class="btn btn-primary delete-comment-btn" id="delete-comment-btn" onclick="deleteComment('@comment.Id')">Delete comment</button>
+                    </div>
+                </div>
+            }
         }
+
+
 
     </div>
     <hr />
 </div>
 
-    <!--<div class="row">
-        <input type="hidden" id="newsId" name="newsId" value="@Model.NewsId" />
-        <div class="col-sm-12">
-            <label for="commentText">Write comment:</label>
-            <textarea name="commentText" class="form-control" id="commentText" rows="3"></textarea>
-        </div>
+<!--<div class="row">
+    <input type="hidden" id="newsId" name="newsId" value="@Model.NewsId" />
+    <div class="col-sm-12">
+        <label for="commentText">Write comment:</label>
+        <textarea name="commentText" class="form-control" id="commentText" rows="3"></textarea>
+    </div>
 
-        <div class="col-sm-12">
-            <button class="btn btn-primary write-comment-btn" id="create-comment-btn"--> @*onclick="createComment()*@<!--">Submit</button>
-        </div>
-    </div>-->
-
-
-     @*    @await Html.PartialAsync("CreateCommentPartial")*@
+    <div class="col-sm-12">
+        <button class="btn btn-primary write-comment-btn" id="create-comment-btn">Submit</button>
+    </div>
+</div>-->
+@*    @await Html.PartialAsync("CreateCommentPartial")*@

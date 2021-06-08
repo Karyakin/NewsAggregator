@@ -19,6 +19,7 @@ namespace Contracts.ServicesInterfacaces
         Task<User> GetUserByLogin(string login);
         Task<User> GetUserWithDetails(string login);
         Task<IEnumerable<User>> GetAllUsersWithPhoneROleMail();
+        Task<IEnumerable<User>> GetAllUsers();
 
 
 

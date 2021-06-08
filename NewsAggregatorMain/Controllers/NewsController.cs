@@ -125,14 +125,7 @@ namespace NewsAggregatorMain.Controllers
 
         }
 
-        /* public async Task<IActionResult> ReadInAgregator(NewsGetDTO newsGetDTO)
-         {
-             var newsWithDetails = await _newsService.GetNewsBiId(newsGetDTO.Id);
-
-
-             return View(newsWithDetails);
-
-         }*/// рабочий
+       
 
         public async Task<IActionResult> ReadInAgregator(NewsGetDTO newsWithCommentsDTO)
         {

@@ -1,0 +1,54 @@
+﻿using Contracts.ServicesInterfacaces;
+using Entities.Entity.NewsEnt;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Serilog;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace NewsAgregator.WebAPI.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class RssSourseController : ControllerBase
+    {
+        private readonly IRssSourceService _rssSourceService;
+        public RssSourseController(IRssSourceService rssSourceService)
+        {
+            _rssSourceService = rssSourceService;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(Guid id)
+        {
+            var rssSourse = await _rssSourceService.RssSourceById(id);
+
+            if (rssSourse is null)
+            {
+                Log.Error("user not found");
+                return BadRequest("user not found");
+            }
+
+            return Ok(rssSourse);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get(string name, string url)
+        {
+            var sources = await _rssSourceService.GetAllRssSourceAsync(false);
+            //todo must be in service
+            if (!string.IsNullOrEmpty(name))
+            {
+                sources = sources.Where(dto => dto.Name.Contains(name));
+            }
+            if (!string.IsNullOrEmpty(url))
+            {
+                sources = sources.Where(dto => dto.Url.Contains(url));
+            }
+            //
+            return Ok(sources);
+        }
+    }
+}

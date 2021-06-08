@@ -155,5 +155,8 @@ namespace Services
 
             return user;
         }
+
+        public async Task<IEnumerable<User>> GetAllUsers() => await _unitOfWork.User.GetAll(false).ToListAsync();
+        
     }
 }

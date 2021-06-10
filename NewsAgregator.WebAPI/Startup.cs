@@ -2,6 +2,7 @@ using Contracts.RepositoryInterfaces;
 using Contracts.ServicesInterfacaces;
 using Contracts.UnitOfWorkInterface;
 using Entities.DataTransferObject;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using NewsAgregato.DAL.CQRS.QueryHendlers;
 using Repositories.CommentRepo;
 using Repositories.Context;
 using Repositories.CountryRepo;
@@ -19,9 +21,11 @@ using Repositories.NewsRep;
 using Repositories.UnitOfWorkRepository;
 using Services;
 using Services.Parsers;
+using Services.SQRS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
@@ -48,9 +52,10 @@ namespace NewsAgregator.WebAPI
 
             services.AddControllersWithViews();
             services.AddScoped<IUnitOfWork, RepositoryUnitOfWork>();
-            services.AddScoped<INewsService, NewsService>();
+            /*services.AddScoped<INewsService, NewsService>();*/
             services.AddScoped<IRssSourceService, RssSourceService>();
-            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IRssSourceService, CQSRssSourceService>();
+            /*services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICountryService, CountryService>();
             services.AddScoped<ICityService, CityService>();
@@ -65,11 +70,17 @@ namespace NewsAgregator.WebAPI
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
-            services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();*/
 
 
-            services.AddScoped<TutByParser>(); //внедрение без привязки к родитель(альтернатива)
-            services.AddScoped<OnlinerParser>();//внедрение без привязки к родитель(альтернатива)
+           
+
+            /* services.AddMediatR(typeof(GetRssSourseByIdQueryHendler).GetTypeInfo().Assembly);
+             services.AddMediatR(typeof(GetRssSourseByNameAndUrlHendler).GetTypeInfo().Assembly);*/
+
+            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(GetRssSourseByIdQueryHendler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(GetRssSourseByNameAndUrlHendler).GetTypeInfo().Assembly);
 
 
             services.AddControllers().AddJsonOptions(x =>x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);

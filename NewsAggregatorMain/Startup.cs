@@ -11,7 +11,6 @@ using Repositories.Context;
 using Contracts.ServicesInterfacaces;
 using Services;
 using Services.Parsers;
-using Contracts.ParseInterface;
 using NewsAggregatorMain.Filters;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
@@ -21,6 +20,9 @@ using Repositories.CountryRepo;
 using Microsoft.AspNetCore.Authorization;
 using NewsAggregatorMain.AuthorizationPolicies;
 using Repositories.CommentRepo;
+using NewsAgregato.DAL.CQRS.QueryHendlers;
+using System.Reflection;
+using MediatR;
 
 /*cd C:\Users\d.karyakin\Desktop\NewsAggregator\RepositoryBase*/
 
@@ -52,6 +54,8 @@ namespace NewsAggregatorMain
                     x => x.MigrationsAssembly(typeof(NewsDataContext).Assembly.FullName));
             });
 
+           
+
             services.AddControllersWithViews();
             services.AddScoped<IUnitOfWork, RepositoryUnitOfWork>();
             services.AddScoped<INewsService, NewsService>();
@@ -78,6 +82,9 @@ namespace NewsAggregatorMain
             services.AddScoped<OnlinerParser>();//внедрение без привязки к родитель(альтернатива)
             //services.AddScoped<IOnlinerParser, OnlinerParser>();
             //services.AddScoped<ITutByParser, TutByParser>(); 
+
+
+            services.AddMediatR(typeof(GetRssSourseByIdQueryHendler).GetTypeInfo().Assembly);
 
             services.AddControllersWithViews()
                 .AddMvcOptions(opt =>

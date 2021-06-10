@@ -13,7 +13,7 @@ namespace NewsAgregator.WebAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userService;
+       /* private readonly IUserService _userService;
         public UserController(IUserService userService )
         {
             _userService = userService;
@@ -54,69 +54,8 @@ namespace NewsAgregator.WebAPI.Controllers
             }
 
             return Ok(users);
-        }
-
-       /* [HttpGet]
-        public async Task<IActionResult> Get(string login, string name*//*, Guid id*//*)
-        {
-            var users = await _userService.GetAllUsers();
-
-
-            if (!string.IsNullOrEmpty(login))
-            {
-                users = users.Where(x => x.Login.Contains(login));
-            }
-
-            if (!string.IsNullOrEmpty(name))
-            {
-                users = users.Where(x => x.LastName.Contains(name));
-            }
-
-            return Ok(users);
-        }
-*/
-
-        /* [HttpGet]
-         public async Task<IActionResult> GetAll()
-         {
-             var users = await _userService.GetAllUsersWithPhoneROleMail();
-             if (users is null)
-             {
-                 Log.Error("News not found");
-                 return BadRequest("News not found");
-             }
-
-             return Ok(users);
-         }*/
-
-
-       /* [HttpPost]
-        public async Task<IActionResult> Updete()
-        {
-
-            return Ok();
-        }
-
-        [HttpPatch]
-        public async Task<IActionResult> UpdeteEnt()
-        {
-
-            return Ok();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create()
-        {
-
-
-            return Ok();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Delete()
-        {
-
-            return Ok();
         }*/
+
+       
     }
 }

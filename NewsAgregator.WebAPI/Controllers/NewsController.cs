@@ -20,6 +20,10 @@ namespace NewsAgregator.WebAPI.Controllers
             _newsService = newsService;
         }
 
+
+
+
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOne(Guid id)
         {
@@ -47,35 +51,7 @@ namespace NewsAgregator.WebAPI.Controllers
             return Ok(news);
         }
 
-      /*
-        [HttpPost]
-        public async Task<IActionResult> Updete()
-        {
-           
-            return Ok();
-        }
 
-        [HttpPatch]
-        public async Task<IActionResult> UpdeteEnt()
-        {
-
-            return Ok();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create()
-        {
-            
-
-            return Ok();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Delete()
-        {
-
-            return Ok();
-        }*/
-
+        
     }
 }

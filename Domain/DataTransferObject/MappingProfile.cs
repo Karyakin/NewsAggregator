@@ -23,6 +23,8 @@ namespace Entities.DataTransferObject
             CreateMap<RssSource, RssSourceDto>().ReverseMap();
             CreateMap<RssSource, RssSourceModel>().ReverseMap();
 
+            CreateMap<RssSourceDto, RssSourceModel>().ReverseMap();
+
             CreateMap<RssSourceModel, RssSource>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(s => Guid.NewGuid()));
 

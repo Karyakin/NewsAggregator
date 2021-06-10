@@ -44,7 +44,7 @@ namespace NewsAggregatorMain.Controllers
                 return NotFound();
             }
 
-            var sourse = await _rssSourceService.RssSourceById(id);
+            var sourse = await _rssSourceService.GetRssSourceById(id);
           
 
             if (sourse == null)

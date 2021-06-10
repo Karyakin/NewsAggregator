@@ -21,7 +21,7 @@ namespace Repositories.Context
         private DbSet<Role> Roles { get; set; }
         private DbSet<Photo> Photos { get; set; }
         private DbSet<Author> Authors { get; set; }
-        private DbSet<RssSource> RssSource { get; set; }
+        public DbSet<RssSource> RssSource { get; set; }
         private DbSet<Category> Categories { get; set; }
         private DbSet<Comment> Comments { get; set; }
         private DbSet<News> News { get; set; }

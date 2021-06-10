@@ -20,13 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\Entities.csproj" />
-    <ProjectReference Include="..\NewsServices\Services.csproj" />
-    <ProjectReference Include="..\RepositoriesInterfaces\Contracts.csproj" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <ProjectReference Include="..\RepositoriesInterfaces\Contracts.csproj" />
   </ItemGroup>
 
 </Project>

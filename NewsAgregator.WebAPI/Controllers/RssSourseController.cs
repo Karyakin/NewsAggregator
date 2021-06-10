@@ -1,5 +1,7 @@
 ﻿using Contracts.ServicesInterfacaces;
 using Entities.Entity.NewsEnt;
+using Entities.Models;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -15,6 +17,7 @@ namespace NewsAgregator.WebAPI.Controllers
     public class RssSourseController : ControllerBase
     {
         private readonly IRssSourceService _rssSourceService;
+
         public RssSourseController(IRssSourceService rssSourceService)
         {
             _rssSourceService = rssSourceService;
@@ -23,7 +26,7 @@ namespace NewsAgregator.WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            var rssSourse = await _rssSourceService.RssSourceById(id);
+            var rssSourse = await _rssSourceService.GetRssSourceById(id);
 
             if (rssSourse is null)
             {
@@ -37,18 +40,29 @@ namespace NewsAgregator.WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(string name, string url)
         {
-            var sources = await _rssSourceService.GetAllRssSourceAsync(false);
-            //todo must be in service
-            if (!string.IsNullOrEmpty(name))
-            {
-                sources = sources.Where(dto => dto.Name.Contains(name));
-            }
-            if (!string.IsNullOrEmpty(url))
-            {
-                sources = sources.Where(dto => dto.Url.Contains(url));
-            }
-            //
+            var sources = await _rssSourceService.RssSourceByNameAndUrl(name, url);
+
+            /* if (!string.IsNullOrEmpty(name))
+             {
+                 sources = sources.Where(dto => dto.Name.Contains(name));
+             }
+             if (!string.IsNullOrEmpty(url))
+             {
+                 sources = sources.Where(dto => dto.Url.Contains(url));
+             }
+             //*/
             return Ok(sources);
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Post(RssSourceModel rssSourceModel)
+        {
+           /* var rssSourseModel = new RssSourceModel();*/
+            await _rssSourceService.CreateOneRssSource(rssSourceModel);
+
+            return Ok();
+        }
     }
+
 }

@@ -17,10 +17,10 @@ namespace Contracts.ServicesInterfacaces
     {
         Task<IEnumerable<RssSourceModel>> GetAllRssSourceAsync(bool trackChanges);
         Task CreateOneRssSource(RssSourceModel rssSourceModel);
-        Task CreateManyRssSource(IEnumerable<RssSource> rssSource);
+     
 
-        Task<RssSourceModel> RssSourceById(Guid? rssSourceId);
+        Task<RssSourceModel> GetRssSourceById(Guid? rssSourceId);
         Task<SourseWithNewsCategory> RssSourceByIdWithNews(Guid? rssSourceId);
-        Task<RssSource> RssSourceByName(string rssSourceName);
+        Task<IEnumerable<RssSourceModel>> RssSourceByNameAndUrl(string name, string url);
     }
 }

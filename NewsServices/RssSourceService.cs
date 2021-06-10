@@ -1,19 +1,17 @@
 ﻿using AutoMapper;
 using Contracts.ServicesInterfacaces;
 using Contracts.UnitOfWorkInterface;
-using Entities.DataTransferObject;
 using Entities.Entity.NewsEnt;
 using Entities.Models;
 using Entities.Models.AssembledModel;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using NewsAgregato.DAL.CQRS.Queries;
 using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.ServiceModel.Syndication;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
 
 namespace Services
 {
@@ -22,18 +20,15 @@ namespace Services
 
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public RssSourceService(IUnitOfWork unitOfWork, IMapper mapper)
+        public RssSourceService(IUnitOfWork unitOfWork, IMapper mapper, IMediator mediator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _mediator = mediator;
         }
-        public async Task CreateManyRssSource(IEnumerable<RssSource> rssSource)
-        {
-            _unitOfWork.RssSource.AddRange(rssSource);
-            await _unitOfWork.SaveAsync();
-        }
-
+      
         public async Task CreateOneRssSource(RssSourceModel rssSourceModel)
         {
 
@@ -64,12 +59,26 @@ namespace Services
 
         }
 
-        public async Task<RssSourceModel> RssSourceById(Guid? rssSourceId)
+        public async Task<RssSourceModel> GetRssSourceById(Guid? rssSourceId)
         {
-            var rssmodel = await _unitOfWork.RssSource.GetById(rssSourceId.Value, false);
-            var res = _mapper.Map<RssSourceModel>(rssmodel);
+            var rssSourseQuery = new GetRssSourseByIdQuery(rssSourceId.Value);
+
+           var rssSourseDto= await _mediator.Send(rssSourseQuery);
+
+
+          /*  var rssmodel = await _unitOfWork.RssSource.GetById(rssSourceId.Value, false);*/
+            var res = _mapper.Map<RssSourceModel>(rssSourseDto);
             return res;
         }
+
+        public async Task<IEnumerable<RssSourceModel>> RssSourceByNameAndUrl(string name, string url)
+        {
+            var rssSourseQuery = new GetRssSourseByNameAndUrlQuery(name, url);
+            var rssSourseDto = await _mediator.Send(rssSourseQuery);
+            var res = _mapper.Map<IEnumerable<RssSourceModel>>( rssSourseDto);
+            return res;
+        }
+    
 
         public async Task<SourseWithNewsCategory> RssSourceByIdWithNews(Guid? rssSourceId)
         {
@@ -89,10 +98,5 @@ namespace Services
             return rssSourceWithNews;
         }
 
-        public async Task<RssSource> RssSourceByName(string rssSourceName)
-        {
-            //   await _wrapper.RssSource.FindRssSourceByName(rssSourceName);
-            return null;
-        }
     }
 }

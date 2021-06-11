@@ -98,5 +98,9 @@ namespace Services
             return rssSourceWithNews;
         }
 
+        public Task<int> DeleteRssSourse(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

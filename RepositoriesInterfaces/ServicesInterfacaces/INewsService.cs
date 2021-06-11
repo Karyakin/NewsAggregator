@@ -22,6 +22,7 @@ namespace Contracts.ServicesInterfacaces
         Task<NewsGetDTO> GetNewsBiId(Guid? newsId);
         Task<IEnumerable<NewsInfoFromRssSourseDto>> GetNewsInfoFromRssSourse(RssSourceModel rssSourceDto);
 
+        Task Aggregate();
         Task<NewsInfoFromRssSourseDto> Delete();
         Task SaveAsync();
         void Save();

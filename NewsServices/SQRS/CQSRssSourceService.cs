@@ -49,6 +49,13 @@ namespace Services.SQRS
             return res;
         }
 
+        public async Task<int> DeleteRssSourse(Guid id)
+        {
+
+            var rssSourseCommand = new DeleteRssSourseCommand(id);
+            var res = await _mediator.Send(rssSourseCommand);
+            return res;
+        }
       
         public async Task CreateOneRssSource(RssSourceModel rssSourceModel)
         {
@@ -82,6 +89,5 @@ namespace Services.SQRS
             throw new NotImplementedException();
         }
 
-       
     }
 }

@@ -63,6 +63,23 @@ namespace NewsAgregator.WebAPI.Controllers
 
             return Ok();
         }
+
+        /*   [HttpGet("empcomp/{companyId}")]*/
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Post(Guid id)
+        {
+            var rssSourseModel = await _rssSourceService.GetRssSourceById(id);
+             
+            if (rssSourseModel is null)
+            {
+                Log.Error($"Can't find rss sourse by id - {id}");
+                return BadRequest($"Can't find rss sourse by id - {id}");
+            }
+
+            var res = await _rssSourceService.DeleteRssSourse(id);
+
+            return Ok($"Rss Sourse \"{rssSourseModel.Name}\" was successfully deleted");
+        }
     }
 
 }

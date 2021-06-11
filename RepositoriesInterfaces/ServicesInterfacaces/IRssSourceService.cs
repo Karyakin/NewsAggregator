@@ -22,5 +22,7 @@ namespace Contracts.ServicesInterfacaces
         Task<RssSourceModel> GetRssSourceById(Guid? rssSourceId);
         Task<SourseWithNewsCategory> RssSourceByIdWithNews(Guid? rssSourceId);
         Task<IEnumerable<RssSourceModel>> RssSourceByNameAndUrl(string name, string url);
+
+        Task<int> DeleteRssSourse(Guid id);
     }
 }

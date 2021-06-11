@@ -38,6 +38,11 @@ namespace Services
             _onlinerParser = onlinerParser;
         }
 
+        public Task Aggregate()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task CreateManyNewsAsync(IEnumerable<NewsInfoFromRssSourseDto> newsInfoFromRssSourseDtos)
         {
             try
@@ -148,7 +153,6 @@ namespace Services
                                     {
                                         lastText = await _onlinerParser.Parse(syndicationItem);
                                     }
-
 
                                     var newsDto = new NewsInfoFromRssSourseDto()
                                     {

@@ -9,6 +9,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using NewsAgregato.DAL.CQRS.Commands;
 using NewsAgregato.DAL.CQRS.Queries;
+using NewsAgregato.DAL.CQRS.QueryHendlers;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -70,13 +71,11 @@ namespace Services.SQRS
             /*var chengedCount = */await _mediator.Send(addRssSourseCommand);
         }
 
-
-
-
-
-        public Task<IEnumerable<RssSourceModel>> GetAllRssSourceAsync(bool trackChanges)
+        public async Task<IEnumerable<RssSourceModel>> GetAllRssSourceAsync(bool trackChanges)
         {
-            throw new NotImplementedException();
+            var rssSourseQuery = new GetAllRssSourseQuery();
+            var rssSourseDto = await _mediator.Send(rssSourseQuery);
+            return rssSourseDto;
         }
 
         public Task<SourseWithNewsCategory> RssSourceByIdWithNews(Guid? rssSourceId)

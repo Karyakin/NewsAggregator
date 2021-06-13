@@ -7,13 +7,17 @@ using Entities.DataTransferObject;
 using Entities.Entity.NewsEnt;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Serilog;
 using Services.Parsers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.ServiceModel.Syndication;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -26,22 +30,40 @@ namespace Services
         private readonly ICategoryService _categoryService;
         private readonly TutByParser _tutByParser;//Иная записть. Без интерфейса и применения базового типа. При такой записи нужно менять внедрение в Sturtup
         private readonly OnlinerParser _onlinerParser; //Иная записть. Без интерфейса и базового типа. При такой записи нужно менять внедрение в Sturtup
+        private readonly IRssSourceService _rssSourceService;
         /*private readonly ITutByParser _tutByParser;
         private readonly IOnlinerParser _onlinerParser;*/
 
-        public NewsService(IUnitOfWork wrapper, IMapper mapper, ICategoryService categoryService, TutByParser tutByParser, OnlinerParser onlinerParser)
+        public NewsService(IUnitOfWork wrapper, IMapper mapper, ICategoryService categoryService, IRssSourceService rssSourceService, TutByParser tutByParser, OnlinerParser onlinerParser)
         {
             _unitOfWork = wrapper;
             _mapper = mapper;
             _categoryService = categoryService;
+            _rssSourceService = rssSourceService;
             _tutByParser = tutByParser;
             _onlinerParser = onlinerParser;
         }
 
-        public Task Aggregate()
+        public async Task Aggregate()
         {
-            throw new NotImplementedException();
+
+            var rsssouses = await _rssSourceService.GetAllRssSourceAsync(false);
+            var newInfos = new List<NewsInfoFromRssSourseDto>(); // without any duplicate
+
+            foreach (var item in rsssouses)
+            {
+                if (/*item.Name.Equals("TUT.by") ||*/ item.Name.Equals("Onliner"))
+                {
+                    var newsList = await GetNewsInfoFromRssSourse(item);
+                    newInfos.AddRange(newsList);
+                }
+            };
+
+            await CreateManyNewsAsync(newInfos);
         }
+
+       
+
 
         public async Task CreateManyNewsAsync(IEnumerable<NewsInfoFromRssSourseDto> newsInfoFromRssSourseDtos)
         {
@@ -181,6 +203,64 @@ namespace Services
                 }
             }
             return news;
+        }
+
+        public async Task RateNews()
+        {
+            var newsText = "В связи с резким ростом числа случаев заболевания COVID-19 мэрия" +
+               " Москва продлила нерабочие дни с 15 по 19 июня включительно с сохранением заработной платы. " +
+               "Суточный показатель заражений по всей России за последнюю неделю вырос почти вдвое, до более чем 13,5 тыс человек. " +
+               "Предприятиям рекомендовано вернуть на удаленку как можно больше сотрудников, не прошедших вакцинацию.";
+
+            using (var httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders
+                    .Accept
+                    .Add(new MediaTypeWithQualityHeaderValue("application/json"));//ACCEPT header
+
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "http://api.ispras.ru/texterra/v1/nlp?targetType=lemma&apikey=8a31806eafe746700c6afb702dc087fb63d63e75")
+                {
+                    Content = new StringContent("[{\"text\":\"" + newsText + "\"}]",
+
+                        Encoding.UTF8,
+                        "application/json")
+                };
+                var response = await httpClient.SendAsync(request);
+
+                var responseString = await response.Content.ReadAsStringAsync();
+
+
+                string[] allwords = responseString.Split(' ');
+
+                var a = allwords.Last();
+                string[] words = a.Split("value");
+
+
+                var input = new List<string>()
+                       {
+
+                           "key1",
+                           "value1",
+                           "key2",
+                           "value2",
+                           "key3",
+                           "value3",
+                           "key4",
+                           "value4"
+                       };
+
+                var result = new List<KeyValuePair<string, string>>();
+
+                for (int index = 1; index < input.Count; index += 2)
+                {
+                    result.Add(new KeyValuePair<string, string>(input[index - 1], input[index]));
+                }
+
+
+              /*  var output = Enumerable.Range(0, input.Count / 2)
+                       .Select(i => Tuple.Create(input[i * 2], input[i * 2 + 1]))
+                       .ToList();*/
+            }
         }
 
         public void Save() => _unitOfWork.Save();

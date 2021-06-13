@@ -21,6 +21,8 @@ namespace Contracts.ServicesInterfacaces
         Task CreateManyNewsAsync(IEnumerable<NewsInfoFromRssSourseDto> news);
         Task<NewsGetDTO> GetNewsBiId(Guid? newsId);
         Task<IEnumerable<NewsInfoFromRssSourseDto>> GetNewsInfoFromRssSourse(RssSourceModel rssSourceDto);
+        public Task RateNews();
+
 
         Task Aggregate();
         Task<NewsInfoFromRssSourseDto> Delete();

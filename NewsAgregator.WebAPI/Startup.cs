@@ -55,12 +55,16 @@ namespace NewsAgregator.WebAPI
 
             services.AddControllersWithViews();
             services.AddScoped<IUnitOfWork, RepositoryUnitOfWork>();
-            /*services.AddScoped<INewsService, NewsService>();*/
-           /* services.AddScoped<INewsService, CQRSNewsService>();*/
+            services.AddScoped<INewsService, NewsService>();
+          /*  services.AddScoped<INewsService, CQRSNewsService>();*/
             services.AddScoped<IRssSourceService, RssSourceService>();
             services.AddScoped<IRssSourceService, CQSRssSourceService>();
-            /*services.AddScoped<ICategoryService, CategoryService>();
-            services.AddScoped<IUserService, UserService>();
+            /*  services.AddScoped<IUserService, CQRSUserService>();*/
+
+
+            services.AddScoped<ICategoryService, CategoryService>();
+
+
             services.AddScoped<ICountryService, CountryService>();
             services.AddScoped<ICityService, CityService>();
             services.AddScoped<IRoleService, RoleService>();
@@ -74,13 +78,15 @@ namespace NewsAgregator.WebAPI
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
-            services.AddScoped<ICommentRepository, CommentRepository>();*/
+            services.AddScoped<ICommentRepository, CommentRepository>();
 
 
 
+            services.AddScoped<TutByParser>(); //внедрение без привязки к родитель(альтернатива)
+            services.AddScoped<OnlinerParser>();//внедрение без привязки к родитель(альтернатива)
 
-            /* services.AddMediatR(typeof(GetRssSourseByIdQueryHendler).GetTypeInfo().Assembly);
-             services.AddMediatR(typeof(GetRssSourseByNameAndUrlHendler).GetTypeInfo().Assembly);*/
+            services.AddMediatR(typeof(GetRssSourseByIdQueryHendler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(GetRssSourseByNameAndUrlHendler).GetTypeInfo().Assembly);
 
 
             services.AddHangfire(conf => conf// для автоматического обновления новосте
@@ -129,12 +135,13 @@ namespace NewsAgregator.WebAPI
 
             app.UseHangfireDashboard();
             var newsService = serviceProvider.GetService(typeof(INewsService)) as INewsService;
-            var rssService = serviceProvider.GetService(typeof(IRssSourceService)) as IRssSourceService;
+            /* var rssService = serviceProvider.GetService(typeof(IRssSourceService)) as IRssSourceService;*/
+            /*
+                        RecurringJob.AddOrUpdate(() =>  rssService.GetAllRssSourceAsync(false), "0,15,30,45 * * * *"); */
 
-            RecurringJob.AddOrUpdate(() =>  rssService.GetAllRssSourceAsync(false), "0,15,30,45 * * * *"); 
-
-             /* RecurringJob.AddOrUpdate(() => newsService.Aggregate(), "0,15,30,45 * * * *");*/
-             RecurringJob.AddOrUpdate(() => Console.WriteLine("выполнилась джоба"), "0,17,20,30,45 * * * *");//crontab.guru
+           /* RecurringJob.AddOrUpdate(() => newsService.Aggregate(), "0,15,30,30 * * * *");*/
+            RecurringJob.AddOrUpdate(() => newsService.RateNews(), "0,15,30,30 * * * *");
+            RecurringJob.AddOrUpdate(() => Console.WriteLine("выполнилась джоба"), "0,17,20,30,45 * * * *");//crontab.guru
 
             app.UseHttpsRedirection();
 

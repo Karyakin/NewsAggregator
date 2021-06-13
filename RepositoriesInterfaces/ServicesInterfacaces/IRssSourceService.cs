@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Contracts.ServicesInterfacaces
-{
+{ 
 
     /// <summary>
     /// Сой вариант зависимостей и наследований

@@ -16,7 +16,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.ServiceModel.Syndication;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -37,23 +39,36 @@ namespace Services
             _newsService = newsService;
         }
 
-        public async Task Aggregate()
+        public async Task RateNews()
         {
-            var query = new GetAllRssSourseQuery();
-            var rssSourse = await _mediator.Send(query);
+            var newsText = "В связи с резким ростом числа случаев заболевания COVID-19 мэрия" +
+                " Москва продлила нерабочие дни с 15 по 19 июня включительно с сохранением заработной платы. " +
+                "Суточный показатель заражений по всей России за последнюю неделю вырос почти вдвое, до более чем 13,5 тыс человек. " +
+                "Предприятиям рекомендовано вернуть на удаленку как можно больше сотрудников, не прошедших вакцинацию.";
 
-
-            Parallel.ForEach(rssSourse, (sourse)=> _newsService.GetNewsInfoFromRssSourse(sourse));
-
-
-           /*  foreach (var item in rssSourse)
+            using (var httpClient = new HttpClient())
             {
-               await _newsService.GetNewsInfoFromRssSourse(item);
+                httpClient.DefaultRequestHeaders
+                    .Accept
+                    .Add(new MediaTypeWithQualityHeaderValue("application/json"));//ACCEPT header
 
-            }*/
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "http://api.ispras.ru/texterra/v1/nlp?targetType=lemma&apikey=8a31806eafe746700c6afb702dc087fb63d63e75")
+                {
+                    Content = new StringContent("[{\"text\":\"" + newsText + "\"}]",
+
+                        Encoding.UTF8,
+                        "application/json")
+                };
+                var response = await httpClient.SendAsync(request);
+
+                var responseString = await response.Content.ReadAsStringAsync();
+            }
+        }
 
 
-
+        public  Task Aggregate()
+        {
+            throw new NotImplementedException();
         }
 
         public Task CreateManyNewsAsync(IEnumerable<NewsInfoFromRssSourseDto> news)

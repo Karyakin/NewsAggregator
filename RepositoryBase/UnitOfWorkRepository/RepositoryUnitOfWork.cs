@@ -35,11 +35,25 @@ namespace Repositories.UnitOfWorkRepository
         private IEmailRepository _email;
         private IPhoneRepository _phone;
         private ICommentRepository _comment;
+        private IRateWorldRepository _rateWorld;
 
         public RepositoryUnitOfWork(NewsDataContext newsDataContextWrapper)
         {
             _newsDataContextWrapper = newsDataContextWrapper;
         }
+
+
+        public IRateWorldRepository RateWorld 
+        {
+            get
+            {
+                if (_rateWorld == null)
+                    _rateWorld = new RateWorldRepository(_newsDataContextWrapper);
+
+                return _rateWorld;
+            }
+        }
+
 
         public ICommentRepository Comment 
         {

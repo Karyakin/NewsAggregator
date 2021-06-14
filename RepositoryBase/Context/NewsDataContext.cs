@@ -25,6 +25,7 @@ namespace Repositories.Context
         private DbSet<Category> Categories { get; set; }
         private DbSet<Comment> Comments { get; set; }
         public DbSet<News> News { get; set; }
+        public DbSet<RateWorlds> RateWorlds { get; set; }
      
     }
 

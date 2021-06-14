@@ -8,11 +8,13 @@ using Entities.Entity.NewsEnt;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using Serilog;
 using Services.Parsers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -20,6 +22,7 @@ using System.ServiceModel.Syndication;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+
 
 namespace Services
 {
@@ -61,9 +64,6 @@ namespace Services
 
             await CreateManyNewsAsync(newInfos);
         }
-
-       
-
 
         public async Task CreateManyNewsAsync(IEnumerable<NewsInfoFromRssSourseDto> newsInfoFromRssSourseDtos)
         {
@@ -169,7 +169,7 @@ namespace Services
 
                                     if (rssSourceModel.Name.Equals("TUT.by"))
                                     {
-                                         lastText = await _tutByParser.Parse(syndicationItem);
+                                        lastText = await _tutByParser.Parse(syndicationItem);
                                     }
                                     else if (rssSourceModel.Name.Equals("Onliner"))
                                     {
@@ -183,7 +183,7 @@ namespace Services
                                         Url = syndicationItem.Id,
                                         Title = syndicationItem.Title.Text,
                                         Summary = document.DocumentElement.TextContent, //syndicationItem.Summary.Text, //clean from html(?)
-                                        Authors = syndicationItem.Authors.Select(x=>x.Name),
+                                        Authors = syndicationItem.Authors.Select(x => x.Name),
                                         Body = lastText,
                                         CategoryId = (await _categoryService.FindCategoryByName(categoryName))?.Id
                                     };
@@ -205,65 +205,97 @@ namespace Services
             return news;
         }
 
+        public void Save() => _unitOfWork.Save();
+        public Task SaveAsync() => _unitOfWork.SaveAsync();
+
         public async Task RateNews()
         {
-            var newsText = "В связи с резким ростом числа случаев заболевания COVID-19 мэрия" +
-               " Москва продлила нерабочие дни с 15 по 19 июня включительно с сохранением заработной платы. " +
-               "Суточный показатель заражений по всей России за последнюю неделю вырос почти вдвое, до более чем 13,5 тыс человек. " +
-               "Предприятиям рекомендовано вернуть на удаленку как можно больше сотрудников, не прошедших вакцинацию.";
+           var rateWorld = _unitOfWork.RateWorld.GetAll(false).ToArray();
 
-            using (var httpClient = new HttpClient())
+            var allNews = (await FindAllNews()).ToArray();
+
+            string myNews = "счастье хорошо жить ура любовь";
+            for (int i = 0; i < 29; i++)
             {
-                httpClient.DefaultRequestHeaders
-                    .Accept
-                    .Add(new MediaTypeWithQualityHeaderValue("application/json"));//ACCEPT header
-
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "http://api.ispras.ru/texterra/v1/nlp?targetType=lemma&apikey=8a31806eafe746700c6afb702dc087fb63d63e75")
+                using (var httpClient = new HttpClient())
                 {
-                    Content = new StringContent("[{\"text\":\"" + newsText + "\"}]",
+                    httpClient.DefaultRequestHeaders
+                        .Accept
+                        .Add(new MediaTypeWithQualityHeaderValue("application/json"));//ACCEPT header
 
-                        Encoding.UTF8,
-                        "application/json")
-                };
-                var response = await httpClient.SendAsync(request);
+                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "http://api.ispras.ru/texterra/v1/nlp?targetType=lemma&apikey=8a31806eafe746700c6afb702dc087fb63d63e75")
+                    {
+                        Content = new StringContent("[{\"text\":\"" + myNews /*allNews[i].Summary*/ + "\"}]",
 
-                var responseString = await response.Content.ReadAsStringAsync();
+                            Encoding.UTF8,
+                            "application/json")
+                    };
+                    var response = await httpClient.SendAsync(request);
+                    var responseString = await response.Content.ReadAsStringAsync();
+
+                    List<string> worldsInNews = new List<string>();
+                    var model = JsonConvert.DeserializeObject<List<Root>>(responseString);
+
+                    foreach (var item in model)
+                    {
+                        var lemma = item.annotations.lemma;
+                        foreach (var lemmaItem in lemma)
+                        {
+
+                            worldsInNews.Add(lemmaItem.value);
+                        }
+                    }
+
+                    int rateForNews = 0;
+
+                    foreach (var worldInNews in worldsInNews)
+                    {
+                        for (int j = 0; j < rateWorld.Length-1; j++)
+                        {
+                            if (worldInNews.Equals(rateWorld[j]))
+                            {
+                                rateForNews = rateForNews + rateWorld[j].Value;
+                            }
+                        }
+                    }
 
 
-                string[] allwords = responseString.Split(' ');
+                   /* foreach (var world in worlds)
+                    {
+                        foreach (var rate in rateWorld)
+                        {
+                            if (rate.Name.Equals(world))
+                            {
+                                rateForNews += rate.Value;
+                            }
+                        }
+                    }*/
 
-                var a = allwords.Last();
-                string[] words = a.Split("value");
-
-
-                var input = new List<string>()
-                       {
-
-                           "key1",
-                           "value1",
-                           "key2",
-                           "value2",
-                           "key3",
-                           "value3",
-                           "key4",
-                           "value4"
-                       };
-
-                var result = new List<KeyValuePair<string, string>>();
-
-                for (int index = 1; index < input.Count; index += 2)
-                {
-                    result.Add(new KeyValuePair<string, string>(input[index - 1], input[index]));
                 }
 
-
-              /*  var output = Enumerable.Range(0, input.Count / 2)
-                       .Select(i => Tuple.Create(input[i * 2], input[i * 2 + 1]))
-                       .ToList();*/
+               /* var a = "C:/Users/d.karyakin/Desktop/NewsAggregator/NewsAgregator.WebAPI/newsrateworld.json";*/
             }
         }
 
-        public void Save() => _unitOfWork.Save();
-        public Task SaveAsync() => _unitOfWork.SaveAsync();
     }
+
+    #region Clase for serialazer json https://json2csharp.com/
+    public class Lemma
+    {
+        public int start { get; set; }
+        public int end { get; set; }
+        public string value { get; set; }
+    }
+
+    public class Annotations
+    {
+        public List<Lemma> lemma { get; set; }
+    }
+
+    public class Root
+    {
+        public string text { get; set; }
+        public Annotations annotations { get; set; }
+    }
+    #endregion
 }

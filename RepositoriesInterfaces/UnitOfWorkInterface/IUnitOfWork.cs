@@ -21,6 +21,7 @@ namespace Contracts.UnitOfWorkInterface
         public IPhoneRepository Phone { get; }
         public IEmailRepository Email{ get; }
         public ICommentRepository Comment{ get; }
+        public IRateWorldRepository RateWorld{ get; }
 
 
 

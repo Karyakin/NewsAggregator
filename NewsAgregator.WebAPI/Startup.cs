@@ -135,13 +135,11 @@ namespace NewsAgregator.WebAPI
 
             app.UseHangfireDashboard();
             var newsService = serviceProvider.GetService(typeof(INewsService)) as INewsService;
-            /* var rssService = serviceProvider.GetService(typeof(IRssSourceService)) as IRssSourceService;*/
-            /*
-                        RecurringJob.AddOrUpdate(() =>  rssService.GetAllRssSourceAsync(false), "0,15,30,45 * * * *"); */
 
-           /* RecurringJob.AddOrUpdate(() => newsService.Aggregate(), "0,15,30,30 * * * *");*/
-            RecurringJob.AddOrUpdate(() => newsService.RateNews(), "0,15,30,30 * * * *");
-            RecurringJob.AddOrUpdate(() => Console.WriteLine("выполнилась джоба"), "0,17,20,30,45 * * * *");//crontab.guru
+            /*https://crontab.guru/#*_*_*_*_**/
+            RecurringJob.AddOrUpdate(() => newsService.Aggregate(), "* 6,10,14,20,23 * * *");
+            RecurringJob.AddOrUpdate(() => newsService.RateNews(), "00 21,23,01,03 * * *");
+            /*RecurringJob.AddOrUpdate(() => Console.WriteLine("выполнилась джоба"), "0,17,20,30,45 * * * *");//crontab.guru*/
 
             app.UseHttpsRedirection();
 

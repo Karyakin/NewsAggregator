@@ -210,12 +210,14 @@ namespace Services
 
         public async Task RateNews()
         {
-           var rateWorld = _unitOfWork.RateWorld.GetAll(false).ToArray();
+            /*  string myNews = "счастье хорошо жить ура любовь";*/
+            var rateWorld = await _unitOfWork.RateWorld.GetAll(false).ToListAsync();
 
-            var allNews = (await FindAllNews()).ToArray();
+            var allNews = (await FindAllNews()).Where(date => date.EndDate is null).ToArray();
 
-            string myNews = "счастье хорошо жить ура любовь";
-            for (int i = 0; i < 29; i++)
+            int newsRating = 0;
+
+            for (int i = 0; i < 14; i++)
             {
                 using (var httpClient = new HttpClient())
                 {
@@ -223,9 +225,9 @@ namespace Services
                         .Accept
                         .Add(new MediaTypeWithQualityHeaderValue("application/json"));//ACCEPT header
 
-                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "http://api.ispras.ru/texterra/v1/nlp?targetType=lemma&apikey=8a31806eafe746700c6afb702dc087fb63d63e75")
+                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "http://api.ispras.ru/texterra/v1/nlp?targetType=lemma&apikey=c2d840e08cb29f30a623a3c3530d4152fd158188")
                     {
-                        Content = new StringContent("[{\"text\":\"" + myNews /*allNews[i].Summary*/ + "\"}]",
+                        Content = new StringContent("[{\"text\":\"" + /*myNews*/ allNews[i].Summary + "\"}]",
 
                             Encoding.UTF8,
                             "application/json")
@@ -233,50 +235,56 @@ namespace Services
                     var response = await httpClient.SendAsync(request);
                     var responseString = await response.Content.ReadAsStringAsync();
 
-                    List<string> worldsInNews = new List<string>();
-                    var model = JsonConvert.DeserializeObject<List<Root>>(responseString);
 
-                    foreach (var item in model)
+                    var model = JsonConvert.DeserializeObject<IEnumerable<Root>>(responseString);
+
+                    if (model is null)
                     {
-                        var lemma = item.annotations.lemma;
-                        foreach (var lemmaItem in lemma)
-                        {
-
-                            worldsInNews.Add(lemmaItem.value);
-                        }
+                        Log.Error("Impossible to get a response from the server \"http://api.ispras.ru/texterra\"");
+                        throw new ArgumentNullException("Impossible to get a response from the server \"http://api.ispras.ru/texterra\"");
                     }
 
-                    int rateForNews = 0;
-
-                    foreach (var worldInNews in worldsInNews)
-                    {
-                        for (int j = 0; j < rateWorld.Length-1; j++)
-                        {
-                            if (worldInNews.Equals(rateWorld[j]))
-                            {
-                                rateForNews = rateForNews + rateWorld[j].Value;
-                            }
-                        }
-                    }
-
-
-                   /* foreach (var world in worlds)
-                    {
-                        foreach (var rate in rateWorld)
-                        {
-                            if (rate.Name.Equals(world))
-                            {
-                                rateForNews += rate.Value;
-                            }
-                        }
-                    }*/
-
+                    newsRating =  GetNewsRating(model, rateWorld);
                 }
 
-               /* var a = "C:/Users/d.karyakin/Desktop/NewsAggregator/NewsAgregator.WebAPI/newsrateworld.json";*/
+                if (allNews[i].EndDate is null)
+                {
+                    allNews[i].Rating = newsRating;
+                    allNews[i].EndDate = DateTime.Now;
+                }
+
+                _unitOfWork.News.Update(_mapper.Map<News>(allNews[i]));
             }
+
+            await _unitOfWork.SaveAsync();
         }
 
+        public int GetNewsRating(IEnumerable<Root> model, IEnumerable<RateWorlds> rateWorlds)
+        {
+            List<string> worldsInNews = new List<string>();
+
+            int rateForNews = 0;
+            foreach (var item in model)
+            {
+                var lemma = item.annotations.lemma;
+                foreach (var lemmaItem in lemma)
+                {
+                    worldsInNews.Add(lemmaItem.value);
+                }
+            }
+
+            foreach (var rate in rateWorlds)
+            {
+                foreach (var world in worldsInNews)
+                {
+                    if (rate.Name == world)
+                    {
+                        rateForNews += rate.Value;
+                    }
+                }
+            }
+            return rateForNews;
+        }
     }
 
     #region Clase for serialazer json https://json2csharp.com/

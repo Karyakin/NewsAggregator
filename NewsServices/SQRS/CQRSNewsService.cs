@@ -10,6 +10,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using NewsAgregato.DAL.CQRS.Queries;
 using NewsAgregato.DAL.CQRS.QueryHendlers;
+using Newtonsoft.Json;
 using Serilog;
 using Services.Parsers;
 using System;
@@ -26,8 +27,6 @@ namespace Services
 {
     public class CQRSNewsService : INewsService
     {
-
-
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
         private readonly INewsService _newsService;
@@ -39,34 +38,12 @@ namespace Services
             _newsService = newsService;
         }
 
-        public async Task RateNews()
+        public Task RateNews()
         {
-            var newsText = "В связи с резким ростом числа случаев заболевания COVID-19 мэрия" +
-                " Москва продлила нерабочие дни с 15 по 19 июня включительно с сохранением заработной платы. " +
-                "Суточный показатель заражений по всей России за последнюю неделю вырос почти вдвое, до более чем 13,5 тыс человек. " +
-                "Предприятиям рекомендовано вернуть на удаленку как можно больше сотрудников, не прошедших вакцинацию.";
-
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders
-                    .Accept
-                    .Add(new MediaTypeWithQualityHeaderValue("application/json"));//ACCEPT header
-
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "http://api.ispras.ru/texterra/v1/nlp?targetType=lemma&apikey=8a31806eafe746700c6afb702dc087fb63d63e75")
-                {
-                    Content = new StringContent("[{\"text\":\"" + newsText + "\"}]",
-
-                        Encoding.UTF8,
-                        "application/json")
-                };
-                var response = await httpClient.SendAsync(request);
-
-                var responseString = await response.Content.ReadAsStringAsync();
-            }
+            throw new NotImplementedException();
         }
 
-
-        public  Task Aggregate()
+        public Task Aggregate()
         {
             throw new NotImplementedException();
         }
@@ -111,4 +88,4 @@ namespace Services
             throw new NotImplementedException();
         }
     }
-    }
+}

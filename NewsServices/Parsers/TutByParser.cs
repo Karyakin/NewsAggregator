@@ -1,4 +1,5 @@
 ﻿using Contracts.ParseInterface;
+using Entities.Entity.NewsEnt;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Services.Parsers
 {
    public class TutByParser : ITutByParser
     {
-        public async Task<string> Parse(SyndicationItem syndicationItem)
+        public async Task<NewStrings> Parse(SyndicationItem syndicationItem)
         {
             var httpClient = new HttpClient();
             var request = await httpClient.GetAsync(syndicationItem.Id);
@@ -31,8 +32,12 @@ namespace Services.Parsers
                .Replace("&nbsp;", " ")
                .Replace("&laquo;", " ")
                .Replace("&raquo;", " ");
-            
-            return lastText;
+
+            var fullNewsText = new NewStrings
+            {
+                ImageUrl = lastText,
+            };
+            return fullNewsText;
         }
     }
 }

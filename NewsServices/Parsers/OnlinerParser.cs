@@ -1,5 +1,6 @@
 ﻿using AngleSharp;
 using Contracts.ParseInterface;
+using Entities.Entity.NewsEnt;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
@@ -15,9 +16,9 @@ namespace Services
 {
     public class OnlinerParser : IOnlinerParser
     {
-        public async Task<string> Parse(SyndicationItem syndicationItem)
+        public async Task<NewStrings> Parse(SyndicationItem syndicationItem)
         {
-
+            /*List<string> newsList = new List<string>();*/
 
             var httpClient = new HttpClient();
             var request = await httpClient.GetAsync(syndicationItem.Id);
@@ -35,6 +36,7 @@ namespace Services
             int newsHendlerImageUrlEnd = newsHendlerImage.LastIndexOf(")");
 
             string imageUrl = newsHendlerImage.Substring(newsHendlerImageUrlStart + 1, newsHendlerImageUrlEnd - 1 - newsHendlerImageUrlStart);
+            
             imageUrl = imageUrl.Replace("'", "");
             var imageUrlTeg = $"<img loading=\"lazy\" class=\"alignnone size-820x5616 wp-image-867035 news-media__image\" src=\"{imageUrl}\">";
 
@@ -51,32 +53,13 @@ namespace Services
 
             string text = listGroup.Replace("class=\"news-text\">", "");
 
-            return text;
+            var fullNewsText = new NewStrings
+            {
+                ImageUrl = imageUrl,
+                NewsText = text
+            };
 
-            /*
-                        var html = @"https://auto.onliner.by/2021/04/27/v-minsk-privezli-trexdvernyj-land-rover-defender-90-za-korotysha-prosyat-1956-tysyachi-rublej";
-
-                        HtmlWeb web = new HtmlWeb();
-
-                        var htmlDoc = web.Load(html);
-
-                        var node = htmlDoc.DocumentNode.SelectSingleNode("//div[@class=\"news-reference\"]");
-
-                        HtmlNode node11 = node.ChildNodes[1];
-
-                        node11.Remove();
-
-
-
-
-
-                        return "";*/
-
-
-
-
-
-
+            return fullNewsText;
 
         }
     }

@@ -5,11 +5,20 @@
 
 
 <div class="card col-sm-12 col-md-6 col-lg-3 news-card ">
+
+   
+    <div>
+        <img src="@Model.HeadImgUrl" alt="Girl in a jacket" width="250" height="150"
+             style="        vertical-align: bottom; margin:20px 00px">
+    </div>
     <div class="card-body">
+
+
         <h5 class="card-title">@Model.Title</h5>
-        @*<h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>*@
+
+
         <p class="card-text">@Model.Content</p>
-        @*<a class="card-link" asp-action="Details" asp-route-id="@Model.Id">Читать на аггрегаторе</a>*@
+
         <a asp-action="ReadInAgregator" asp-route-Id="@Model.Id">Читать на агрегаторе</a>
         <br />
         <a href="@Model.Url">Читать в источнике</a>

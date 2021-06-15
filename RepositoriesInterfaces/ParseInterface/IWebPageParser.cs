@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities.Entity.NewsEnt;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.Syndication;
@@ -10,6 +11,6 @@ namespace Contracts.ParseInterface
    public interface IWebPageParser
 
     {
-        Task<string> Parse(SyndicationItem syndicationItem);
+        Task<NewStrings> Parse(SyndicationItem syndicationItem);
     }
 }

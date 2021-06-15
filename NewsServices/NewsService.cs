@@ -166,14 +166,17 @@ namespace Services
                                 if (!currentNewsUrls.Any(url => url.Equals(syndicationItem.Id)))
                                 {
                                     string lastText = null;
+                                    string imageUrl = null;
 
                                     if (rssSourceModel.Name.Equals("TUT.by"))
                                     {
-                                        lastText = await _tutByParser.Parse(syndicationItem);
+                                        lastText = (await _tutByParser.Parse(syndicationItem)).NewsText;
                                     }
                                     else if (rssSourceModel.Name.Equals("Onliner"))
                                     {
-                                        lastText = await _onlinerParser.Parse(syndicationItem);
+                                        var fullNewsText = (await _onlinerParser.Parse(syndicationItem));
+                                        lastText = fullNewsText.NewsText;
+                                        imageUrl = fullNewsText.ImageUrl;
                                     }
 
                                     var newsDto = new NewsInfoFromRssSourseDto()
@@ -181,6 +184,7 @@ namespace Services
                                         Id = Guid.NewGuid(),
                                         RssSourceId = rssSourceModel?.Id,
                                         Url = syndicationItem.Id,
+                                        HeadImgUrl = imageUrl,
                                         Title = syndicationItem.Title.Text,
                                         Summary = document.DocumentElement.TextContent, //syndicationItem.Summary.Text, //clean from html(?)
                                         Authors = syndicationItem.Authors.Select(x => x.Name),

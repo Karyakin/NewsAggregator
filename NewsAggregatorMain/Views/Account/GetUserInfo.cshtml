@@ -3,7 +3,7 @@
 <h2>Enter user login for searche</h2>
 <form asp-controller="Account" asp-antiforgery="true" method="post">
     <label asp-for="Login">Login</label>
-    <div class="col-md-5">
+    <div class="col-md-6">
 
         <div class="row">
 
@@ -114,7 +114,7 @@
                 @item.ContactDetails.Phones.FirstOrDefault().PhoneNumber
             </td>
             <td>
-                <a asp-action="DeleteUser" asp-route-id="@item.Id">Delete user</a> |
+                <a asp-action="DeleteUser" asp-route-id="@item.Id" onclick="return confirm('Are you sure?')"  >Delete user</a> |
             </td>
         </tr>
         }

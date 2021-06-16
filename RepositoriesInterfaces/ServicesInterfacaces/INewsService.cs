@@ -25,7 +25,7 @@ namespace Contracts.ServicesInterfacaces
 
 
         Task Aggregate();
-        Task<NewsInfoFromRssSourseDto> Delete();
+        void Delete(News news);
         Task SaveAsync();
         void Save();
     }

@@ -12,7 +12,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Aggregate">@*имя метода в который желаем попасть*@
+        <form asp-action="Aggregate" onclick="return confirm('Are you sure?')"> 
             <input type="submit" value="Submit" class="btn btn-danger" /> |
             <a asp-action="Index">Cancel</a>
         </form>

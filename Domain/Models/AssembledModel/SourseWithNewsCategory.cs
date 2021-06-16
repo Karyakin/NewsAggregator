@@ -10,6 +10,7 @@ namespace Entities.Models.AssembledModel
    public class SourseWithNewsCategory
     {
         public Guid Id { get; set; }
+        public Guid RssSourceId { get; set; }
         public string Name { get; set; }
         public string Link { get; set; } 
         public DateTime DateOfReceiving { get; set; }

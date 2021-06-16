@@ -64,7 +64,7 @@ namespace Repositories
 
         public void Remove(T entity)
         {
-            _Table.Remove(entity);
+            _Table.RemoveRange(entity);
         }
 
         public Task RemoveRange(IEnumerable<T> entity)

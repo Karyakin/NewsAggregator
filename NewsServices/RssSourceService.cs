@@ -5,6 +5,7 @@ using Entities.Entity.NewsEnt;
 using Entities.Models;
 using Entities.Models.AssembledModel;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NewsAgregato.DAL.CQRS.Queries;
 using Serilog;
@@ -99,6 +100,11 @@ namespace Services
         }
 
         public Task<int> DeleteRssSourse(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IActionResult> DeleteNews(SourseWithNewsCategory sourseWithNewsCategory)
         {
             throw new NotImplementedException();
         }

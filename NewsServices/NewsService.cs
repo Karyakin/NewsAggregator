@@ -87,9 +87,21 @@ namespace Services
             await _unitOfWork.SaveAsync();
         }
 
-        public Task<NewsInfoFromRssSourseDto> Delete()
+        public void Delete(News news)
         {
-            throw new NotImplementedException();
+
+            var newsEnt = _unitOfWork.News.GetByCondition(x => x.Id.Equals(news.Id), false).FirstOrDefault();
+            try
+            {
+                _unitOfWork.News.Remove(newsEnt);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message);
+                throw new Exception(e.Message);
+            }
+           
+            _unitOfWork.SaveAsync();
         }
 
         public async Task<IEnumerable<NewsGetDTO>> FindAllNews()
@@ -108,10 +120,11 @@ namespace Services
 
         public async Task<NewsGetDTO> GetNewsBiId(Guid? newsId)
         {
-            var rssSourseWithNews = await _unitOfWork.News.GetByCondition(x => x.Id.Equals(newsId), true)
+           /* var rssSourseWithNews = await _unitOfWork.News.GetByCondition(x => x.Id.Equals(newsId), false)
                .Include(x => x.Category)
                .Include(x => x.RssSource)
-               .SingleOrDefaultAsync();
+               .AsNoTracking()//чтобы не отслеживать новость, т.к. при удалении не даст
+               .SingleOrDefaultAsync();*/
 
             var news = await _unitOfWork.News.GetById(newsId.Value, false);
 
@@ -221,7 +234,7 @@ namespace Services
 
             int newsRating = 0;
 
-            for (int i = 0; i < 14; i++)
+            for (int i = 0; i < 9; i++)
             {
                 using (var httpClient = new HttpClient())
                 {
@@ -229,7 +242,7 @@ namespace Services
                         .Accept
                         .Add(new MediaTypeWithQualityHeaderValue("application/json"));//ACCEPT header
 
-                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "http://api.ispras.ru/texterra/v1/nlp?targetType=lemma&apikey=c2d840e08cb29f30a623a3c3530d4152fd158188")
+                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "http://api.ispras.ru/texterra/v1/nlp?targetType=lemma&apikey=09a19b6bf78224ba0a98d7e0bcd297d65b4b4586")
                     {
                         Content = new StringContent("[{\"text\":\"" + /*myNews*/ allNews[i].Summary + "\"}]",
 
@@ -240,6 +253,7 @@ namespace Services
                     var responseString = await response.Content.ReadAsStringAsync();
 
 
+                    
                     var model = JsonConvert.DeserializeObject<IEnumerable<Root>>(responseString);
 
                     if (model is null)

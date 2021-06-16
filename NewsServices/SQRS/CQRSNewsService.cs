@@ -58,10 +58,7 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public Task<NewsInfoFromRssSourseDto> Delete()
-        {
-            throw new NotImplementedException();
-        }
+      
 
         public Task<IEnumerable<NewsGetDTO>> FindAllNews()
         {
@@ -84,6 +81,11 @@ namespace Services
         }
 
         public Task SaveAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(News news)
         {
             throw new NotImplementedException();
         }

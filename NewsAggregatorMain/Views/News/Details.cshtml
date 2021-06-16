@@ -89,7 +89,7 @@
 <div>
     <a asp-controller="News" asp-action="Index" asp-route-sourseId="@Model.Id">News</a> |
     <a asp-action="Index">Back to List</a> |
-    <a asp-action="Delete">Delete</a>
-
+    <a asp-controller="News" asp-action="DeleteNews" asp-route-id="@Model.Id"
+       onclick="return confirm('Are you sure?')">Delete news</a>
 
 </div>

@@ -1,6 +1,7 @@
 ﻿using Entities.Entity.NewsEnt;
 using Entities.Models;
 using Entities.Models.AssembledModel;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,8 @@ namespace Contracts.ServicesInterfacaces
         Task<RssSourceModel> GetRssSourceById(Guid? rssSourceId);
         Task<SourseWithNewsCategory> RssSourceByIdWithNews(Guid? rssSourceId);
         Task<IEnumerable<RssSourceModel>> RssSourceByNameAndUrl(string name, string url);
+
+     
 
         Task<int> DeleteRssSourse(Guid id);
     }

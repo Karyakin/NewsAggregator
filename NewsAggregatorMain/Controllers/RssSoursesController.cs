@@ -3,6 +3,7 @@ using Contracts.ServicesInterfacaces;
 using Contracts.UnitOfWorkInterface;
 using Entities.Entity.NewsEnt;
 using Entities.Models;
+using Entities.Models.AssembledModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -22,9 +23,11 @@ namespace NewsAggregatorMain.Controllers
         private readonly IMapper _mapper;*/
 
         private readonly IRssSourceService _rssSourceService;
-        public RssSoursesController(IRssSourceService rssSourceService)
+        private readonly IUnitOfWork _unitOfWork;
+        public RssSoursesController(IRssSourceService rssSourceService, IUnitOfWork unitOfWork)
         {
             _rssSourceService = rssSourceService;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<IActionResult> Index()
@@ -74,9 +77,6 @@ namespace NewsAggregatorMain.Controllers
             return View(sourse);
         }
 
-
-
-
         public IActionResult Create(RssSource rssSource)
         {
 
@@ -106,6 +106,31 @@ namespace NewsAggregatorMain.Controllers
             }
 
             return  RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> DeleteNews(SourseWithNewsCategory sourseWithNewsCategory)
+        {
+            var news = _unitOfWork.News.GetByCondition(x => x.Id.Equals(sourseWithNewsCategory.Id), false).SingleOrDefault();
+
+
+            if (news is null)
+            {
+                BadRequest("Can't find news!");
+            }
+
+            try
+            {
+                _unitOfWork.News.Remove(news);
+            }
+            catch (Exception ex)
+            {
+
+                Log.Error($"something went wrong. Details: {ex.Message}");
+            }
+
+            await _unitOfWork.SaveAsync();
+            return RedirectToAction("DetailsWithNews", new { id = news.RssSourceId });
+
         }
     }
 }

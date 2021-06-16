@@ -67,7 +67,6 @@ namespace NewsAggregatorMain.Controllers
         }
 
 
-
         //[Authorize("18-Content")]
         // [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(int page = 1)
@@ -117,16 +116,9 @@ namespace NewsAggregatorMain.Controllers
         public async Task<IActionResult> Details(NewsGetDTO newsGetDTO)
         {
             var newsWithDetails = await _newsService.GetNewsBiId(newsGetDTO.Id);
-
-
-
-
             return View(newsWithDetails);
-
         }
-
-       
-
+             
         public async Task<IActionResult> ReadInAgregator(NewsGetDTO newsWithCommentsDTO)
         {
             var newsWithDetails = await _newsService.GetNewsBiId(newsWithCommentsDTO.Id);
@@ -141,10 +133,29 @@ namespace NewsAggregatorMain.Controllers
 
 
 
-        [HttpPost]
-        void Delete(News news)
+       public async Task<IActionResult> DeleteNews(NewsGetDTO newsGetDTO)
         {
-            throw new NotImplementedException();
+           var news = _unitOfWork.News.GetByCondition(x => x.Id.Equals(newsGetDTO.Id), false).SingleOrDefault();
+         
+          
+            if (news is null)
+            {
+                BadRequest("Can't find news!");
+            }
+
+            try
+            {
+                _unitOfWork.News.Remove(news);
+            }
+            catch (Exception ex)
+            {
+
+                Log.Error($"something went wrong. Details: {ex.Message}");
+            }
+
+            await _unitOfWork.SaveAsync();
+            return RedirectToAction(nameof(Index));
+
         }
     }
 }

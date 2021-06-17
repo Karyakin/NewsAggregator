@@ -6,6 +6,7 @@ using Entities.Models;
 using Hangfire;
 using Hangfire.SqlServer;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -15,8 +16,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NewsAgregato.DAL.CQRS.QueryHendlers;
+using NewsAgregator.WebAPI.Auth;
 using Repositories.CommentRepo;
 using Repositories.Context;
 using Repositories.CountryRepo;
@@ -29,6 +32,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
@@ -56,7 +60,7 @@ namespace NewsAgregator.WebAPI
             services.AddControllersWithViews();
             services.AddScoped<IUnitOfWork, RepositoryUnitOfWork>();
             services.AddScoped<INewsService, NewsService>();
-          /*  services.AddScoped<INewsService, CQRSNewsService>();*/
+            /*  services.AddScoped<INewsService, CQRSNewsService>();*/
             services.AddScoped<IRssSourceService, RssSourceService>();
             services.AddScoped<IRssSourceService, CQSRssSourceService>();
             /*  services.AddScoped<IUserService, CQRSUserService>();*/
@@ -79,6 +83,9 @@ namespace NewsAgregator.WebAPI
             services.AddScoped<ICountryRepository, CountryRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
+
+
+            services.AddScoped<IJwtAuthManager, JwtAuthManager>();
 
 
 
@@ -109,8 +116,25 @@ namespace NewsAgregator.WebAPI
             services.AddMediatR(typeof(GetRssSourseByIdQueryHendler).GetTypeInfo().Assembly);
             services.AddMediatR(typeof(GetRssSourseByNameAndUrlHendler).GetTypeInfo().Assembly);
 
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(opt =>
+                {
+                    opt.RequireHttpsMetadata = false;
+                    opt.SaveToken = true;//сохранение токена
+                    opt.TokenValidationParameters = new TokenValidationParameters()// парметра валидации токена
+                    {
+                        ValidateIssuerSigningKey = true,//токен будет шифрованным
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),//шифровка для токена
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
 
-            services.AddControllers().AddJsonOptions(x =>x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+            services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
@@ -137,8 +161,8 @@ namespace NewsAgregator.WebAPI
             var newsService = serviceProvider.GetService(typeof(INewsService)) as INewsService;
 
             /*https://crontab.guru/#*_*_*_*_**/
-            RecurringJob.AddOrUpdate(() => newsService.Aggregate(), "* 6,10,14,20,23 * * *");
-            RecurringJob.AddOrUpdate(() => newsService.RateNews(), "00 21,23,01,03 * * *");
+            /* RecurringJob.AddOrUpdate(() => newsService.Aggregate(), "* 6,10,14,20,23 * * *");
+             RecurringJob.AddOrUpdate(() => newsService.RateNews(), "59 * * * *");*/
             /*RecurringJob.AddOrUpdate(() => Console.WriteLine("выполнилась джоба"), "0,17,20,30,45 * * * *");//crontab.guru*/
 
             app.UseHttpsRedirection();

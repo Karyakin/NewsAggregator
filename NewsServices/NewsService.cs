@@ -234,7 +234,7 @@ namespace Services
 
             int newsRating = 0;
 
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i <3; i++)
             {
                 using (var httpClient = new HttpClient())
                 {
@@ -254,7 +254,7 @@ namespace Services
 
 
                     
-                    var model = JsonConvert.DeserializeObject<IEnumerable<Root>>(responseString);
+                   var model = JsonConvert.DeserializeObject<IEnumerable<Root>>(responseString);
 
                     if (model is null)
                     {

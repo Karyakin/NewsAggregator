@@ -6,6 +6,7 @@ using Entities.DataTransferObject;
 using Entities.Entity.NewsEnt;
 using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +42,9 @@ namespace NewsAggregatorMain.Controllers
             _commentService = commentService;
             _mapper = mapper;
         }
+
+
+
 
         public IActionResult Aggregate()
         {

@@ -5,17 +5,35 @@
     ViewData["Title"] = "View";
 }
 
-<h1>ALL NEWS</h1>
+<div class="row">
+    <div>
+        <h1>ALL NEWS</h1>
+    </div>
+
+    <div>
+        <input id="foo" name="foo" type="checkbox" value="true" />
+        <input name="foo" type="hidden" value="false" />
+    </div>
+
+
+</div>
+
+
+
+
+
 @if (Model.IsMember)
 {
-<p>
-    <a asp-action="Aggregate">Create News</a>
-</p>
+    <p>
+        <a asp-action="Aggregate">Create News</a>
+
+    </p>
 }
 
 
 
-<div class="row" >
+
+<div class="row">
 
     @foreach (var item in Model.News)
     {

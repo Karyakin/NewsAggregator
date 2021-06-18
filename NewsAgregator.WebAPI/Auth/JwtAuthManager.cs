@@ -20,7 +20,7 @@ namespace NewsAgregator.WebAPI.Auth
             _configuration = configuration;
         }
 
-        public JwtAuthResult GenerateTokens(string login, Claim[] claims)
+        public JwtAuthResult GenerateTokens(string login, Claim[] claims) 
         {
             //собираем токен
             var jwtToken = new JwtSecurityToken("GoodNesAggregator",//issuer

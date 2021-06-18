@@ -63,7 +63,9 @@ namespace NewsAgregator.WebAPI
             /*  services.AddScoped<INewsService, CQRSNewsService>();*/
             services.AddScoped<IRssSourceService, RssSourceService>();
             services.AddScoped<IRssSourceService, CQSRssSourceService>();
-            /*  services.AddScoped<IUserService, CQRSUserService>();*/
+            services.AddScoped<IUserService, CQRSUserService>();
+          /*  services.AddScoped<IUserService, UserService>();*/
+            services.AddScoped<IRoleService, CQRSRoleService>();
 
 
             services.AddScoped<ICategoryService, CategoryService>();
@@ -71,7 +73,6 @@ namespace NewsAgregator.WebAPI
 
             services.AddScoped<ICountryService, CountryService>();
             services.AddScoped<ICityService, CityService>();
-            services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IPhoneService, PhoneService>();
             services.AddScoped<IContactDetailsService, ContactDetailsService>();
@@ -92,9 +93,10 @@ namespace NewsAgregator.WebAPI
             services.AddScoped<TutByParser>(); //внедрение без привязки к родитель(альтернатива)
             services.AddScoped<OnlinerParser>();//внедрение без привязки к родитель(альтернатива)
 
-            services.AddMediatR(typeof(GetRssSourseByIdQueryHendler).GetTypeInfo().Assembly);
+          /*  services.AddMediatR(typeof(GetRssSourseByIdQueryHendler).GetTypeInfo().Assembly);
             services.AddMediatR(typeof(GetRssSourseByNameAndUrlHendler).GetTypeInfo().Assembly);
-
+            services.AddMediatR(typeof(GetUserByLoginQueryHendler).GetTypeInfo().Assembly);
+*/
 
             services.AddHangfire(conf => conf// для автоматического обновления новосте
                 .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
@@ -115,6 +117,7 @@ namespace NewsAgregator.WebAPI
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
             services.AddMediatR(typeof(GetRssSourseByIdQueryHendler).GetTypeInfo().Assembly);
             services.AddMediatR(typeof(GetRssSourseByNameAndUrlHendler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(GetUserByLoginQueryHendler).GetTypeInfo().Assembly);
 
             services.AddAuthentication(opt =>
             {
@@ -169,6 +172,7 @@ namespace NewsAgregator.WebAPI
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

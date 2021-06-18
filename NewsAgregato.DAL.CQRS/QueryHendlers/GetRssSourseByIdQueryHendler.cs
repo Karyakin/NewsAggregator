@@ -31,11 +31,5 @@ namespace NewsAgregato.DAL.CQRS.QueryHendlers
             var rssSourseDto = _mapper.Map<RssSourceDto>(rssSourseEnt);
             return rssSourseDto;
         }
-
-
-
-
-
-     
     }
 }

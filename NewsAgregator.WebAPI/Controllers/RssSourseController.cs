@@ -2,6 +2,7 @@
 using Entities.Entity.NewsEnt;
 using Entities.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -14,6 +15,7 @@ namespace NewsAgregator.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class RssSourseController : ControllerBase
     {
         private readonly IRssSourceService _rssSourceService;

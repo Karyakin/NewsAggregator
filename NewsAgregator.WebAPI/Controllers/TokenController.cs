@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NewsAgregator.WebAPI.Auth;
+using Contracts.ServicesInterfacaces;
 
 namespace NewsAgregator.WebAPI.Controllers
 {
@@ -17,17 +18,27 @@ namespace NewsAgregator.WebAPI.Controllers
     {
         private readonly IJwtAuthManager _jwtAuthManager;
 
-        public TokenController(IJwtAuthManager jwtAuthManager)
+        private readonly IUserService _userService;
+        private readonly IRoleService _roleService;
+
+        public TokenController(IJwtAuthManager jwtAuthManager, IUserService userService, IRoleService roleService)
         {
             _jwtAuthManager = jwtAuthManager;
+            _userService = userService;
+            _roleService = roleService;
         }
 
         [AllowAnonymous]
         [HttpPost]
         [Route("Login")]
-        public IActionResult Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             //todo получить роль нашего пользователя и 
+
+            var user = await _userService.GetUserByLogin(request.Login);
+            var userRole = await _roleService.GetRoleIdyById(user.RoleId);
+
+            //todo написать метод логинации чтобы сверять логин и пароль, и если все норм выдаем токен
 
             JwtAuthResult jwtResult;
             if (request.Login == "Agent")// 

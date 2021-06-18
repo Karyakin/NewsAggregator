@@ -17,8 +17,8 @@ namespace Repositories.Context
         private DbSet<Phone> Phones { get; set; }
         private DbSet<EMail> EMails { get; set; }
         private DbSet<Country> Countries { get; set; }
-        private DbSet<User> Users { get; set; }
-        private DbSet<Role> Roles { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
         private DbSet<Photo> Photos { get; set; }
         private DbSet<Author> Authors { get; set; }
         public DbSet<RssSource> RssSource { get; set; }

@@ -2,6 +2,9 @@
 using Entities.DataTransferObject;
 using Entities.Entity.Users;
 using Entities.Models;
+using MediatR;
+using NewsAgregato.DAL.CQRS.Queries;
+using Repositories.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +15,24 @@ namespace Services.SQRS
 {
     public class CQRSUserService : IUserService
     {
+        private readonly IMediator _mediator;
+        public CQRSUserService(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
+        public async Task<User> GetUserByLogin(string login)
+        {
+            var getUserQuery = new GetUserByLoginQuery(login);
+            var user = await _mediator.Send(getUserQuery);
+            return user;
+        }
+
+
+
+
+        #region NotImplemented
+
         public Task<User> ArrangeNewUser(RegisterDto registerDto, PasswordSoultModel passwordSoultModel)
         {
             throw new NotImplementedException();
@@ -42,11 +63,6 @@ namespace Services.SQRS
             throw new NotImplementedException();
         }
 
-        public Task<User> GetUserByLogin(string login)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<User> GetUserWithDetails(string login)
         {
             throw new NotImplementedException();
@@ -56,5 +72,10 @@ namespace Services.SQRS
         {
             throw new NotImplementedException();
         }
+
+
+        #endregion
+
+       
     }
 }

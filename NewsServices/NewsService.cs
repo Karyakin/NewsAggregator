@@ -100,7 +100,7 @@ namespace Services
                 Log.Error(e.Message);
                 throw new Exception(e.Message);
             }
-           
+
             _unitOfWork.SaveAsync();
         }
 
@@ -120,11 +120,11 @@ namespace Services
 
         public async Task<NewsGetDTO> GetNewsBiId(Guid? newsId)
         {
-           /* var rssSourseWithNews = await _unitOfWork.News.GetByCondition(x => x.Id.Equals(newsId), false)
-               .Include(x => x.Category)
-               .Include(x => x.RssSource)
-               .AsNoTracking()//чтобы не отслеживать новость, т.к. при удалении не даст
-               .SingleOrDefaultAsync();*/
+            /* var rssSourseWithNews = await _unitOfWork.News.GetByCondition(x => x.Id.Equals(newsId), false)
+                .Include(x => x.Category)
+                .Include(x => x.RssSource)
+                .AsNoTracking()//чтобы не отслеживать новость, т.к. при удалении не даст
+                .SingleOrDefaultAsync();*/
 
             var news = await _unitOfWork.News.GetById(newsId.Value, false);
 
@@ -234,7 +234,7 @@ namespace Services
 
             int newsRating = 0;
 
-            for (int i = 0; i <3; i++)
+            for (int i = 0; i < 3; i++)
             {
                 using (var httpClient = new HttpClient())
                 {
@@ -252,26 +252,25 @@ namespace Services
                     var response = await httpClient.SendAsync(request);
                     var responseString = await response.Content.ReadAsStringAsync();
 
-
-                    
-                   var model = JsonConvert.DeserializeObject<IEnumerable<Root>>(responseString);
-
-                    if (model is null)
+                    if (string.IsNullOrEmpty(responseString))
                     {
-                        Log.Error("Impossible to get a response from the server \"http://api.ispras.ru/texterra\"");
-                        throw new ArgumentNullException("Impossible to get a response from the server \"http://api.ispras.ru/texterra\"");
+                        Log.Information($"не удалось оценить новость {DateTime.Now}.\n Сообщение от сервера:\n " +
+                            $"StatusCode: {response.StatusCode}, " +
+                            $"Headers: {response.Headers}, Content: {response.Content}, " +
+                            $"RequestMessage: {response.RequestMessage}");
+                        throw new ArgumentNullException("\n______________________________________________________________________________");
                     }
 
-                    newsRating =  GetNewsRating(model, rateWorld);
+                    var model = JsonConvert.DeserializeObject<IEnumerable<Root>>(responseString);
+                    newsRating = GetNewsRating(model, rateWorld);
                 }
 
                 if (allNews[i].EndDate is null)
                 {
                     allNews[i].Rating = newsRating;
                     allNews[i].EndDate = DateTime.Now;
+                    _unitOfWork.News.Update(_mapper.Map<News>(allNews[i]));
                 }
-
-                _unitOfWork.News.Update(_mapper.Map<News>(allNews[i]));
             }
 
             await _unitOfWork.SaveAsync();

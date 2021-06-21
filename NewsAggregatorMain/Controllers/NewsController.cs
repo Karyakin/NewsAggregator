@@ -21,9 +21,7 @@ using System.Xml;
 
 namespace NewsAggregatorMain.Controllers
 {
-    //[Route("[controller]")]
-
-    // [Authorize(Policy = "18+Content")]
+    //[Authorize(Policy = "18+Content")]
     [Authorize(Roles = "Admin, User")]
     public class NewsController : Controller
     {

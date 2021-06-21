@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NewsAgregator.WebAPI.Auth;
 using Contracts.ServicesInterfacaces;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace NewsAgregator.WebAPI.Controllers
 {
@@ -33,33 +35,30 @@ namespace NewsAgregator.WebAPI.Controllers
         [Route("Login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            //todo получить роль нашего пользователя и 
-
             var user = await _userService.GetUserByLogin(request.Login);
             var userRole = await _roleService.GetRoleIdyById(user.RoleId);
 
-            //todo написать метод логинации чтобы сверять логин и пароль, и если все норм выдаем токен
+            if (user == null)
+                return BadRequest("Пользователь с таким именем не зарегистрирован!");
+            using (var hmac = new HMACSHA512(user.PasswordSalt))
+            {
+                var computesHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password));
+                for (int i = 0; i < computesHash.Length; i++)
+                {
+                    if (computesHash[i] != user.PasswordHash[i])
+                        return Unauthorized("Пользователь с таким именем не зарегистрирован!");//ошибка авторизации. не смог авторизоваться
+                }
+            }
 
             JwtAuthResult jwtResult;
-            if (request.Login == "Agent")// 
-            {
-                var claims = new[]
-                {
-                    new Claim(ClaimTypes.Name, request.Login),
-                    new Claim(ClaimTypes.Role, "Admin")
-                };
 
-                jwtResult = _jwtAuthManager.GenerateTokens(request.Login, claims);
-            }
-            else
+            var claims = new[]
             {
-                var claims = new[]
-                {
                     new Claim(ClaimTypes.Name, request.Login),
-                    new Claim(ClaimTypes.Role, "User")
-                };
-                jwtResult = _jwtAuthManager.GenerateTokens(request.Login, claims);
-            }
+                    new Claim(ClaimTypes.Role, userRole.Name)
+            };
+
+            jwtResult = _jwtAuthManager.GenerateTokens(request.Login, claims);
             return Ok(jwtResult);
         }
     }

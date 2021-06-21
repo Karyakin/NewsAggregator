@@ -1,4 +1,5 @@
-﻿using Contracts.ServicesInterfacaces;
+﻿using AutoMapper;
+using Contracts.ServicesInterfacaces;
 using Entities.DataTransferObject;
 using Entities.Entity.Users;
 using Entities.Models;
@@ -16,9 +17,11 @@ namespace Services.SQRS
     public class CQRSUserService : IUserService
     {
         private readonly IMediator _mediator;
-        public CQRSUserService(IMediator mediator)
+        private readonly IMapper _mapper;
+        public CQRSUserService(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
+            _mapper = mapper;
         }
 
         public async Task<User> GetUserByLogin(string login)
@@ -29,6 +32,13 @@ namespace Services.SQRS
         }
 
 
+        public async Task<IEnumerable<User>> GetAllUsers()
+        {
+            var usersQuery = new GetAllUsersQuery();
+            var usersDto = await _mediator.Send(usersQuery);
+            var users =_mapper.Map<IEnumerable<User>>(usersDto);
+            return users;
+        }
 
 
         #region NotImplemented
@@ -43,10 +53,6 @@ namespace Services.SQRS
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<User>> GetAllUsers()
-        {
-            throw new NotImplementedException();
-        }
 
         public Task<IEnumerable<User>> GetAllUsersWithPhoneROleMail()
         {

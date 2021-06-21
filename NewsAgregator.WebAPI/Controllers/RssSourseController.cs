@@ -56,14 +56,21 @@ namespace NewsAgregator.WebAPI.Controllers
             return Ok(sources);
         }
 
+        [HttpGet("all")]
+        public async Task<IActionResult> Get()
+        {
+            var sources = await _rssSourceService.GetAllRssSourceAsync(false);
+            return Ok(sources);
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Post(RssSourceModel rssSourceModel)
         {
            /* var rssSourseModel = new RssSourceModel();*/
-            await _rssSourceService.CreateOneRssSource(rssSourceModel);
+          await _rssSourceService.CreateOneRssSource(rssSourceModel);
 
-            return Ok();
+            return Ok($"SrrSource \"{rssSourceModel.Name}\" was successfully created");
         }
 
         /*   [HttpGet("empcomp/{companyId}")]*/
@@ -78,7 +85,7 @@ namespace NewsAgregator.WebAPI.Controllers
                 return BadRequest($"Can't find rss sourse by id - {id}");
             }
 
-            var res = await _rssSourceService.DeleteRssSourse(id);
+            var res = await _rssSourceService.DeleteRssSourse(id);//можно пернуть количество удаленных записей
 
             return Ok($"Rss Sourse \"{rssSourseModel.Name}\" was successfully deleted");
         }

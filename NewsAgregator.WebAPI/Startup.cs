@@ -164,8 +164,9 @@ namespace NewsAgregator.WebAPI
             var newsService = serviceProvider.GetService(typeof(INewsService)) as INewsService;
 
             /*https://crontab.guru/#*_*_*_*_**/
+           /* RecurringJob.AddOrUpdate(() => newsService.RateNews(), "59 * * * *");*/
             /* RecurringJob.AddOrUpdate(() => newsService.Aggregate(), "* 6,10,14,20,23 * * *");
-             RecurringJob.AddOrUpdate(() => newsService.RateNews(), "59 * * * *");*/
+            */
             /*RecurringJob.AddOrUpdate(() => Console.WriteLine("выполнилась джоба"), "0,17,20,30,45 * * * *");//crontab.guru*/
 
             app.UseHttpsRedirection();

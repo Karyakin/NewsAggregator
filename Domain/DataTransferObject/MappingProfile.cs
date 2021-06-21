@@ -34,6 +34,7 @@ namespace Entities.DataTransferObject
 
 
             CreateMap<RegisterDto, User>().ReverseMap();
+            CreateMap<UserDto, User>().ReverseMap();
             CreateMap<RoleDto, Role>().ReverseMap();
             CreateMap<Comment, CommentDto>();
             CreateMap<CommentDto, Comment>();

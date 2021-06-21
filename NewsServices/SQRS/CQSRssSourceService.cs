@@ -65,9 +65,9 @@ namespace Services.SQRS
 
             var addRssSourseCommand = new AddRssSourseCommand(
                 rssSourceModel.Id
-                ,rssSourceModel.Name
-                ,rssSourceModel.Url
-                ,rssSourceModel.DateOfReceiving);
+                , rssSourceModel.Name
+                , rssSourceModel.Url
+                , DateTime.Now);
 
             /*var chengedCount = */await _mediator.Send(addRssSourseCommand);
         }

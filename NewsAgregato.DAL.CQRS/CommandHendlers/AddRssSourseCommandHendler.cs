@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 
 namespace NewsAgregato.DAL.CQRS.CommandHendlers
 {
-    public class AddNewsCommandHendler : IRequestHandler<AddRssSourseCommand, int>
+    public class AddRssSourseCommandHendler : IRequestHandler<AddRssSourseCommand, int>
     {
         private readonly NewsDataContext _dbContext;
         private readonly IMapper _mapper;
 
-        public AddNewsCommandHendler(NewsDataContext dbContext, IMapper mapper)
+        public AddRssSourseCommandHendler(NewsDataContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;

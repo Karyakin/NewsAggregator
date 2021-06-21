@@ -28,8 +28,6 @@ namespace Services
             return comments;
         }
 
-       
-
         public void CreateComment(Comment comment)
         {
             _unitOfWork.Comment.Add(comment);

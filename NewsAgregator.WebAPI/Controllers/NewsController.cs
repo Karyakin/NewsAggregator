@@ -20,10 +20,6 @@ namespace NewsAgregator.WebAPI.Controllers
             _newsService = newsService;
         }
 
-
-
-
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOne(Guid id)
         {
@@ -50,8 +46,5 @@ namespace NewsAgregator.WebAPI.Controllers
 
             return Ok(news);
         }
-
-
-        
     }
 }

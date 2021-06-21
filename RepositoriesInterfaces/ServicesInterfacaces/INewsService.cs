@@ -10,20 +10,14 @@ using System.Threading.Tasks;
 
 namespace Contracts.ServicesInterfacaces
 {
-
-    /// <summary>
-    /// Сой вариант зависимостей и наследований
-    /// </summary>
-    public interface INewsService //: IRepositoryBases<News>
+    public interface INewsService
     {
         public Task<IEnumerable<NewsGetDTO>> FindAllNews();
-        Task CreateOneNewsAsync(News news);
-        Task CreateManyNewsAsync(IEnumerable<NewsInfoFromRssSourseDto> news);
         Task<NewsGetDTO> GetNewsBiId(Guid? newsId);
         Task<IEnumerable<NewsInfoFromRssSourseDto>> GetNewsInfoFromRssSourse(RssSourceModel rssSourceDto);
+        Task CreateOneNewsAsync(News news);
+        Task CreateManyNewsAsync(IEnumerable<NewsInfoFromRssSourseDto> news);
         public Task RateNews();
-
-
         Task Aggregate();
         void Delete(News news);
         Task SaveAsync();

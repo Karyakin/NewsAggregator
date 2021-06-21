@@ -11,14 +11,8 @@ using Entities.Entity.Users;
 
 namespace Contracts.RepositoryInterfaces
 {
-
-    /// <summary>
-    /// Сой вариант зависимостей и наследований
-    /// </summary>
-    public interface IUserRepository : IRepositoryBases<User>   //: IRepositoryBase<User>
+    public interface IUserRepository : IRepositoryBases<User>
     {
-       
-
     }
 }
 

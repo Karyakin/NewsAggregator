@@ -8,20 +8,7 @@ using System.Threading.Tasks;
 
 namespace Contracts.RepositoryInterfaces
 {
-
-    /// <summary>
-    /// Сой вариант зависимостей и наследований
-    /// </summary>
     public interface IRssSourceRepository : IRepositoryBases<RssSource>
     {
-        /*Task<IEnumerable<RssSource>> GetAllRssSourceAsync(bool trackChanges);
-        void CreateOneRssSource(RssSource rssSource);
-        void CreateManyRssSource(IEnumerable<RssSource> rssSource);
-
-        Task<RssSource> FindRssSourceById(Guid rssSourceId);
-        Task<RssSource> FindNewsForSourse(Guid rssSourceId);
-        Task<RssSource> FindRssSourceByName(string rssSourceName);*/
-
-
     }
 }

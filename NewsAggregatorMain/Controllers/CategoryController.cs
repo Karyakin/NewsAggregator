@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 namespace NewsAggregatorMain.Controllers
 {
-
     public class CategoryController : Controller
     {
         private readonly ICategoryService _categoryService;
@@ -27,12 +26,6 @@ namespace NewsAggregatorMain.Controllers
             var res = await _categoryService.GetAllCategoryAsync(false);
             return Ok(res);
         }
-
-       /* [HttpGet]
-        public async Task<IActionResult> GetOneNews()
-        {
-            return  await _
-        }*/
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -51,7 +44,7 @@ namespace NewsAggregatorMain.Controllers
                 Description = "Пляски гулянки"
             };
 
-           await _categoryService.CreateOneCategory(category);
+            await _categoryService.CreateOneCategory(category);
 
             return Ok($"Новая категория {category.Name} была успешно дабавлена");
         }
@@ -59,7 +52,6 @@ namespace NewsAggregatorMain.Controllers
         [HttpPut]
         public async Task<IActionResult> AddCategories()
         {
-
             Category medical = new Category()
             {
                 Id = Guid.NewGuid(),
@@ -72,8 +64,6 @@ namespace NewsAggregatorMain.Controllers
                 Name = "Мир",
                 Description = "Че там в мире"
             };
-
-           
 
             List<Category> categories = new List<Category>()
             {

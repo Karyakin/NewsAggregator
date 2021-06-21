@@ -16,20 +16,11 @@ namespace Contracts.ServicesInterfacaces
         PasswordSoultModel GetPasswordHashSoult(string modelPassword);
         Task<bool> UserExist(string login);
         public Task<User> ArrangeNewUser(RegisterDto registerDto, PasswordSoultModel passwordSoultModel);
+        public Task<User> GetUserById(Guid id);
         Task<User> GetUserByLogin(string login);
         Task<User> GetUserWithDetails(string login);
         Task<IEnumerable<User>> GetAllUsersWithPhoneROleMail();
         Task<IEnumerable<User>> GetAllUsers();
-
-
-
         public void DeleteUser(User user);
-
-        public Task<User> GetUserById(Guid id);
-       
-
-
-        /*Task<bool> RegisterUser(UserDto model);
-        */
     }
 }

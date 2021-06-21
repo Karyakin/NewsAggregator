@@ -10,6 +10,5 @@ namespace Contracts.ServicesInterfacaces
 {
    public interface IRoleRepository : IRepositoryBases<Role>
     {
-       
     }
 }

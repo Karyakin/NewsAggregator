@@ -3,33 +3,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NewsAgregator.Identity.Data;
 using NewsAgregator.Identity.Models;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace NewsAgregator.Identity.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly UserManager<User> _userManager;
-
-        public HomeController(ILogger<HomeController> logger, UserManager<User> userManager)
+       public HomeController()
         {
-            _logger = logger;
-            _userManager = userManager;
         }
 
         public IActionResult Index()
         {
-
-            var x = _userManager.Users.ToList(); ;
-
-
-          
-
             return View();
         }
 

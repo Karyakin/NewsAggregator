@@ -9,10 +9,10 @@ namespace Contracts.ServicesInterfacaces
 {
    public interface ICityService
     {
-        Task<bool> CityExist(string cityName);
         Task<IEnumerable<City>> FindAllCity();
         Task<City> FindCityById(Guid сityId);
         Task<City> FindCityByName(string name);
+        Task<bool> CityExist(string cityName);
 
     }
 }

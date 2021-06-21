@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace NewsAggregatorMain.Filters
 {
@@ -19,11 +16,6 @@ namespace NewsAggregatorMain.Filters
             if (!userAgent.Contains("Chrome/"))
             {
                 context.Result = new RedirectToActionResult("Index", "News", null);// если нужно перекинуть в метод
-/*
-                context.Result = new ContentResult()// вывести сообщение
-                {
-                    Content = "Brouser not support. Brouser must by not Crome"
-                };*/
             }
         }
 
@@ -36,7 +28,5 @@ namespace NewsAggregatorMain.Filters
         {
             context.Result = new RedirectToActionResult("Index", "News", null);// если нужно перекинуть в метод
         }
-
-      
     }
 }

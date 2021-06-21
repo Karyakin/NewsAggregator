@@ -12,8 +12,7 @@ namespace Contracts.ServicesInterfacaces
     {
         Task<Role> GetRoleIdyByName(string roleName);
         Task<Role> GetRoleIdyById(Guid idRole);
-        Task AddRoleToUser(string roleName, User user);
-     
         Task<IEnumerable<Role>> GetRoles();
+        Task AddRoleToUser(string roleName, User user);
     }
 }

@@ -1,14 +1,9 @@
 ﻿using Contracts.ServicesInterfacaces;
-using Entities.Entity.NewsEnt;
 using Entities.Models;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace NewsAgregator.WebAPI.Controllers
@@ -43,16 +38,6 @@ namespace NewsAgregator.WebAPI.Controllers
         public async Task<IActionResult> Get(string name, string url)
         {
             var sources = await _rssSourceService.RssSourceByNameAndUrl(name, url);
-
-            /* if (!string.IsNullOrEmpty(name))
-             {
-                 sources = sources.Where(dto => dto.Name.Contains(name));
-             }
-             if (!string.IsNullOrEmpty(url))
-             {
-                 sources = sources.Where(dto => dto.Url.Contains(url));
-             }
-             //*/
             return Ok(sources);
         }
 
@@ -67,13 +52,11 @@ namespace NewsAgregator.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(RssSourceModel rssSourceModel)
         {
-           /* var rssSourseModel = new RssSourceModel();*/
           await _rssSourceService.CreateOneRssSource(rssSourceModel);
 
             return Ok($"SrrSource \"{rssSourceModel.Name}\" was successfully created");
         }
 
-        /*   [HttpGet("empcomp/{companyId}")]*/
         [HttpDelete("{id}")]
         public async Task<IActionResult> Post(Guid id)
         {
@@ -90,5 +73,4 @@ namespace NewsAgregator.WebAPI.Controllers
             return Ok($"Rss Sourse \"{rssSourseModel.Name}\" was successfully deleted");
         }
     }
-
 }

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -38,15 +35,11 @@ namespace NewsAgregator.WebAPI.Auth
                 Token = Guid.NewGuid().ToString("D")
             };
 
-            //todo using CQRS insert token and Refresh token to DB
-
             return new JwtAuthResult()
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken
             };
         }
-
-
     }
 }

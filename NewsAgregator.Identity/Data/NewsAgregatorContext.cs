@@ -13,8 +13,6 @@ namespace NewsAgregator.Identity.Data
         public NewsAgregatorContext(DbContextOptions<NewsAgregatorContext> options)
             :base(options)
         {
-            
         }
-
     }
 }

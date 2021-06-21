@@ -19,9 +19,6 @@ namespace NewsAggregatorMain.Controllers
     //[Authorize(Roles ="Admin")]
     public class RssSoursesController : Controller
     {
-        /*private readonly IRepositoryWrapper _wrapper;
-        private readonly IMapper _mapper;*/
-
         private readonly IRssSourceService _rssSourceService;
         private readonly IUnitOfWork _unitOfWork;
         public RssSoursesController(IRssSourceService rssSourceService, IUnitOfWork unitOfWork)
@@ -32,12 +29,8 @@ namespace NewsAggregatorMain.Controllers
 
         public async Task<IActionResult> Index()
         {
-            
             var rssSource = await _rssSourceService.GetAllRssSourceAsync(false);
-
-
             return View(rssSource);
-
         }
 
         public async Task<IActionResult> Details(Guid? id)
@@ -48,16 +41,13 @@ namespace NewsAggregatorMain.Controllers
             }
 
             var sourse = await _rssSourceService.GetRssSourceById(id);
-          
 
             if (sourse == null)
             {
                 return NotFound();
             }
-
             return View(sourse);
         }
-
 
         public async Task<IActionResult> DetailsWithNews(Guid? id)
         {
@@ -67,7 +57,6 @@ namespace NewsAggregatorMain.Controllers
             }
 
             var sourse = await _rssSourceService.RssSourceByIdWithNews(id);
-
 
             if (sourse == null)
             {
@@ -79,7 +68,6 @@ namespace NewsAggregatorMain.Controllers
 
         public IActionResult Create(RssSource rssSource)
         {
-
             return  View();
         }
 
@@ -101,18 +89,14 @@ namespace NewsAggregatorMain.Controllers
                 {
                     Log.Error($"Something went wrong when trying to add to the source. Message: {ex.Message}");
                     return BadRequest( $"Something went wrong when trying to add to the source. Incorrect Rss Sourse adress!");
-
                 }
             }
-
             return  RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> DeleteNews(SourseWithNewsCategory sourseWithNewsCategory)
         {
             var news = _unitOfWork.News.GetByCondition(x => x.Id.Equals(sourseWithNewsCategory.Id), false).SingleOrDefault();
-
-
             if (news is null)
             {
                 BadRequest("Can't find news!");
@@ -130,7 +114,6 @@ namespace NewsAggregatorMain.Controllers
 
             await _unitOfWork.SaveAsync();
             return RedirectToAction("DetailsWithNews", new { id = news.RssSourceId });
-
         }
     }
 }

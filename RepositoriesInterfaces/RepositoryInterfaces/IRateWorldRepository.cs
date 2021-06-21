@@ -8,10 +8,7 @@ using System.Threading.Tasks;
 
 namespace Contracts.RepositoryInterfaces
 {
-        public interface IRateWorldRepository : IRepositoryBases<RateWorlds>  //: IRepositoryBase<News>
-        {
-
-
-        }
-    
+    public interface IRateWorldRepository : IRepositoryBases<RateWorlds>
+    {
+    }
 }

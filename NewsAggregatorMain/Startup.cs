@@ -23,6 +23,8 @@ using Repositories.CommentRepo;
 using NewsAgregato.DAL.CQRS.QueryHendlers;
 using System.Reflection;
 using MediatR;
+using System;
+using Services.СurrencyExchangeHelpers;
 
 /*cd C:\Users\d.karyakin\Desktop\NewsAggregator\RepositoryBase*/
 
@@ -54,7 +56,12 @@ namespace NewsAggregatorMain
                     x => x.MigrationsAssembly(typeof(NewsDataContext).Assembly.FullName));
             });
 
-           
+            services.AddHttpClient<IExchangeService, ExchangeService>(client =>
+            {
+                client.BaseAddress = new Uri(Configuration.GetSection("NationalBankSettings")["BaseUrl"]);
+            });
+
+            services.Configure<NationalBankSettings>(Configuration.GetSection("NationalBankSettings"));
 
             services.AddControllersWithViews();
             services.AddScoped<IUnitOfWork, RepositoryUnitOfWork>();
@@ -69,20 +76,13 @@ namespace NewsAggregatorMain
             services.AddScoped<IPhoneService, PhoneService>(); 
             services.AddScoped<IContactDetailsService, ContactDetailsService>(); 
             services.AddScoped<ICommentService, CommentService>(); 
-
-
             services.AddScoped<ICityRepository, CityRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
-
-
             services.AddScoped<TutByParser>(); //внедрение без привязки к родитель(альтернатива)
             services.AddScoped<OnlinerParser>();//внедрение без привязки к родитель(альтернатива)
-            //services.AddScoped<IOnlinerParser, OnlinerParser>();
-            //services.AddScoped<ITutByParser, TutByParser>(); 
-
 
             services.AddMediatR(typeof(GetRssSourseByIdQueryHendler).GetTypeInfo().Assembly);
 
@@ -104,16 +104,6 @@ namespace NewsAggregatorMain
                                opt.LoginPath = new PathString("/Account/Login");// если пользователь не авторизирован, то он будет переброшен по этому пути
                                opt.AccessDeniedPath = new PathString("/Account/Login");
                            });
-
-            /*services.AddAuthorization(opt =>
-            {
-                opt.AddPolicy("18-Content", policy =>
-                    {
-                        policy.RequireClaim("age", "18");
-                    });
-            });*/
-
-           // Policy - based authorization
             services.AddAuthorization(opt =>
             {
                 opt.AddPolicy("18+Content", policy =>
@@ -134,7 +124,6 @@ namespace NewsAggregatorMain
             #endregion
             services.AddControllers().AddNewtonsoftJson(options =>
                        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

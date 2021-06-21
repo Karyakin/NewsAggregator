@@ -34,8 +34,7 @@ namespace NewsAggregatorMain.Controllers
             var commentsListEnt = await _commentService.FindAllCommentsForNews(newsId);
             var commentsListDto = _mapper.Map<IEnumerable<CommentDto>>(commentsListEnt)
                 .OrderBy(x => x.CreateDate);
-
-
+            
             return View(new CreateCommentDto
             {
                 NewsId = newsId,
@@ -65,7 +64,6 @@ namespace NewsAggregatorMain.Controllers
             return Ok();
         }
 
-
         [HttpGet]
         public IActionResult InputCommentArea()
         {
@@ -80,7 +78,5 @@ namespace NewsAggregatorMain.Controllers
             await _unitOfWork.SaveAsync();
             return Ok();
         }
-
-
     }
 }

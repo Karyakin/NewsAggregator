@@ -10,22 +10,13 @@ using System.Threading.Tasks;
 
 namespace Contracts.ServicesInterfacaces
 { 
-
-    /// <summary>
-    /// Сой вариант зависимостей и наследований
-    /// </summary>
-    public interface IRssSourceService// : IRssSourceService
+    public interface IRssSourceService
     {
         Task<IEnumerable<RssSourceModel>> GetAllRssSourceAsync(bool trackChanges);
         Task CreateOneRssSource(RssSourceModel rssSourceModel);
-     
-
         Task<RssSourceModel> GetRssSourceById(Guid? rssSourceId);
         Task<SourseWithNewsCategory> RssSourceByIdWithNews(Guid? rssSourceId);
         Task<IEnumerable<RssSourceModel>> RssSourceByNameAndUrl(string name, string url);
-
-     
-
         Task<int> DeleteRssSourse(Guid id);
     }
 }

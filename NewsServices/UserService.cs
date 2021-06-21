@@ -62,9 +62,7 @@ namespace Services
             var phoneId = Guid.NewGuid();
             var cityId = (await _cityService.FindCityByName(registerDto.City)).Id;
             var countryId = (await _countryService.FindCountryByName(registerDto.Country)).Id;
-
-            // var roleId = (_unitOfWork.Role.GetByCondition(x => x.Name.Equals("User"), false).FirstOrDefault()).Id;
-
+           
             EMail mail = new EMail()
             {
                 Id = eMailId,
@@ -111,7 +109,6 @@ namespace Services
             }
             catch (Exception ex)
             {
-
                 Log.Error($"Can't create user. Details: {ex.Message}");
             }
             return new User();
@@ -155,7 +152,6 @@ namespace Services
 
             return user;
         }
-
         public async Task<IEnumerable<User>> GetAllUsers() => await _unitOfWork.User.GetAll(false).ToListAsync();
         
     }

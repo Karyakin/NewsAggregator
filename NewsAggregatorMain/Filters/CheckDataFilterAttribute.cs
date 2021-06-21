@@ -15,7 +15,6 @@ namespace NewsAggregatorMain.Filters
             _newsService = newsService;
         }
 
-
         /// <summary>
         /// Если QueryString будет содержать abc то в контроллер придет значение hiddenId
         /// </summary>

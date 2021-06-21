@@ -1,8 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -13,7 +9,7 @@ namespace NewsAggregatorMain.TagHelpers
 {
     public class PaginationTagHelper : TagHelper
     {
-        private readonly IUrlHelperFactory _urlHelperFactory;// позволяет выстраиват урлы
+        private readonly IUrlHelperFactory _urlHelperFactory;
 
         public PaginationTagHelper(IUrlHelperFactory urlHelperFactory)
         {
@@ -45,28 +41,7 @@ namespace NewsAggregatorMain.TagHelpers
                 tag.InnerHtml.Append(anchorInnerHtml);
                 result.InnerHtml.AppendHtml(tag);
             }
-
             output.Content.AppendHtml(result.InnerHtml);
         }
-
-        //public string GetAnchorInnerHtml(int i, PageInfo info)
-        //{
-        //    var anchorInnerHtml = "";
-        //    if (info.TotalPages<=10)
-        //    {
-        //        anchorInnerHtml = i.ToString();
-        //    }
-        //    else
-        //    {
-        //        if ((i-info.PageNumber >= 2 || info.PageNumber - i >= 2) && i != 0 && i != info.TotalPages)
-        //        {
-        //            anchorInnerHtml = "..";
-        //        }
-        //        else
-        //        {
-        //            anchorInnerHtml = i.ToString();
-        //        }
-        //    }
-        //}
     }
 }

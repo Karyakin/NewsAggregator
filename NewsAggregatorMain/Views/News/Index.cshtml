@@ -4,23 +4,24 @@
 @{
     ViewData["Title"] = "View";
 }
-
 <div class="row">
     <div>
+        <font size="5" face="Courier New">
+            <table width="100%" cellspacing="0" cellpadding="5">
+                <tr>
+                    <td align="right">Курсы валют Нацбанка РБ</td>
+                    <td valign="top">USD:</td>
+                    <td valign="top">@ViewData["USD"]</td>
+                    <td valign="top">EUR:</td>
+                    <td valign="top">@ViewData["EUR"]</td>
+                    <td valign="top">RUB:</td>
+                    <td valign="top">@ViewData["RUB"]</td>
+                </tr>
+            </table>
+        </font>
         <h1>ALL NEWS</h1>
     </div>
-
-    <div>
-        <input id="foo" name="foo" type="checkbox" value="true" />
-        <input name="foo" type="hidden" value="false" />
-    </div>
-
-
 </div>
-
-
-
-
 
 @if (Model.IsMember)
 {
@@ -29,9 +30,6 @@
 
     </p>
 }
-
-
-
 
 <div class="row">
 
@@ -44,10 +42,9 @@
 
 <div class="btn-group">
     @Html.CreatePagination(Model.PageInfo, i =>
-Url.Action("Index", new { page = i, sourseId = Model.News.FirstOrDefault().Id @*. ?.RssSourseId *@}))
+Url.Action("Index", new { page = i, sourseId = Model.News.FirstOrDefault().Id}))
 
 </div>
 
 
-@* <pagination page-model="Model.PageInfo" page-action="Index"></pagination>*@
 

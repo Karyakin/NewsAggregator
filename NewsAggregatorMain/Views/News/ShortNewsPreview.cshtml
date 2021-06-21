@@ -1,13 +1,10 @@
 ﻿@model Entities.DataTransferObject.NewsGetDTO
 
 <div class="card col-sm-12 col-md-6 col-lg-4 news-card ">
-
-
     <div>
         <img src="@Model.HeadImgUrl" alt="Girl in a jacket" width="350" height="200"
-             style="        vertical-align: bottom; margin:20px 00px">
+             style="vertical-align: bottom; margin:20px 00px">
     </div>
-
     <hr align="center" color="Grey" />
     <div class="card-body">
         <h5 class="card-title">@Model.Title</h5>
@@ -15,8 +12,6 @@
         <a asp-action="ReadInAgregator" asp-route-Id="@Model.Id">Читать на агрегаторе</a>
         <br />
         <a href="@Model.Url">Читать в источнике</a>
-
-
         @if (User.Claims.Any(x => x.Value.Contains("Admin")))
         {
             <p align="right">

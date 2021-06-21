@@ -8,7 +8,5 @@ namespace NewsAgregator.Identity.Data
 {
     public class Role : IdentityRole<Guid>
     {
-       
-
     }
 }

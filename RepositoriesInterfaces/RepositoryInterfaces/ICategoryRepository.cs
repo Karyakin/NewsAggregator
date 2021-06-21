@@ -8,14 +8,7 @@ using System.Threading.Tasks;
 
 namespace Contracts.RepositoryInterfaces
 {
-    /// <summary>
-    /// Сой вариант зависимостей и наследований
-    /// </summary>
     public interface ICategoryRepository : IRepositoryBases<Category>
     {
-      /*  Task<IEnumerable<Category>> GetAllCategoryAsync(bool trackChanges);
-        void CreateOneCategory(Category category);
-        void CreateManyCategories(IEnumerable<Category> categories);
-        Task<Category> FindCategoryByName(string categoryName);*/
     }
 }

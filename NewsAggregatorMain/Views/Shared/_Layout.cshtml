@@ -6,20 +6,18 @@
     <title>@ViewData["Title"] - NewsAggregator</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-
     <style>
         body {
             background: #b3b3b3; /* Цвет фона */
             color: #483D8B; /* Цвет текста */
         }
-</style>
+    </style>
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">NewsAggregator</a>
-                @*  <a class="navbar-brand" asp-area="" asp-controller="Account" asp-action="Login">NewsAggregator</a>*@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -29,18 +27,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="News" asp-action="Index">AllNews</a>
                         </li>
-
                         @if (User.Claims.Any(x => x.Value.Contains("Admin")))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="RssSourses" asp-action="Index">RssSources</a>
                             </li>
                         }
-                      @*  <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-                        </li>*@
-
-
                         @if (User.Claims.Any(x => x.Value.Contains("Admin")))
                         {
                             <li class="nav-item">
@@ -48,17 +40,12 @@
                                    asp-action="GetUserInfo">Chenge user info</a>
                             </li>
                         }
-
-
-
                         <div class="dropdown">
                             <button class="btn bs-tooltip-top" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Авторизация
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="nav-link text-dark" id="user-info" asp-area="" asp-controller="Account" asp-action="LogOut">Log out</a>
-                               @* <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Log In</a>
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>*@
                             </div>
                         </div>
                     </ul>

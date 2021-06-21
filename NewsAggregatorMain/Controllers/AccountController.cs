@@ -142,8 +142,7 @@ namespace NewsAggregatorMain.Controllers
                 }
             }
             await Autointification(user);
-            //  return RedirectToAction(nameof(Index), nameof(News));
-
+            
             return string.IsNullOrEmpty(loginDto.ReturnUrl)
                            ? (IActionResult)RedirectToAction("Index", "Home")
                            : Redirect(loginDto.ReturnUrl);
@@ -180,8 +179,6 @@ namespace NewsAggregatorMain.Controllers
                 ClaimsIdentity.DefaultNameClaimType,
                 ClaimsIdentity.DefaultRoleClaimType);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
-
-            // return RedirectToAction(nameof(Index), nameof(News));
         }
 
         [HttpGet]
@@ -245,12 +242,7 @@ namespace NewsAggregatorMain.Controllers
             if (role is null)
                 return BadRequest("There is no role with this login");
 
-
-            /*var userEmail = user.ContactDetails.EMails;*/
-
             var email = new List<EMail>();
-
-            //   var em = (user.ContactDetails.EMails.SingleOrDefault()).UserEMail.Contains(userDto.Email);
 
             if (!(user.ContactDetails.EMails.SingleOrDefault()).UserEMail.Contains(userDto.Email))
             {
@@ -285,8 +277,6 @@ namespace NewsAggregatorMain.Controllers
                 phones.Add(user.ContactDetails.Phones.FirstOrDefault());
             }
 
-
-
             bool isMemder;
             if (role.Name.Contains("Admin"))
             {
@@ -315,7 +305,6 @@ namespace NewsAggregatorMain.Controllers
                 CreateDate = user.CreateDate,
                 RemovedDate = user.RemovedDate,
                 LastActiv = user.LastActiv,
-                //   RoleId = role.Id,
                 Role = new Role()
                 {
                     Id = role.Id,
@@ -323,10 +312,6 @@ namespace NewsAggregatorMain.Controllers
                     IsMember = isMemder,
                     CreateDate = DateTime.Now,
                 },
-
-
-
-                //ContactDetailsId = user.ContactDetailsId,
 
                 ContactDetails = new ContactDetails()
                 {
@@ -346,8 +331,6 @@ namespace NewsAggregatorMain.Controllers
 
                     EMails = email,
                     Phones = phones
-
-
                 }
             };
 
@@ -376,7 +359,7 @@ namespace NewsAggregatorMain.Controllers
             return RedirectToAction("GetUserInfo", "Account");
         }
 
-        [AcceptVerbs("Get", "Post")]//допустимые значения
+        [AcceptVerbs("Get", "Post")]
         public async Task<IActionResult> CheckLogin(string login)
         {
             return (await _userService.GetUserByLogin(login)) != null
@@ -384,7 +367,7 @@ namespace NewsAggregatorMain.Controllers
                 : Json(true);
         }
 
-        [AcceptVerbs("Get", "Post")]//допустимые значения
+        [AcceptVerbs("Get", "Post")]
         public async Task<IActionResult> CheckEmail(string email)
         {
             return (await _emailService.CheckEmailExist(email)) != null
@@ -392,7 +375,7 @@ namespace NewsAggregatorMain.Controllers
                 : Json(true);
         }
 
-        [AcceptVerbs("Get", "Post")]//допустимые значения
+        [AcceptVerbs("Get", "Post")]
         public async Task<IActionResult> CheckPhone(string phones)
         {
             return (await _phoneService.CheckPhoneExist(phones)) != null
@@ -400,7 +383,7 @@ namespace NewsAggregatorMain.Controllers
                 : Json(true);
         }
 
-        [AcceptVerbs("Get", "Post")]//допустимые значения
+        [AcceptVerbs("Get", "Post")]
         public IActionResult CheckDate(DateTime dayOfBirth)
         {
             return dayOfBirth > DateTime.Now
@@ -408,7 +391,7 @@ namespace NewsAggregatorMain.Controllers
                 : Json(true);
         }
 
-        [AcceptVerbs("Get", "Post")]//допустимые значения
+        [AcceptVerbs("Get", "Post")]
         public async Task<IActionResult> CheckCity(string city)
         {
             return (await _cityService.FindCityByName(city)) != null
@@ -416,7 +399,7 @@ namespace NewsAggregatorMain.Controllers
                : Json(false);
         }
 
-        [AcceptVerbs("Get", "Post")]//допустимые значения
+        [AcceptVerbs("Get", "Post")]
         public async Task<IActionResult> CheckCountry(string country)
         {
             var ss = await _countryService.FindCountryByName(country);

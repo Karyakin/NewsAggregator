@@ -18,15 +18,13 @@ namespace Services
     {
         public async Task<NewStrings> Parse(SyndicationItem syndicationItem)
         {
-            /*List<string> newsList = new List<string>();*/
-
             var httpClient = new HttpClient();
             var request = await httpClient.GetAsync(syndicationItem.Id);
             var response = await request.Content.ReadAsStringAsync();
 
             #region CutHendlerImage
 
-            int newsHendlerImageStart = response.IndexOf("<div class=\"news-header__image\"");// еогда нет заголовочной фотки вылетаем
+            int newsHendlerImageStart = response.IndexOf("<div class=\"news-header__image\"");
 
             string newsHendlerImageStartToEnd = response.Substring(newsHendlerImageStart);
             int newsHendlerImageEnd = newsHendlerImageStartToEnd.IndexOf("</div>");

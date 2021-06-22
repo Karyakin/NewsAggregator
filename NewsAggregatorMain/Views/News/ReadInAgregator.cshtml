@@ -4,7 +4,11 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>@Model.Title</h1>
+@if (Model.Url.Contains("onliner"))
+{
+    <h1>@Model.Title</h1>
+}
+
 <div>
     <h4>@Model.Content</h4>
 

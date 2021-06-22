@@ -83,6 +83,7 @@ namespace NewsAggregatorMain
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<TutByParser>(); //внедрение без привязки к родитель(альтернатива)
             services.AddScoped<OnlinerParser>();//внедрение без привязки к родитель(альтернатива)
+            services.AddScoped<IgromaniaParser>();//внедрение без привязки к родитель(альтернатива)
 
             services.AddMediatR(typeof(GetRssSourseByIdQueryHendler).GetTypeInfo().Assembly);
 

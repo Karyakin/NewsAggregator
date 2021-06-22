@@ -1,4 +1,5 @@
 ﻿using AngleSharp;
+using AngleSharp.Dom;
 using AutoMapper;
 using Contracts.ParseInterface;
 using Contracts.ServicesInterfacaces;
@@ -33,11 +34,11 @@ namespace Services
         private readonly ICategoryService _categoryService;
         private readonly TutByParser _tutByParser;//Иная записть. Без интерфейса и применения базового типа. При такой записи нужно менять внедрение в Sturtup
         private readonly OnlinerParser _onlinerParser; //Иная записть. Без интерфейса и базового типа. При такой записи нужно менять внедрение в Sturtup
+        private readonly IgromaniaParser _igromaniaParser; //Иная записть. Без интерфейса и базового типа. При такой записи нужно менять внедрение в Sturtup
         private readonly IRssSourceService _rssSourceService;
-        /*private readonly ITutByParser _tutByParser;
-        private readonly IOnlinerParser _onlinerParser;*/
 
-        public NewsService(IUnitOfWork wrapper, IMapper mapper, ICategoryService categoryService, IRssSourceService rssSourceService, TutByParser tutByParser, OnlinerParser onlinerParser)
+        public NewsService(IUnitOfWork wrapper, IMapper mapper, ICategoryService categoryService, IRssSourceService rssSourceService, 
+            TutByParser tutByParser, OnlinerParser onlinerParser, IgromaniaParser igromaniaParser)
         {
             _unitOfWork = wrapper;
             _mapper = mapper;
@@ -45,6 +46,7 @@ namespace Services
             _rssSourceService = rssSourceService;
             _tutByParser = tutByParser;
             _onlinerParser = onlinerParser;
+            _igromaniaParser = igromaniaParser;
         }
 
         public async Task Aggregate()
@@ -115,19 +117,12 @@ namespace Services
             }
             var getCompanyDTO = _mapper.Map<IEnumerable<NewsGetDTO>>(companies).ToList();
 
-            return getCompanyDTO;
+            return getCompanyDTO.OrderByDescending(x=>x.StartDate);
         }
 
         public async Task<NewsGetDTO> GetNewsBiId(Guid? newsId)
         {
-            /* var rssSourseWithNews = await _unitOfWork.News.GetByCondition(x => x.Id.Equals(newsId), false)
-                .Include(x => x.Category)
-                .Include(x => x.RssSource)
-                .AsNoTracking()//чтобы не отслеживать новость, т.к. при удалении не даст
-                .SingleOrDefaultAsync();*/
-
             var news = await _unitOfWork.News.GetById(newsId.Value, false);
-
             var test = _mapper.Map<NewsGetDTO>(news);
 
             return test;
@@ -169,9 +164,8 @@ namespace Services
                             .Select(n => n.Url)
                             .ToListAsync();
 
-                            //Create a virtual request to specify the document to load (here from our fixed string)
+                           
                             var document = await context.OpenAsync(req => req.Content(syndicationItem.Summary.Text));// для парсинга страницы
-                            // var title = document.DocumentElement.TextContent;
 
 
                             try
@@ -188,6 +182,16 @@ namespace Services
                                     else if (rssSourceModel.Name.Equals("Onliner"))
                                     {
                                         var fullNewsText = (await _onlinerParser.Parse(syndicationItem));
+                                        lastText = fullNewsText.NewsText;
+                                        imageUrl = fullNewsText.ImageUrl;
+                                    }
+                                    else if (rssSourceModel.Name.Equals("igromania"))
+                                    {
+                                        var fullNewsText = (await _igromaniaParser.Parse(syndicationItem));
+                                        if (fullNewsText is null)
+                                        {
+                                            break;
+                                        }
                                         lastText = fullNewsText.NewsText;
                                         imageUrl = fullNewsText.ImageUrl;
                                     }

@@ -56,7 +56,7 @@ namespace NewsAggregatorMain.Controllers
 
             foreach (var item in rsssouses)
             {
-                if (/*item.Name.Equals("TUT.by") ||*/ item.Name.Equals("Onliner"))
+                if (/*item.Name.Equals("TUT.by") || item.Name.Equals("Onliner")*/ item.Name.Equals("igromania"))
                 {
                     var newsList = await _newsService.GetNewsInfoFromRssSourse(item);
                     newInfos.AddRange(newsList);

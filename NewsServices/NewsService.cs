@@ -36,9 +36,10 @@ namespace Services
         private readonly OnlinerParser _onlinerParser; //Иная записть. Без интерфейса и базового типа. При такой записи нужно менять внедрение в Sturtup
         private readonly IgromaniaParser _igromaniaParser; //Иная записть. Без интерфейса и базового типа. При такой записи нужно менять внедрение в Sturtup
         private readonly IRssSourceService _rssSourceService;
+        private readonly IOONParser _OONParser;
 
         public NewsService(IUnitOfWork wrapper, IMapper mapper, ICategoryService categoryService, IRssSourceService rssSourceService, 
-            TutByParser tutByParser, OnlinerParser onlinerParser, IgromaniaParser igromaniaParser)
+            TutByParser tutByParser, OnlinerParser onlinerParser, IgromaniaParser igromaniaParser, OONParser oONParser)
         {
             _unitOfWork = wrapper;
             _mapper = mapper;
@@ -47,6 +48,7 @@ namespace Services
             _tutByParser = tutByParser;
             _onlinerParser = onlinerParser;
             _igromaniaParser = igromaniaParser;
+            _OONParser = oONParser;
         }
 
         public async Task Aggregate()
@@ -163,10 +165,8 @@ namespace Services
                             .GetAll(false)//rssSourseId must be not nullable
                             .Select(n => n.Url)
                             .ToListAsync();
-
                            
                             var document = await context.OpenAsync(req => req.Content(syndicationItem.Summary.Text));// для парсинга страницы
-
 
                             try
                             {
@@ -182,12 +182,26 @@ namespace Services
                                     else if (rssSourceModel.Name.Equals("Onliner"))
                                     {
                                         var fullNewsText = (await _onlinerParser.Parse(syndicationItem));
+                                        if (fullNewsText is null)
+                                        {
+                                            break;
+                                        }
                                         lastText = fullNewsText.NewsText;
                                         imageUrl = fullNewsText.ImageUrl;
                                     }
                                     else if (rssSourceModel.Name.Equals("igromania"))
                                     {
                                         var fullNewsText = (await _igromaniaParser.Parse(syndicationItem));
+                                        if (fullNewsText is null)
+                                        {
+                                            break;
+                                        }
+                                        lastText = fullNewsText.NewsText;
+                                        imageUrl = fullNewsText.ImageUrl;
+                                    }
+                                    else if (rssSourceModel.Name.Equals("OON"))
+                                    {
+                                        var fullNewsText = (await _OONParser.Parse(syndicationItem));
                                         if (fullNewsText is null)
                                         {
                                             break;
@@ -246,7 +260,7 @@ namespace Services
                         .Accept
                         .Add(new MediaTypeWithQualityHeaderValue("application/json"));//ACCEPT header
 
-                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "http://api.ispras.ru/texterra/v1/nlp?targetType=lemma&apikey=09a19b6bf78224ba0a98d7e0bcd297d65b4b4586")
+                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "http://api.ispras.ru/texterra/v1/nlp?targetType=lemma&apikey=913cdfa8a00e017c443ea0bf209204343e26975c")
                     {
                         Content = new StringContent("[{\"text\":\"" + /*myNews*/ allNews[i].Summary + "\"}]",
 

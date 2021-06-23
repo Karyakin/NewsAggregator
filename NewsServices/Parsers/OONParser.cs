@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Services.Parsers
 {
-    public class IgromaniaParser : IIgromaniaParser
+    public class OONParser : IOONParser
     {
         public async Task<NewStrings> Parse(SyndicationItem syndicationItem)
         {
@@ -110,10 +110,8 @@ namespace Services.Parsers
 
             return fullNewsText;
 
+
+
         }
     }
 }
-/*||
-                    item.OuterHtml.Equals("info_block_botrt") ||
-                    item.OuterHtml.Equals("uninote console") ||
-                    item.OuterHtml.Equals("clear_block clearfix")*/

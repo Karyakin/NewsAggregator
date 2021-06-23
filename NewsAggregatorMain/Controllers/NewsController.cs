@@ -1,15 +1,11 @@
 ﻿using AutoMapper;
-using Contracts.RepositoryInterfaces;
 using Contracts.ServicesInterfacaces;
 using Contracts.UnitOfWorkInterface;
 using Entities.DataTransferObject;
-using Entities.Entity.NewsEnt;
-using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using NewsAggregatorMain.Models;
 using NewsAggregatorMain.Models.ViewModel.NewsVM;
 using Serilog;
@@ -17,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml;
 
 namespace NewsAggregatorMain.Controllers
 {
@@ -56,7 +51,7 @@ namespace NewsAggregatorMain.Controllers
 
             foreach (var item in rsssouses)
             {
-                if (/*item.Name.Equals("TUT.by") || item.Name.Equals("Onliner")*/ item.Name.Equals("igromania"))
+                if (/*item.Name.Equals("TUT.by") || item.Name.Equals("Onliner")*/ item.Name.Equals("igromania") /*|| item.Name.Equals("OON")*/)
                 {
                     var newsList = await _newsService.GetNewsInfoFromRssSourse(item);
                     newInfos.AddRange(newsList);

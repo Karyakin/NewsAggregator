@@ -53,6 +53,7 @@ namespace NewsAgregator.WebAPI
             services.AddControllersWithViews();
             services.AddScoped<IUnitOfWork, RepositoryUnitOfWork>();
             services.AddScoped<INewsService, NewsService>();
+           // services.AddScoped<INewsService, CQRSNewsService>();
             services.AddScoped<IRssSourceService, RssSourceService>();
             services.AddScoped<IRssSourceService, CQSRssSourceService>();
             services.AddScoped<IUserService, CQRSUserService>();
@@ -72,6 +73,7 @@ namespace NewsAgregator.WebAPI
             services.AddScoped<IJwtAuthManager, JwtAuthManager>();
             services.AddScoped<TutByParser>(); //внедрение без привязки к родитель(альтернатива)
             services.AddScoped<OnlinerParser>();//внедрение без привязки к родитель(альтернатива)
+            services.AddScoped<IgromaniaParser>();//внедрение без привязки к родитель(альтернатива)
 
             services.AddHangfire(conf => conf// для автоматического обновления новосте
                 .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
@@ -137,7 +139,7 @@ namespace NewsAgregator.WebAPI
             var newsService = serviceProvider.GetService(typeof(INewsService)) as INewsService;
 
             /*https://crontab.guru/#*_*_*_*_**/
-           /* RecurringJob.AddOrUpdate(() => newsService.RateNews(), "59 * * * *");*/
+            RecurringJob.AddOrUpdate(() => newsService.RateNews(), "59 * * * *");
             /* RecurringJob.AddOrUpdate(() => newsService.Aggregate(), "* 6,10,14,20,23 * * *");
             */
             /*RecurringJob.AddOrUpdate(() => Console.WriteLine("выполнилась джоба"), "0,17,20,30,45 * * * *");//crontab.guru*/

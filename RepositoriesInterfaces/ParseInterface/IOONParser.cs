@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Contracts.ParseInterface
 {
-   public interface IIgromaniaParser
+   public interface IOONParser
     {
         public Task<NewStrings> Parse(SyndicationItem syndicationItem);
     }

@@ -119,12 +119,18 @@ namespace Services
             }
             var getCompanyDTO = _mapper.Map<IEnumerable<NewsGetDTO>>(companies).ToList();
 
-            return getCompanyDTO.OrderByDescending(x=>x.StartDate);
+            return getCompanyDTO/*.OrderByDescending(x=>x.StartDate)*/;
         }
 
         public async Task<NewsGetDTO> GetNewsBiId(Guid? newsId)
         {
-            var news = await _unitOfWork.News.GetById(newsId.Value, false);
+            //var news = await _unitOfWork.News.GetById(newsId.Value, false);
+            var news = await _unitOfWork.News.GetAll(false)
+             .Include(x => x.Category)
+             .Include(x => x.RssSource)
+             .Include(x => x.Comments).ThenInclude(x=>x.User).Where(x=>x.Id.Equals(newsId.Value))
+             .FirstOrDefaultAsync();
+
             var test = _mapper.Map<NewsGetDTO>(news);
 
             return test;

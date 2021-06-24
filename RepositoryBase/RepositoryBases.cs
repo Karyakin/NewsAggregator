@@ -61,7 +61,6 @@ namespace Repositories
             _Table.AddRange(entity);
         }
 
-
         public void Remove(T entity)
         {
             _Table.RemoveRange(entity);
@@ -76,7 +75,6 @@ namespace Repositories
         {
             _Table.Update(entity);
         }
-
 
         public void Dispose()
         {

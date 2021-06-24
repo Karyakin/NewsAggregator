@@ -19,15 +19,30 @@
                 </tr>
             </table>
         </font>
-        <h1>ALL NEWS</h1>
+        <hr align="center" color="Blue" />
+        <h1 align="center">ALL NEWS</h1>
+        <div>
+
+        </div>
     </div>
 </div>
+
 
 @if (Model.IsMember)
 {
     <p>
-        <a asp-action="Aggregate">Create News</a>
+        <div class="row">
+            <div align="left" class="col">
+            <a asp-action="Aggregate">Create News</a>
 
+            </div>
+
+            <div align="right" class="col">
+
+            <a asp-action="Index" asp-route-sortState="RatingSort">Sort</a>
+            </div>
+
+        </div>
     </p>
 }
 
@@ -40,11 +55,41 @@
 
 </div>
 
-<div class="btn-group">
-    @Html.CreatePagination(Model.PageInfo, i =>
-Url.Action("Index", new { page = i, sourseId = Model.News.FirstOrDefault().Id}))
+@*<div class="btn-group">
+        @Html.CreatePagination(Model.PageInfo, i =>
+    Url.Action("Index", new { page = i, sourseId = Model.News.FirstOrDefault().Id}))
+
+    </div>
+*@
+<hr align="center" color="Blue" />
+
+<div class="row">
+
+    <div class="col">
+        @if (Model.PageInfo.HasPreviousPage)
+        {
+            <a asp-action="Index"
+               asp-route-page="@(Model.PageInfo.PageNumber - 1)"
+               class="btn btn-outline-dark">
+                <i class="glyphicon glyphicon-chevron-left"></i>
+                Назад
+            </a>
+        }
+    </div>
+
+    <div class="col">@Model.PageInfo.PageNumber</div>
+
+    <div class="col">
+        @if (Model.PageInfo.HasNextPage)
+        {
+            <a asp-action="Index"
+               asp-route-page="@(Model.PageInfo.PageNumber + 1)"
+               class="btn btn-outline-dark">
+                Вперед
+                <i class="glyphicon glyphicon-chevron-right"></i>
+
+            </a>
+        }
+    </div>
 
 </div>
-
-
-

@@ -8,7 +8,7 @@ namespace NewsAggregatorMain.Models.ViewModel.NewsVM
 {
     public class NewsListWithPaginationInfo
     {
-        public IEnumerable<NewsGetDTO> News { get; set; }
+        public IEnumerable<NewsGetDTO> News { get; set; } 
         public PageInfo PageInfo { get; set; }
         public bool IsMember { get; set; }
     }

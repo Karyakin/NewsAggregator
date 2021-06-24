@@ -9,14 +9,25 @@
     <div class="card-body">
         <h5 class="card-title">@Model.Title</h5>
         <p class="card-text">@Model.Content</p>
-        <a asp-action="ReadInAgregator" asp-route-Id="@Model.Id">Читать на агрегаторе</a>
-        <br />
-        <a href="@Model.Url">Читать в источнике</a>
-        @if (User.Claims.Any(x => x.Value.Contains("Admin")))
-        {
-            <p align="right">
-                <a asp-action="Details" asp-route-id="@Model.Id">Details</a>
-            </p>
-        }
+
+
     </div>
+    @if (User.Claims.Any(x => x.Value.Contains("Admin")))
+    {
+
+        <div class="row">
+            <div class="col-lg-6">
+                <a asp-controller="News" asp-action="ReadInAgregator" asp-route-Id="@Model.Id">На агрегаторе</a>
+            </div>
+            <br />
+            <div class="col-lg-6" align="right">
+                <a href="@Model.Url">В источнике</a>
+            </div>
+        </div>
+        <hr />
+
+        <p align="right">
+            <a asp-action="Details" asp-route-id="@Model.Id">Details</a>
+        </p>
+    }
 </div>

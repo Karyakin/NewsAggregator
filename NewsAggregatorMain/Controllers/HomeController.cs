@@ -1,23 +1,48 @@
-﻿using Contracts.ServicesInterfacaces;
+﻿using AutoMapper;
+using Contracts.ServicesInterfacaces;
+using Contracts.UnitOfWorkInterface;
 using Entities.DataTransferObject;
+using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NewsAggregatorMain.Filters;
 using NewsAggregatorMain.Models;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace NewsAggregatorMain.Controllers
 {
     public class HomeController : Controller
     {
-        public HomeController()
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
+        public HomeController(IMapper mapper, IUnitOfWork unitOfWork)
         {
+            _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var bestNewsEnt = await _unitOfWork.News.GetAll(false).OrderByDescending(x => x.Rating).Select(x=>_mapper.Map<NewsGetDTO>(x))
+               .FirstOrDefaultAsync();
+
+            var badNewsEnt = await _unitOfWork.News.GetAll(false).OrderBy(x => x.Rating).Select(x => _mapper.Map<NewsGetDTO>(x))
+               .FirstOrDefaultAsync();
+
+          /*  var newsForGom = _mapper.Map<NewsGetDTO>(bestNewsEnt);*/
+
+
+            var news = new NewsForHomePageModel
+            {
+                GoogNews = bestNewsEnt,
+                BadNews = badNewsEnt
+            };
+
+            return View(news);
         }
 
         [ChromFilterAttribute]

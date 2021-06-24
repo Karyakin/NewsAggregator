@@ -43,6 +43,7 @@ namespace NewsAggregatorMain.Controllers
             return View();
         }
 
+
         [HttpPost]
         public async Task<IActionResult> Aggregate(CreateNewsViewModel createNewsViewModel)
         {
@@ -62,7 +63,7 @@ namespace NewsAggregatorMain.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(int page = 1, SortState sortState = SortState.RatingDesc)
         {
             var currence = await _exchangeService.GetCurrencyExchangeAsync(DateTime.Now, 0);
 
@@ -80,11 +81,14 @@ namespace NewsAggregatorMain.Controllers
                 }
                 if (curAbbreviation.Equals("RUB"))
                 {
-                    ViewData["RUB"] = $"{currencyValue} за 100 росс.рублей";
+                    ViewData["RUB"] = $"{currencyValue} за 100 рос.рублей";
                 }
             }
 
             var allNews = (await _newsService.FindAllNews()).ToList();
+
+
+            ViewData["RatingSort"] = sortState == SortState.RatinAsc ? SortState.RatingDesc: SortState.RatinAsc;
 
             var pageSize = 9;
             var newsPerPages = allNews.Skip((page - 1) * pageSize).Take(pageSize);
@@ -94,6 +98,18 @@ namespace NewsAggregatorMain.Controllers
                 PageSize = pageSize,
                 TotalItems = allNews.Count
             };
+
+
+
+            ///пересоздаем newsPerPages в зависимости от соритровки
+            newsPerPages = sortState switch
+            {
+                SortState.RatingDesc => newsPerPages.OrderByDescending(s => s.Rating),
+                SortState.RatinAsc => newsPerPages.OrderBy(s => s.Rating),
+                _ => newsPerPages.OrderBy(s => s.Rating),// по умолчанию
+            };
+
+
 
             return View(new NewsListWithPaginationInfo()
             {

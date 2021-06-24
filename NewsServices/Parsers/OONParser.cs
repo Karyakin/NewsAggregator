@@ -23,27 +23,15 @@ namespace Services.Parsers
 
             var htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(response);
-            var htmlBody = htmlDoc.DocumentNode.SelectSingleNode("//div[@class='page_news noselect']");
-            if (htmlBody is null)
-            {
-                return null;
-            }
+            var htmlBody = htmlDoc.DocumentNode.SelectSingleNode("//div[@class='main-container container']");
+
             var newsText = htmlBody.OuterHtml;
 
 
 
             var htmlDocWitout = new HtmlDocument();
             htmlDocWitout.LoadHtml(newsText);
-            var htmlBodyWitout = htmlDocWitout.DocumentNode.SelectSingleNode("//div[@class='share_block']");
-            if (htmlBodyWitout is null)
-            {
-                return null;
-            }
-            htmlBodyWitout.RemoveAllChildren();
-
-            htmlBodyWitout = htmlDocWitout.DocumentNode.SelectSingleNode("//div[@class='uninote console']");
-
-
+            var htmlBodyWitout = htmlDocWitout.DocumentNode.SelectSingleNode("//div[@class='col-md-4 col-xs-12 top-right-column']");
             if (htmlBodyWitout is null)
             {
                 return null;
@@ -52,32 +40,35 @@ namespace Services.Parsers
 
 
 
-            htmlBodyWitout = htmlDocWitout.DocumentNode.SelectSingleNode("//div[@class='share_block']");
+            htmlBodyWitout = htmlDocWitout.DocumentNode.SelectSingleNode("//aside[@class='col-sm-3 sidebar sidebar-second']");
             if (htmlBodyWitout != null)
             {
                 htmlBodyWitout.RemoveAllChildren();
             }
 
-            htmlBodyWitout = htmlDocWitout.DocumentNode.SelectSingleNode("//div[@class='favorite_block']");
+            htmlBodyWitout = htmlDocWitout.DocumentNode.SelectSingleNode("//div[@class='panel panel-info']");
             if (htmlBodyWitout != null)
             {
                 htmlBodyWitout.RemoveAllChildren();
             }
 
-
-            htmlBodyWitout = htmlDocWitout.DocumentNode.SelectSingleNode("//div[@class='page_news_info clearfix']");
+            htmlBodyWitout = htmlDocWitout.DocumentNode.SelectSingleNode("//div[@class='field-items']");
             if (htmlBodyWitout != null)
             {
                 htmlBodyWitout.RemoveAllChildren();
             }
 
-
-            htmlBodyWitout = htmlDocWitout.DocumentNode.SelectSingleNode("//div[@class='nepncont']");
+            htmlBodyWitout = htmlDocWitout.DocumentNode.SelectSingleNode("//div[@class='field-item even']");
             if (htmlBodyWitout != null)
             {
                 htmlBodyWitout.RemoveAllChildren();
             }
 
+            htmlBodyWitout = htmlDocWitout.DocumentNode.SelectSingleNode("//section[@id='block-views-story-story-tags-block']");
+            if (htmlBodyWitout != null)
+            {
+                htmlBodyWitout.RemoveAllChildren();
+            }
 
 
             var text = htmlDocWitout.DocumentNode.OuterHtml;
@@ -86,7 +77,7 @@ namespace Services.Parsers
 
             var htmlDocPhotoUrl = new HtmlDocument();
             htmlDocPhotoUrl.LoadHtml(text);
-            var htmlphoto = htmlDocPhotoUrl.DocumentNode.SelectSingleNode("//div[@class='main_pic_container']");
+            var htmlphoto = htmlDocPhotoUrl.DocumentNode.SelectSingleNode("//img[@class='img-responsive']");
 
             if (htmlphoto is null)
             {
@@ -96,7 +87,7 @@ namespace Services.Parsers
             var photoUrlDirty = htmlphoto.OuterHtml;
 
             int newsHendlerImageUrlStart = photoUrlDirty.IndexOf("\"https:");
-            int newsHendlerImageUrlEnd = photoUrlDirty.IndexOf(".jpg");
+            int newsHendlerImageUrlEnd = photoUrlDirty.IndexOf(".jpg\"");
 
             string imageUrl = photoUrlDirty.Substring(newsHendlerImageUrlStart + 1, newsHendlerImageUrlEnd + 3 - newsHendlerImageUrlStart);
             #endregion

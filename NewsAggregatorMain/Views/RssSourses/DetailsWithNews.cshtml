@@ -40,6 +40,7 @@
                 <th>
                     Title
                 </th>
+
                 <th>
                     Category
                 </th>
@@ -62,9 +63,13 @@
                     <td>
                         @item.Title
                     </td>
-                    <td>
-                        @item.Category.Name
-                    </td>
+                    @if (item.Category?.Name == null)
+                    {
+                        <td>
+                            нет
+                        </td>
+                    }
+
                     <td>
                         @item.StartDate
                     </td>

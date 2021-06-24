@@ -7,15 +7,18 @@ using System.Threading.Tasks;
 
 namespace Entities.Models.AssembledModel
 {
-   public class SourseWithNewsCategory
+    public class SourseWithNewsCategory
     {
         public Guid Id { get; set; }
         public Guid RssSourceId { get; set; }
         public string Name { get; set; }
-        public string Link { get; set; } 
+        public string Link { get; set; }
         public DateTime DateOfReceiving { get; set; }
-       // public IEnumerable<Guid> NewsId { get; set; }
-        public IEnumerable<News> News{ get; set; }
+        // public IEnumerable<Guid> NewsId { get; set; }
+        public IEnumerable<News> News { get; set; }
+
+       
         public Category Categories { get; set; }
+
     }
 }

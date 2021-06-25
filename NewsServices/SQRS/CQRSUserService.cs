@@ -6,6 +6,7 @@ using Entities.Models;
 using MediatR;
 using NewsAgregato.DAL.CQRS.Queries;
 using Repositories.Context;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,9 +27,17 @@ namespace Services.SQRS
 
         public async Task<User> GetUserByLogin(string login)
         {
-            var getUserQuery = new GetUserByLoginQuery(login);
-            var user = await _mediator.Send(getUserQuery);
-            return user;
+            try
+            {
+                var getUserQuery = new GetUserByLoginQuery(login);
+                var user = await _mediator.Send(getUserQuery);
+                return user;
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"{ex.Message}");
+                throw;
+            }
         }
 
 
@@ -39,7 +48,6 @@ namespace Services.SQRS
             var users =_mapper.Map<IEnumerable<User>>(usersDto);
             return users;
         }
-
 
         #region NotImplemented
 
@@ -81,7 +89,5 @@ namespace Services.SQRS
 
 
         #endregion
-
-       
     }
 }

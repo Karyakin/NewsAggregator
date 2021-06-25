@@ -63,7 +63,9 @@ namespace NewsAggregatorMain.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Index(int page = 1, SortState sortState = SortState.RatingDesc)
+
+
+        private async Task<NewsListWithPaginationInfo> GetNews(int page)
         {
             var currence = await _exchangeService.GetCurrencyExchangeAsync(DateTime.Now, 0);
 
@@ -88,8 +90,6 @@ namespace NewsAggregatorMain.Controllers
             var allNews = (await _newsService.FindAllNews()).ToList();
 
 
-            ViewData["RatingSort"] = sortState == SortState.RatinAsc ? SortState.RatingDesc: SortState.RatinAsc;
-
             var pageSize = 9;
             var newsPerPages = allNews.Skip((page - 1) * pageSize).Take(pageSize);
             var pageInfo = new PageInfo()
@@ -100,8 +100,40 @@ namespace NewsAggregatorMain.Controllers
             };
 
 
+            return new NewsListWithPaginationInfo()
+            {
+                News = newsPerPages,
+                PageInfo = pageInfo,
+                IsMember = HttpContext.User.Claims.Any(x => x.Value.Contains("Admin"))
+            };
+        }
 
-            ///пересоздаем newsPerPages в зависимости от соритровки
+        public async Task<IActionResult> Index(/*SortState? sortState, */int page = 1)
+        {
+            return View(await GetNews(page));
+        }
+
+
+        public async Task<IActionResult> IndexSort(SortState? sortState, int page)
+        {
+            var news = await GetNews(page);
+
+            if (!sortState.HasValue)
+            {
+               news.News = Sort(news.News, SortState.RatingDesc);
+            }
+            else
+            {
+                news.News = Sort(news.News, sortState.Value);
+            }
+
+            return View("Index",news);
+        }
+
+        private IEnumerable<NewsGetDTO> Sort(IEnumerable<NewsGetDTO> newsPerPages, SortState sortState)
+        {
+
+            ViewData["RatingSort"] = sortState == SortState.RatinAsc ? SortState.RatingDesc : SortState.RatinAsc;
             newsPerPages = sortState switch
             {
                 SortState.RatingDesc => newsPerPages.OrderByDescending(s => s.Rating),
@@ -109,14 +141,7 @@ namespace NewsAggregatorMain.Controllers
                 _ => newsPerPages.OrderBy(s => s.Rating),// по умолчанию
             };
 
-
-
-            return View(new NewsListWithPaginationInfo()
-            {
-                News = newsPerPages,
-                PageInfo = pageInfo,
-                IsMember = HttpContext.User.Claims.Any(x => x.Value.Contains("Admin"))
-            });
+            return newsPerPages;
         }
 
         [HttpPost]

@@ -1,26 +1,33 @@
 ﻿@model Entities.DataTransferObject.RegisterDto
-<h2>Registration</h2>
+
+
+<h2 align="center">Registration</h2>
 
 <form asp-action="Register" asp-controller="Account" asp-antiforgery="true" method="post">
     <!--antiforgeryбудет - сгенерирован токе который потом на BE будет валидироватся. т.е. теперь с консоли какой-нибудь невозможно будет сгенерит 100000 запросо.-->
     <!--<div class="validation" asp-validation-summary="ModelOnly"></div>--><!--если на нашей модели RegisterViewModel будут ошибки с валидацией, то они будут отрисованы на форме-->
 
     <div>
-        <hr align="center" color="Blue" />
-        <div class="form-group">
-            <label asp-for="Login">Login</label>
+        <div align="center">
+            <hr align="center" color="Blue" />
+            <div class="form-group">
+                <label asp-for="Login">Login</label>
+            </div>
             <input type="text" asp-for="Login" />
             <span asp-validation-for="Login" class="text-danger"></span>
         </div>
-
-        <div class="form-group">
-            <label asp-for="LastName">LastName</label>
+        <div align="center">
+            <div class="form-group">
+                <label asp-for="LastName">LastName</label>
+            </div>
             <input type="text" asp-for="LastName" />
             <span asp-validation-for="LastName" class="text-danger"></span>
         </div>
 
-        <div class="form-group">
-            <label for="myBrowser">Выберите страну</label>
+        <div align="center">
+            <div class="form-group">
+                <label for="myBrowser">Выберите страну</label>
+            </div>
             <input list="character1" asp-for="Country" size="45">
             <datalist id="character1">
                 @foreach (var item1 in Model.CountryName)
@@ -31,8 +38,10 @@
             <span asp-validation-for="Country" class="text-danger"></span>
         </div>
 
-        <div class="form-group">
-            <label for="myBrowser">Выберите страну</label>
+        <div align="center">
+            <div class="form-group">
+                <label for="myBrowser">Выберите страну</label>
+            </div>
             <input list="character" asp-for="City" size="45">
             <datalist id="character">
                 @foreach (var item1 in Model.CitiesName)
@@ -43,25 +52,31 @@
             <span asp-validation-for="City" class="text-danger"></span>
         </div>
 
-        <div>
-            <label for="DayOfBirth">Введите дату рождения:</label>
+
+        <div align="center">
+            <div>
+                <label for="DayOfBirth">Введите дату рождения:</label>
+            </div>
             <input type="date" asp-for="DayOfBirth" value="12-02-2012">
             <span asp-validation-for="DayOfBirth" class="text-danger"></span>
         </div>
 
 
-        <div class="form-group">
-            <label asp-for="Email">Email</label>
+        <div align="center">
+            <div class="form-group">
+                <label asp-for="Email">Email</label>
+            </div>
             <input type="text" asp-for="Email" />
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
+        <div align="center">
+            <div class="form-group">
 
-        <div class="form-group">
-
-            <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" type="text/javascript"></script>
-            <script src="https://cdn.jsdelivr.net/npm/jquery.maskedinput@1.4.1/src/jquery.maskedinput.js" type="text/javascript"></script>
-            <script src="js/jquery.maskedinput.min.js"></script>
-            <label asp-for="Phones">Phones</label>
+                <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" type="text/javascript"></script>
+                <script src="https://cdn.jsdelivr.net/npm/jquery.maskedinput@1.4.1/src/jquery.maskedinput.js" type="text/javascript"></script>
+                <script src="js/jquery.maskedinput.min.js"></script>
+                <label asp-for="Phones">Phones</label>
+            </div>
             <input class="phone_mask" type="text" asp-for="Phones" />
             <script>
                 $(".phone_mask").mask("+375(99)9999999");
@@ -70,18 +85,22 @@
             <span asp-validation-for="Phones" class="text-danger"></span>
         </div>
 
-        <div class="form-group">
-            <label asp-for="Password">Password</label>
-            <input type="password" asp-for="Password" />
-            <span asp-validation-for="Password" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="PasswordConfirmation">Confirm Password</label>
-            <input type="password" asp-for="PasswordConfirmation" />
-            <span asp-validation-for="PasswordConfirmation" class="text-danger"></span>
-        </div>
-        <div>
-            <input type="submit" value="Register" />
+        <div align="center">
+            <div class="form-group">
+                <label asp-for="Password">Password</label>
+            </div>
+                <input type="password" asp-for="Password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            <div class="form-group">
+                <label asp-for="PasswordConfirmation">Confirm Password</label>
+            </div>
+                <input type="password" asp-for="PasswordConfirmation" />
+                <span asp-validation-for="PasswordConfirmation" class="text-danger"></span>
+            <div>
+                <input type="submit" value="Register" />
+            </div>
+
+
         </div>
     </div>
 </form>
@@ -89,7 +108,7 @@
 @section Scripts
     {
 
-   
+
 
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

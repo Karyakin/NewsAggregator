@@ -39,9 +39,8 @@
 
             <div align="right" class="col">
 
-            <a asp-action="Index" asp-route-sortState="RatingSort">Sort</a>
+            <a asp-action="IndexSort" asp-route-page="@Model.PageInfo.PageNumber"  asp-route-sortState="@ViewData["RatingSort"]">Sort</a>
             </div>
-
         </div>
     </p>
 }

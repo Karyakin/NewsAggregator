@@ -57,5 +57,45 @@ namespace NewsAgregator.WebAPI.Controllers
             jwtResult = _jwtAuthManager.GenerateTokens(request.Login, claims);
             return Ok(jwtResult);
         }
+
+
+
+        #region Don't read
+        /*
+               [AllowAnonymous]
+               [HttpPost]
+               [Route("Refresh")]
+               public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)
+               {
+                   if (!await _refreshTokenService.CheckIsRefreshTokenIsValid(request.Token))
+                   {
+                       return BadRequest("Invalid Refresh Token");
+                   }
+
+                   var userEmail = await _userService.GetUserEmailByRefreshToken(request.Token);
+                   if (!string.IsNullOrEmpty(userEmail))
+                   {
+                       var jwtAuthResult = await GetJwt(userEmail);
+                       return Ok(jwtAuthResult);
+                   }
+
+                   return BadRequest("Email or password is incorrect");
+               }
+
+               private async Task<JwtAuthResult> GetJwt(string email)
+               {
+                   JwtAuthResult jwtResult;
+                   var roleName = await _userService.GetUserRoleNameByEmail(email);
+
+                   var claims = new[]
+                   {
+                       new Claim(ClaimTypes.Email, email),
+                       new Claim(ClaimTypes.Role, roleName)
+                   };
+
+                   jwtResult = await _jwtAuthManager.GenerateTokens(email, claims);
+                   return jwtResult;
+               }*/
+        #endregion
     }
 }

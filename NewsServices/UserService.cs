@@ -1,9 +1,6 @@
-﻿using AutoMapper;
-using Contracts.Interfaces;
-using Contracts.ServicesInterfacaces;
+﻿using Contracts.ServicesInterfacaces;
 using Contracts.UnitOfWorkInterface;
 using Entities.DataTransferObject;
-using Entities.Entity.NewsEnt;
 using Entities.Entity.Users;
 using Entities.Models;
 using Entity.Users;
@@ -12,9 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
-using System.ServiceModel.Syndication;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -53,6 +48,8 @@ namespace Services
             var rez = await exist.AnyAsync(x => x.Login.Contains(login));
             return rez;
         }
+
+       
 
         [ValidateAntiForgeryToken]
         public async Task<User> ArrangeNewUser(RegisterDto registerDto, PasswordSoultModel passwordSoultModel)

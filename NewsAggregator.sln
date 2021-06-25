@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Domain\Entities
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL(DataAccessLayer)", "DAL(DataAccessLayer)", "{B3985BCA-3585-4581-BE4E-A96AD3305B07}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BusinessLogicLayer", "BusinessLogicLayer", "{170F76CB-F604-4862-8288-C1772F60D4A4}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "RepositoriesInterfaces\Contracts.csproj", "{FBE84C73-A635-42F5-867E-B33E85AD0D63}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositories", "RepositoryBase\Repositories.csproj", "{48BCDCD3-1E14-4DF3-A083-EA6AE71FBF0D}"

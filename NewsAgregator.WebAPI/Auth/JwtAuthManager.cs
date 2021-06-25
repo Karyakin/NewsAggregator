@@ -38,7 +38,7 @@ namespace NewsAgregator.WebAPI.Auth
             return new JwtAuthResult()
             {
                 AccessToken = accessToken,
-                RefreshToken = refreshToken
+                RefreshToken = refreshToken 
             };
         }
     }

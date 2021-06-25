@@ -8,22 +8,22 @@
 
 <div class="row">
     <div class="card col-sm-12 col-md-6 col-lg-6 news-card ">
-        <h3 align="center">Самая хорошая новость</h3>
+        <h3 align="center">Самая хорошая новость на этот час</h3>
         <div>
-            <img src="@Model.GoogNews.HeadImgUrl" alt="Girl in a jacket" width="530" height="330"
+            <img src="@Model.GoogNews?.HeadImgUrl" alt="Girl in a jacket" width="530" height="330"
                  style="vertical-align: bottom; margin:20px 00px">
         </div>
         <hr align="center" color="Grey" />
         <div class="card-body">
-            <h5 align="center" class="card-title">@Model.GoogNews.Title</h5>
-            <p class="card-text">@Model.GoogNews.Content</p>
+            <h5 align="center" class="card-title">@Model.GoogNews?.Title</h5>
+            <p class="card-text">@Model.GoogNews?.Content</p>
             <div class="row">
                 <div class="col-lg-6">
-                    <a asp-controller="News" asp-action="ReadInAgregator" asp-route-Id="@Model.GoogNews.Id">Читать на агрегаторе</a>
+                    <a asp-controller="News" asp-action="ReadInAgregator" asp-route-Id="@Model.GoogNews?.Id">Читать на агрегаторе</a>
                 </div>
                 <br />
                 <div class="col-lg-6" align="right">
-                    <a href="@Model.GoogNews.Url">Читать в источнике</a>
+                    <a href="@Model.GoogNews?.Url">Читать в источнике</a>
                 </div>
             </div>
 
@@ -31,7 +31,7 @@
             {
                 <hr />
                 <p align="right">
-                    <a asp-controller="News" asp-action="Details" asp-route-id="@Model.GoogNews.Id">Details</a>
+                    <a asp-controller="News" asp-action="Details" asp-route-id="@Model.GoogNews?.Id">Details</a>
                 </p>
             }
         </div>
@@ -39,29 +39,29 @@
     </div>
 
     <div class="card col-sm-12 col-md-6 col-lg-6 news-card ">
-        <h3 align="center">Самая плохая новость</h3>
+        <h3 align="center">Самая плохая новость на этот час</h3>
         <div>
-            <img src="@Model.BadNews.HeadImgUrl" alt="Girl in a jacket" width="530" height="330"
+            <img src="@Model.BadNews?.HeadImgUrl" alt="Girl in a jacket" width="530" height="330"
                  style="vertical-align: bottom; margin:20px 00px">
         </div>
         <hr align="center" color="Grey" />
         <div class="card-body">
-            <h5 align="center" class="card-title">@Model.BadNews.Title</h5>
-            <p class="card-text">@Model.BadNews.Content</p>
+            <h5 align="center" class="card-title">@Model.BadNews?.Title</h5>
+            <p class="card-text">@Model.BadNews?.Content</p>
             <div class="row" >
                 <div class="col-lg-6">
-                    <a asp-controller="News" asp-action="ReadInAgregator" asp-route-Id="@Model.BadNews.Id">Читать на агрегаторе</a>
+                    <a asp-controller="News" asp-action="ReadInAgregator" asp-route-Id="@Model.BadNews?.Id">Читать на агрегаторе</a>
                 </div>
                 <br />
                 <div class="col-lg-6" align="right">
-                    <a href="@Model.BadNews.Url">Читать в источнике</a>
+                    <a href="@Model.BadNews?.Url">Читать в источнике</a>
                 </div>
             </div>
             @if (User.Claims.Any(x => x.Value.Contains("Admin")))
             {
                 <hr />
                 <p align="right">
-                    <a asp-controller="News" asp-action="Details" asp-route-id="@Model.BadNews.Id">Details</a>
+                    <a asp-controller="News" asp-action="Details" asp-route-id="@Model.BadNews?.Id">Details</a>
                 </p>
             }
         </div>

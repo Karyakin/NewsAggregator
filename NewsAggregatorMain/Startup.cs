@@ -25,6 +25,8 @@ using System.Reflection;
 using MediatR;
 using System;
 using Services.СurrencyExchangeHelpers;
+using NewsAggregatorMain.Helper;
+using Services.ServiseHelpers;
 
 /*cd C:\Users\d.karyakin\Desktop\NewsAggregator\RepositoryBase*/
 
@@ -85,6 +87,7 @@ namespace NewsAggregatorMain
             services.AddScoped<OnlinerParser>();//внедрение без привязки к родитель(альтернатива)
             services.AddScoped<IgromaniaParser>();//внедрение без привязки к родитель(альтернатива)
             services.AddScoped<OONParser>();//внедрение без привязки к родитель(альтернатива)
+            services.AddScoped<ITexterra,Texterra>();
 
             services.AddMediatR(typeof(GetRssSourseByIdQueryHendler).GetTypeInfo().Assembly);
 

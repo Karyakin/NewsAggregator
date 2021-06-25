@@ -13,6 +13,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using Serilog;
 using Services.Parsers;
+using Services.ServiseHelpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -37,9 +38,10 @@ namespace Services
         private readonly IgromaniaParser _igromaniaParser; //Иная записть. Без интерфейса и базового типа. При такой записи нужно менять внедрение в Sturtup
         private readonly IRssSourceService _rssSourceService;
         private readonly IOONParser _OONParser;
+        private readonly ITexterra _texterra;
 
-        public NewsService(IUnitOfWork wrapper, IMapper mapper, ICategoryService categoryService, IRssSourceService rssSourceService, 
-            TutByParser tutByParser, OnlinerParser onlinerParser, IgromaniaParser igromaniaParser, OONParser oONParser)
+        public NewsService(IUnitOfWork wrapper, IMapper mapper, ICategoryService categoryService, IRssSourceService rssSourceService,
+            TutByParser tutByParser, OnlinerParser onlinerParser, IgromaniaParser igromaniaParser, OONParser oONParser, ITexterra texterra)
         {
             _unitOfWork = wrapper;
             _mapper = mapper;
@@ -49,6 +51,7 @@ namespace Services
             _onlinerParser = onlinerParser;
             _igromaniaParser = igromaniaParser;
             _OONParser = oONParser;
+            _texterra = texterra;
         }
 
         public async Task Aggregate()
@@ -59,7 +62,7 @@ namespace Services
 
             foreach (var item in rsssouses)
             {
-                if (/*item.Name.Equals("TUT.by") ||*/ item.Name.Equals("Onliner"))
+                if (/*item.Name.Equals("TUT.by") ||*/ item.Name.Equals("Onliner") || item.Name.Equals("igromania") || item.Name.Equals("OON"))
                 {
                     var newsList = await GetNewsInfoFromRssSourse(item);
                     newInfos.AddRange(newsList);
@@ -128,7 +131,7 @@ namespace Services
             var news = await _unitOfWork.News.GetAll(false)
              .Include(x => x.Category)
              .Include(x => x.RssSource)
-             .Include(x => x.Comments).ThenInclude(x=>x.User).Where(x=>x.Id.Equals(newsId.Value))
+             .Include(x => x.Comments).ThenInclude(x => x.User).Where(x => x.Id.Equals(newsId.Value))
              .FirstOrDefaultAsync();
 
             var test = _mapper.Map<NewsGetDTO>(news);
@@ -171,7 +174,7 @@ namespace Services
                             .GetAll(false)//rssSourseId must be not nullable
                             .Select(n => n.Url)
                             .ToListAsync();
-                           
+
                             var document = await context.OpenAsync(req => req.Content(syndicationItem.Summary.Text));// для парсинга страницы
 
                             try
@@ -251,50 +254,18 @@ namespace Services
 
         public async Task RateNews()
         {
-            /*  string myNews = "счастье хорошо жить ура любовь";*/
             var rateWorld = await _unitOfWork.RateWorld.GetAll(false).ToListAsync();
-
-            var allNews = (await FindAllNews()).Where(date => date.EndDate is null).ToArray();
-
+            var allNews = (await FindAllNews()).Where(date => date.EndDate is null).Take(29).ToArray();
             int newsRating = 0;
-
-            for (int i = 0; i < 3; i++)
+           
+            for (int i = 0; i < 29; i++)
             {
-                using (var httpClient = new HttpClient())
-                {
-                    httpClient.DefaultRequestHeaders
-                        .Accept
-                        .Add(new MediaTypeWithQualityHeaderValue("application/json"));//ACCEPT header
+                var model = await _texterra.GetTexterra(allNews[i].Summary);
+                newsRating = GetNewsRating(model, rateWorld);
 
-                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "http://api.ispras.ru/texterra/v1/nlp?targetType=lemma&apikey=913cdfa8a00e017c443ea0bf209204343e26975c")
-                    {
-                        Content = new StringContent("[{\"text\":\"" + /*myNews*/ allNews[i].Summary + "\"}]",
-
-                            Encoding.UTF8,
-                            "application/json")
-                    };
-                    var response = await httpClient.SendAsync(request);
-                    var responseString = await response.Content.ReadAsStringAsync();
-
-                    if (string.IsNullOrEmpty(responseString))
-                    {
-                        Log.Information($"не удалось оценить новость {DateTime.Now}.\n Сообщение от сервера:\n " +
-                            $"StatusCode: {response.StatusCode}, " +
-                            $"Headers: {response.Headers}, Content: {response.Content}, " +
-                            $"RequestMessage: {response.RequestMessage}");
-                        throw new ArgumentNullException("\n______________________________________________________________________________");
-                    }
-
-                    var model = JsonConvert.DeserializeObject<IEnumerable<Root>>(responseString);
-                    newsRating = GetNewsRating(model, rateWorld);
-                }
-
-                if (allNews[i].EndDate is null)
-                {
-                    allNews[i].Rating = newsRating;
-                    allNews[i].EndDate = DateTime.Now;
-                    _unitOfWork.News.Update(_mapper.Map<News>(allNews[i]));
-                }
+                allNews[i].Rating = newsRating;
+                allNews[i].EndDate = DateTime.Now;
+                _unitOfWork.News.Update(_mapper.Map<News>(allNews[i]));
             }
 
             await _unitOfWork.SaveAsync();
@@ -302,6 +273,11 @@ namespace Services
 
         public int GetNewsRating(IEnumerable<Root> model, IEnumerable<RateWorlds> rateWorlds)
         {
+            if (model is null)
+            {
+                return 0;
+            }
+
             List<string> worldsInNews = new List<string>();
 
             int rateForNews = 0;

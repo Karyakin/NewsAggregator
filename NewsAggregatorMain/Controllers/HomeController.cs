@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NewsAggregatorMain.Filters;
 using NewsAggregatorMain.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -27,11 +28,19 @@ namespace NewsAggregatorMain.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var bestNewsEnt = await _unitOfWork.News.GetAll(false).OrderByDescending(x => x.Rating).Select(x=>_mapper.Map<NewsGetDTO>(x))
-               .FirstOrDefaultAsync();
+            var today = DateTime.Today;
 
-            var badNewsEnt = await _unitOfWork.News.GetAll(false).OrderBy(x => x.Rating).Select(x => _mapper.Map<NewsGetDTO>(x))
-               .FirstOrDefaultAsync();
+            var bestNewsEnt = await _unitOfWork.News.GetAll(false)
+                .Where(t => t.StartDate.Date == today)
+                .OrderByDescending(x => x.Rating)
+                .Select(x=>_mapper.Map<NewsGetDTO>(x))
+                .FirstOrDefaultAsync();
+
+            var badNewsEnt = await _unitOfWork.News.GetAll(false)
+                .Where(t => t.StartDate.Date == today)
+                .OrderBy(x => x.Rating)
+                .Select(x => _mapper.Map<NewsGetDTO>(x))
+                .FirstOrDefaultAsync();
 
           /*  var newsForGom = _mapper.Map<NewsGetDTO>(bestNewsEnt);*/
 

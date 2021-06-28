@@ -31,7 +31,7 @@ namespace NewsAgregator.WebAPI.Auth
             var refreshToken = new RefreshToken()
             {
                 Login = login,
-                ExpireAt = DateTime.Now.AddHours(24), //на протяжении 24 все валидно
+                ExpireAt = DateTime.Now.AddHours(1), //на протяжении 1 все валидно
                 Token = Guid.NewGuid().ToString("D")
             };
 

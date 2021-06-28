@@ -1,12 +1,9 @@
-﻿using Contracts.Interfaces;
-using Contracts.ServicesInterfacaces;
+﻿using Contracts.ServicesInterfacaces;
 using Contracts.UnitOfWorkInterface;
 using Entity.Users;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Services
@@ -19,17 +16,13 @@ namespace Services
             _unitOfWork = unitOfWork;
         }
 
-
         public async Task<bool> CountryExist(string countryIn)
         {
             var exist = _unitOfWork.Country.GetAll(false);
-            var rez = await exist.AnyAsync(x => x.Name.Contains(countryIn));
-            return rez;
-
-
+            return await exist.AnyAsync(x => x.Name.Contains(countryIn));
         }
 
-        public async Task<IEnumerable<Country>> FindAllCountries() => 
+        public async Task<IEnumerable<Country>> FindAllCountries() =>
             await _unitOfWork.Country.GetAll(false).ToListAsync();
 
         public async Task<Country> FindCountryById(Guid countryId)
@@ -38,7 +31,7 @@ namespace Services
             return country;
         }
 
-        public async Task<Country> FindCountryByName(string nameCountry)=>
-           await _unitOfWork.Country.GetByCondition(x=>x.Name.Equals(nameCountry), false).SingleOrDefaultAsync();
+        public async Task<Country> FindCountryByName(string nameCountry) =>
+           await _unitOfWork.Country.GetByCondition(x => x.Name.Equals(nameCountry), false).SingleOrDefaultAsync();
     }
 }

@@ -22,7 +22,6 @@ namespace NewsAggregatorMain.Filters
             {
                 ViewName = "CustomError"
             };
-
         }
     }
 }

@@ -44,6 +44,7 @@ namespace NewsAgregator.WebAPI.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error(ex.Message);
                 return BadRequest(ex.Message);
                 throw;
             }
@@ -59,6 +60,7 @@ namespace NewsAgregator.WebAPI.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error(ex.Message);
                 return BadRequest(ex.Message);
                 throw;
             }

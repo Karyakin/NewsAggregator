@@ -5,6 +5,7 @@ using Entities.DataTransferObject;
 using Entities.Entity.NewsEnt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,37 +32,55 @@ namespace NewsAggregatorMain.Controllers
         [HttpGet]
         public async Task<IActionResult> List(Guid newsId)
         {
-            var commentsListEnt = await _commentService.FindAllCommentsForNews(newsId);
-            var commentsListDto = _mapper.Map<IEnumerable<CommentDto>>(commentsListEnt)
-                .OrderBy(x => x.CreateDate);
-            
-            return View(new CreateCommentDto
+            try
             {
-                NewsId = newsId,
-                Comments = commentsListDto
-            });
+                var commentsListEnt = await _commentService.FindAllCommentsForNews(newsId);
+                var commentsListDto = _mapper.Map<IEnumerable<CommentDto>>(commentsListEnt)
+                    .OrderBy(x => x.CreateDate);
+
+                return View(new CreateCommentDto
+                {
+                    NewsId = newsId,
+                    Comments = commentsListDto
+                });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                return BadRequest(ex.Message);
+                throw;
+            }
         }
 
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCommentDto createComment)
         {
-            var user = HttpContext.User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimsIdentity.DefaultNameClaimType));
-            var userEmail = user?.Value;
-            var userId = (await _userService.GetUserByLogin(userEmail)).Id;
-
-            var comment = new Comment
+            try
             {
-                Id = Guid.NewGuid(),
-                NewsId = createComment.NewsId,
-                Text = createComment.CommentText,
-                CreateDate = DateTime.Now,
-                UserId = userId,
-            };
+                var user = HttpContext.User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimsIdentity.DefaultNameClaimType));
+                var userEmail = user?.Value;
+                var userId = (await _userService.GetUserByLogin(userEmail)).Id;
 
-            _unitOfWork.Comment.Add(comment);
-            await _unitOfWork.SaveAsync();
-            return Ok();
+                var comment = new Comment
+                {
+                    Id = Guid.NewGuid(),
+                    NewsId = createComment.NewsId,
+                    Text = createComment.CommentText,
+                    CreateDate = DateTime.Now,
+                    UserId = userId,
+                };
+
+                _unitOfWork.Comment.Add(comment);
+                await _unitOfWork.SaveAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                return BadRequest(ex.Message);
+                throw;
+            }
         }
 
         [HttpGet]
@@ -73,10 +92,19 @@ namespace NewsAggregatorMain.Controllers
         [HttpGet]
         public async Task<IActionResult> DeleteComment(Guid commentId)
         {
-            var comment = await _commentService.GetCommentById(commentId);
-            _commentService.DeleteComment(comment);
-            await _unitOfWork.SaveAsync();
-            return Ok();
+            try
+            {
+                var comment = await _commentService.GetCommentById(commentId);
+                _commentService.DeleteComment(comment);
+                await _unitOfWork.SaveAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                return BadRequest(ex.Message);
+                throw;
+            }
         }
     }
 }

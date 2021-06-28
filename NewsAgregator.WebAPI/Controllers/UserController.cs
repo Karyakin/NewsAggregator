@@ -1,6 +1,7 @@
 ﻿using Contracts.ServicesInterfacaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System;
 using System.Threading.Tasks;
 
@@ -27,6 +28,7 @@ namespace NewsAgregator.WebAPI.Controllers
             }
             catch (Exception e)
             {
+                Log.Error(e.Message);
                 return BadRequest(e.Message);
                 throw;
             }

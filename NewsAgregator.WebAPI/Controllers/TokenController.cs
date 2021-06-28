@@ -6,6 +6,7 @@ using NewsAgregator.WebAPI.Auth;
 using Contracts.ServicesInterfacaces;
 using System.Security.Cryptography;
 using System.Text;
+using Serilog;
 
 namespace NewsAgregator.WebAPI.Controllers
 {
@@ -35,7 +36,7 @@ namespace NewsAgregator.WebAPI.Controllers
             var userRole = await _roleService.GetRoleIdyById(user.RoleId);
 
             if (user == null)
-                return BadRequest("Пользователь с таким именем не зарегистрирован!");
+               return BadRequest("Пользователь с таким именем не зарегистрирован!");
             using (var hmac = new HMACSHA512(user.PasswordSalt))
             {
                 var computesHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password));

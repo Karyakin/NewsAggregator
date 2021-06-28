@@ -27,38 +27,57 @@ namespace Services.SQRS
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public CQSRssSourceService( IMapper mapper, IMediator mediator)
+        public CQSRssSourceService(IMapper mapper, IMediator mediator)
         {
             _mapper = mapper;
             _mediator = mediator;
         }
 
-
         public async Task<RssSourceModel> GetRssSourceById(Guid? rssSourceId)
         {
             var rssSourseQuery = new GetRssSourseByIdQuery(rssSourceId.Value);
-            var rssSourseDto = await _mediator.Send(rssSourseQuery);
-            var res = _mapper.Map<RssSourceModel>(rssSourseDto);
-            return res;
+            try
+            {
+                var rssSourseDto = await _mediator.Send(rssSourseQuery);
+                return _mapper.Map<RssSourceModel>(rssSourseDto);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                throw;
+            }
         }
 
-       
+
         public async Task<IEnumerable<RssSourceModel>> RssSourceByNameAndUrl(string name, string url)
         {
             var rssSourseQuery = new GetRssSourseByNameAndUrlQuery(name, url);
-            var rssSourseDto = await _mediator.Send(rssSourseQuery);
-            var res = _mapper.Map<IEnumerable<RssSourceModel>>(rssSourseDto);
-            return res;
+            try
+            {
+                var rssSourseDto = await _mediator.Send(rssSourseQuery);
+                return _mapper.Map<IEnumerable<RssSourceModel>>(rssSourseDto);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                throw;
+            }
         }
 
         public async Task<int> DeleteRssSourse(Guid id)
         {
-
             var rssSourseCommand = new DeleteRssSourseCommand(id);
-            var res = await _mediator.Send(rssSourseCommand);
-            return res;
+            try
+            {
+                return await _mediator.Send(rssSourseCommand);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                throw;
+            }
         }
-      
+
         public async Task CreateOneRssSource(RssSourceModel rssSourceModel)
         {
             rssSourceModel.Id = Guid.NewGuid();
@@ -69,14 +88,30 @@ namespace Services.SQRS
                 , rssSourceModel.Url
                 , DateTime.Now);
 
-            /*var chengedCount = */await _mediator.Send(addRssSourseCommand);
+            try
+            {
+                await _mediator.Send(addRssSourseCommand);  /*var chengedCount = */
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                throw;
+            }
         }
 
         public async Task<IEnumerable<RssSourceModel>> GetAllRssSourceAsync(bool trackChanges)
         {
             var rssSourseQuery = new GetAllRssSourseQuery();
-            var rssSourseDto = await _mediator.Send(rssSourseQuery);
-            return rssSourseDto;
+            try
+            {
+                return await _mediator.Send(rssSourseQuery);
+
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                throw;
+            }
         }
 
         public Task<SourseWithNewsCategory> RssSourceByIdWithNews(Guid? rssSourceId)

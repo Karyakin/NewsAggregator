@@ -44,9 +44,16 @@ namespace Services.SQRS
         public async Task<IEnumerable<User>> GetAllUsers()
         {
             var usersQuery = new GetAllUsersQuery();
-            var usersDto = await _mediator.Send(usersQuery);
-            var users =_mapper.Map<IEnumerable<User>>(usersDto);
-            return users;
+            try
+            {
+                var usersDto = await _mediator.Send(usersQuery);
+                return _mapper.Map<IEnumerable<User>>(usersDto);
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"{ex.Message}");
+                throw;
+            }
         }
 
         #region NotImplemented

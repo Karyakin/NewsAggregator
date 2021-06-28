@@ -4,16 +4,12 @@
     ViewData["Title"] = "Details";
 }
 
-@*@if (Model.Url.Contains("onliner"))
-{
-    <h1>@Model.Title</h1>
-}*@
-
 <div>
-    @if (!Model.Url.Contains("un.org"))
+    @if (Model.Url.Contains("onliner"))
     {
         <img src="@Model.HeadImgUrl" />
     }
+   
 
     <h4>@Model.Content</h4>
 

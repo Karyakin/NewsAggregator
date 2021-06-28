@@ -63,8 +63,6 @@ namespace NewsAggregatorMain.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
-
         private async Task<NewsListWithPaginationInfo> GetNews(int page)
         {
             var currence = await _exchangeService.GetCurrencyExchangeAsync(DateTime.Now, 0);
@@ -108,11 +106,10 @@ namespace NewsAggregatorMain.Controllers
             };
         }
 
-        public async Task<IActionResult> Index(/*SortState? sortState, */int page = 1)
+        public async Task<IActionResult> Index(int page = 1)
         {
             return View(await GetNews(page));
         }
-
 
         public async Task<IActionResult> IndexSort(SortState? sortState, int page)
         {

@@ -1,14 +1,11 @@
-﻿using AutoMapper;
-using Contracts.ServicesInterfacaces;
+﻿using Contracts.ServicesInterfacaces;
 using Contracts.UnitOfWorkInterface;
 using Entities.Entity.NewsEnt;
 using Entities.Models;
 using Entities.Models.AssembledModel;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;

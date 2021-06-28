@@ -14,7 +14,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using NewsAggregatorMain.Helper;
 using NewsAgregato.DAL.CQRS.QueryHendlers;
 using NewsAgregator.WebAPI.Auth;
 using Repositories.CommentRepo;
@@ -144,17 +143,12 @@ namespace NewsAgregator.WebAPI
 
             /*https://crontab.guru/#*_*_*_*_**/
             RecurringJob.AddOrUpdate(() => newsService.Aggregate(), "50 6,10,14,20,23 * * *");
-           // RecurringJob.AddOrUpdate(() => newsService.RateNews(), "57 6,10,14,20,23 * * *");
-
-            /*RecurringJob.AddOrUpdate(() => Console.WriteLine("выполнилась джоба"), "0,17,20,30,45 * * * *");//crontab.guru*/
+            RecurringJob.AddOrUpdate(() => newsService.RateNews(), "57 14,17,23,01,06 * * *");
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
-using Contracts.ServicesInterfacaces;
 using Contracts.UnitOfWorkInterface;
 using Entities.DataTransferObject;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using NewsAggregatorMain.Filters;
 using NewsAggregatorMain.Models;
 using System;
@@ -41,9 +39,6 @@ namespace NewsAggregatorMain.Controllers
                 .OrderBy(x => x.Rating)
                 .Select(x => _mapper.Map<NewsGetDTO>(x))
                 .FirstOrDefaultAsync();
-
-          /*  var newsForGom = _mapper.Map<NewsGetDTO>(bestNewsEnt);*/
-
 
             var news = new NewsForHomePageModel
             {

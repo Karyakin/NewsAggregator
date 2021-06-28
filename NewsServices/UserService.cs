@@ -49,7 +49,7 @@ namespace Services
             return rez;
         }
 
-       
+
 
         [ValidateAntiForgeryToken]
         public async Task<User> ArrangeNewUser(RegisterDto registerDto, PasswordSoultModel passwordSoultModel)
@@ -59,13 +59,13 @@ namespace Services
             var phoneId = Guid.NewGuid();
             var cityId = (await _cityService.FindCityByName(registerDto.City)).Id;
             var countryId = (await _countryService.FindCountryByName(registerDto.Country)).Id;
-           
+
             EMail mail = new EMail()
             {
                 Id = eMailId,
                 UserEMail = registerDto.Email,
                 CreateDate = DateTime.Now,
-                ContactDetailsId = contactDetailsId 
+                ContactDetailsId = contactDetailsId
             };
 
             Phone phone = new Phone()
@@ -111,45 +111,31 @@ namespace Services
             return new User();
         }
 
-        public async Task<User> GetUserByLogin(string login)=>
+        public async Task<User> GetUserByLogin(string login) =>
             await _unitOfWork.User.GetByCondition(x => x.Login.Equals(login), false).FirstOrDefaultAsync();
 
-        public async Task<User> GetUserWithDetails(string login)
-        {
-            var user = await _unitOfWork.User.GetByCondition(x => x.Login.Equals(login), false)
-                .Include(x => x.ContactDetails).ThenInclude(x=>x.City)
-                .Include(x=>x.ContactDetails).ThenInclude(x=>x.Country)
-                .Include(x=>x.ContactDetails).ThenInclude(x=>x.EMails)
-                .Include(x=>x.ContactDetails).ThenInclude(x=>x.Phones)
-                .Include(x=>x.Role)
+        public async Task<User> GetUserWithDetails(string login) =>
+                 await _unitOfWork.User.GetByCondition(x => x.Login.Equals(login), false)
+                .Include(x => x.ContactDetails).ThenInclude(x => x.City)
+                .Include(x => x.ContactDetails).ThenInclude(x => x.Country)
+                .Include(x => x.ContactDetails).ThenInclude(x => x.EMails)
+                .Include(x => x.ContactDetails).ThenInclude(x => x.Phones)
+                .Include(x => x.Role)
                 .FirstOrDefaultAsync();
 
-            return user;
-        }
 
-        public async Task<IEnumerable<User>> GetAllUsersWithPhoneROleMail()
-        {
-            var users = await _unitOfWork.User.GetAll(false)
+        public async Task<IEnumerable<User>> GetAllUsersWithPhoneROleMail() =>
+                 await _unitOfWork.User.GetAll(false)
                 .Include(x => x.ContactDetails).ThenInclude(x => x.EMails)
                 .Include(x => x.ContactDetails).ThenInclude(x => x.Phones)
                 .Include(x => x.Role).ToListAsync();
 
 
-            return users;
-        }
 
-        public void DeleteUser(User user)
-        {
-            _unitOfWork.User.Remove(user);
-        }
+        public void DeleteUser(User user)=> _unitOfWork.User.Remove(user);
 
-        public async Task<User> GetUserById(Guid id)
-        {
-            var user = await _unitOfWork.User.GetById(id, false);
-
-            return user;
-        }
+        public async Task<User> GetUserById(Guid id)=>  await _unitOfWork.User.GetById(id, false);
         public async Task<IEnumerable<User>> GetAllUsers() => await _unitOfWork.User.GetAll(false).ToListAsync();
-        
+
     }
 }

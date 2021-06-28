@@ -1,5 +1,4 @@
 ﻿using AngleSharp;
-using AngleSharp.Dom;
 using AutoMapper;
 using Contracts.ParseInterface;
 using Contracts.ServicesInterfacaces;
@@ -8,20 +7,13 @@ using Entities.DataTransferObject;
 using Entities.Entity.NewsEnt;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Linq;
 using Serilog;
 using Services.Parsers;
 using Services.ServiseHelpers;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.ServiceModel.Syndication;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -122,12 +114,11 @@ namespace Services
             }
             var getCompanyDTO = _mapper.Map<IEnumerable<NewsGetDTO>>(companies).ToList();
 
-            return getCompanyDTO/*.OrderByDescending(x=>x.StartDate)*/;
+            return getCompanyDTO;/*.OrderByDescending(x=>x.StartDate)*/
         }
 
         public async Task<NewsGetDTO> GetNewsBiId(Guid? newsId)
         {
-            //var news = await _unitOfWork.News.GetById(newsId.Value, false);
             var news = await _unitOfWork.News.GetAll(false)
              .Include(x => x.Category)
              .Include(x => x.RssSource)
@@ -249,9 +240,6 @@ namespace Services
             return news;
         }
 
-        public void Save() => _unitOfWork.Save();
-        public Task SaveAsync() => _unitOfWork.SaveAsync();
-
         public async Task RateNews()
         {
             var rateWorld = await _unitOfWork.RateWorld.GetAll(false).ToListAsync();
@@ -302,6 +290,8 @@ namespace Services
             }
             return rateForNews;
         }
+        public void Save() => _unitOfWork.Save();
+        public Task SaveAsync() => _unitOfWork.SaveAsync();
     }
 
     #region Clase for serialazer json https://json2csharp.com/

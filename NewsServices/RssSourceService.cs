@@ -29,7 +29,7 @@ namespace Services
             _mapper = mapper;
             _mediator = mediator;
         }
-      
+
         public async Task CreateOneRssSource(RssSourceModel rssSourceModel)
         {
 
@@ -54,49 +54,67 @@ namespace Services
 
         public async Task<IEnumerable<RssSourceModel>> GetAllRssSourceAsync(bool trackChanges)
         {
-            var rssSourse = await _unitOfWork.RssSource.GetAll(false).ToListAsync();
-            var rssSourseDto = _mapper.Map<IEnumerable<RssSourceModel>>(rssSourse).ToList();
-            return rssSourseDto;
-
+            try
+            {
+                var rssSourse = await _unitOfWork.RssSource.GetAll(false).ToListAsync();
+                var rssSourseDto = _mapper.Map<IEnumerable<RssSourceModel>>(rssSourse).ToList();
+                return rssSourseDto;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                throw;
+            }
         }
 
         public async Task<RssSourceModel> GetRssSourceById(Guid? rssSourceId)
         {
-            var rssSourseQuery = new GetRssSourseByIdQuery(rssSourceId.Value);
-
-           var rssSourseDto= await _mediator.Send(rssSourseQuery);
-
-
-          /*  var rssmodel = await _unitOfWork.RssSource.GetById(rssSourceId.Value, false);*/
-            var res = _mapper.Map<RssSourceModel>(rssSourseDto);
-            return res;
+            try
+            {
+                var rssSourseQuery = new GetRssSourseByIdQuery(rssSourceId.Value);
+                var rssSourseDto = await _mediator.Send(rssSourseQuery);
+                return _mapper.Map<RssSourceModel>(rssSourseDto);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                throw;
+            }
         }
 
         public async Task<IEnumerable<RssSourceModel>> RssSourceByNameAndUrl(string name, string url)
         {
-            var rssSourseQuery = new GetRssSourseByNameAndUrlQuery(name, url);
-            var rssSourseDto = await _mediator.Send(rssSourseQuery);
-            var res = _mapper.Map<IEnumerable<RssSourceModel>>( rssSourseDto);
-            return res;
+            try
+            {
+                var rssSourseQuery = new GetRssSourseByNameAndUrlQuery(name, url);
+                var rssSourseDto = await _mediator.Send(rssSourseQuery);
+                return _mapper.Map<IEnumerable<RssSourceModel>>(rssSourseDto);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                throw;
+            }
         }
-    
+
 
         public async Task<SourseWithNewsCategory> RssSourceByIdWithNews(Guid? rssSourceId)
         {
+            try
+            {
+               var rssSourseWithNews = await _unitOfWork.RssSource.GetByCondition(x => x.Id.Equals(rssSourceId), true)
+              .Include(news => news.News)
+              .ThenInclude(z => z.Category)
+              .Include(x => x.News)//-- отсюда можно не делать, это тут не нужно и чисто для примера инклудов
+              .ThenInclude(x => x.Comments).SingleOrDefaultAsync();
 
-            // var resoult =  _unitOfWork.RssSource.GetBy(n => n.Id.Equals(rssSourceId.Value), n => n.News);
-
-
-            var rssSourseWithNews = await _unitOfWork.RssSource.GetByCondition(x => x.Id.Equals(rssSourceId), true)
-               .Include(news => news.News)
-               .ThenInclude(z => z.Category)
-               .Include(x => x.News)//-- отсюда можно не делать, это тут не нужно и чисто для примера инклудов
-               .ThenInclude(x => x.Comments).SingleOrDefaultAsync();
-
-
-            var rssSourceWithNews = _mapper.Map<SourseWithNewsCategory>(rssSourseWithNews);
-
-            return rssSourceWithNews;
+                return _mapper.Map<SourseWithNewsCategory>(rssSourseWithNews);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                throw;
+            }
         }
 
         public Task<int> DeleteRssSourse(Guid id)

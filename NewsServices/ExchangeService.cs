@@ -23,15 +23,12 @@ namespace Services
     {
         public HttpClient _httpClient;
         private readonly IOptions<NationalBankSettings> _nationalBankConfig;
-        private readonly IMapper _mapper;
        
 
-        public ExchangeService(HttpClient httpClient, IOptions<NationalBankSettings> options, IMapper mapper)
+        public ExchangeService(HttpClient httpClient, IOptions<NationalBankSettings> options)
         {
             _httpClient = httpClient;
             _nationalBankConfig = options;
-            _mapper = mapper;
-          
         }
 
         public async Task<IEnumerable<CurrencyDto>> GetCurrencyExchangeAsync(DateTime? onDate, int? periodicity)
@@ -47,8 +44,7 @@ namespace Services
                 var str = $"{_nationalBankConfig.Value.BaseUrl}exrates/rates?ondate={onDate.Value.ToString("yyyy-MM-dd")}&periodicity={periodicity}";
                 var responseString = await _httpClient.GetStringAsync(str);
                 var catalogCurrencyDto = JsonSerializer.Deserialize<IEnumerable<CurrencyDto>>(responseString);
-
-
+                
                 return catalogCurrencyDto;
             }
             catch (Exception ex)

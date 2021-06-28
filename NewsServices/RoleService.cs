@@ -4,6 +4,7 @@ using Contracts.UnitOfWorkInterface;
 using Entities.DataTransferObject;
 using Entities.Entity.Users;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,32 +24,41 @@ namespace Services
             _mapper = mapper;
         }
 
-      
-
         public async Task AddRoleToUser(string roleName, User user)
         {
-            //  var user = await _unitOfWork.User.GetByCondition(x => x.Login.Equals(userEnt.Login), false).FirstOrDefaultAsync();
-            //  user.RoleId = 
-            var role = await GetRoleIdyByName(roleName);
-            user.RoleId = role.Id;
-            _unitOfWork.User.Update(user);
-            await _unitOfWork.SaveAsync();
-            // return _mapper.Map<UserDto>(user);
+            if (roleName is null)
+            {
+                Log.Error($"roleName can not be null. method: {nameof(AddRoleToUser)}");
+                throw new ArgumentNullException();
+            }
+
+            if (user is null)
+            {
+                Log.Error($"user can not be null. method: {nameof(AddRoleToUser)}");
+                throw new ArgumentNullException();
+            }
+            try
+            {
+                var role = await GetRoleIdyByName(roleName);
+                user.RoleId = role.Id;
+                _unitOfWork.User.Update(user);
+                await _unitOfWork.SaveAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                throw;
+            }
+            
         }
 
-        public async Task<Role> GetRoleIdyById(Guid idRole)
-        {
-            var role = await _unitOfWork.Role.GetByCondition(x => x.Id.Equals(idRole), false).SingleOrDefaultAsync();
-            return role;
-        }
+        public async Task<Role> GetRoleIdyById(Guid idRole)=>
+                            await _unitOfWork.Role.GetByCondition(x => x.Id.Equals(idRole), false).SingleOrDefaultAsync();
 
         public async Task<Role> GetRoleIdyByName(string roleName) =>
-            await _unitOfWork.Role.GetByCondition(x => x.Name.Equals(roleName), false).SingleOrDefaultAsync();
+                            await _unitOfWork.Role.GetByCondition(x => x.Name.Equals(roleName), false).SingleOrDefaultAsync();
 
-        public async Task<IEnumerable<Role>> GetRoles()
-        {
-            var roles = await _unitOfWork.Role.GetAll(false).ToListAsync();
-            return roles;
-        }
+        public async Task<IEnumerable<Role>> GetRoles()=>
+                         await _unitOfWork.Role.GetAll(false).ToListAsync();
     }
 }

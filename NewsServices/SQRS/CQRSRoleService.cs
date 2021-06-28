@@ -2,6 +2,7 @@
 using Entities.Entity.Users;
 using MediatR;
 using NewsAgregato.DAL.CQRS.Queries;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,11 @@ namespace Services.SQRS
         public async Task<Role> GetRoleIdyById(Guid idRole)
         {
             var roleByIdQuery = new GetRoleByIdQuery(idRole);
+            if (roleByIdQuery is null)
+            {
+                Log.Error("failed to get the role");
+                throw new ArgumentNullException();
+            }
             var role = await _mediator.Send(roleByIdQuery);
             return role;
         }

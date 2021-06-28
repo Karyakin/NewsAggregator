@@ -1,6 +1,7 @@
 ﻿using Contracts.ServicesInterfacaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace NewsAgregator.WebAPI.Controllers
@@ -19,8 +20,16 @@ namespace NewsAgregator.WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var users = await _userService.GetAllUsers();
-            return Ok(users);
+            try
+            {
+                var users = await _userService.GetAllUsers();
+                return Ok(users);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+                throw;
+            }
         }
     }
 }

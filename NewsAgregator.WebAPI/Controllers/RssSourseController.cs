@@ -37,40 +37,71 @@ namespace NewsAgregator.WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(string name, string url)
         {
-            var sources = await _rssSourceService.RssSourceByNameAndUrl(name, url);
-            return Ok(sources);
+            try
+            {
+                var sources = await _rssSourceService.RssSourceByNameAndUrl(name, url);
+                return Ok(sources);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+                throw;
+            }
         }
 
         [HttpGet("all")]
         public async Task<IActionResult> Get()
         {
-            var sources = await _rssSourceService.GetAllRssSourceAsync(false);
-            return Ok(sources);
+            try
+            {
+                var sources = await _rssSourceService.GetAllRssSourceAsync(false);
+                return Ok(sources);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+                throw;
+            }
         }
 
 
         [HttpPost]
         public async Task<IActionResult> Post(RssSourceModel rssSourceModel)
         {
-          await _rssSourceService.CreateOneRssSource(rssSourceModel);
-
-            return Ok($"SrrSource \"{rssSourceModel.Name}\" was successfully created");
+            try
+            {
+                await _rssSourceService.CreateOneRssSource(rssSourceModel);
+                return Ok($"SrrSource \"{rssSourceModel.Name}\" was successfully created");
+            }
+            catch (Exception ex)
+            {
+                BadRequest(ex.Message);
+                throw;
+            }
         }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Post(Guid id)
         {
             var rssSourseModel = await _rssSourceService.GetRssSourceById(id);
-             
+
             if (rssSourseModel is null)
             {
                 Log.Error($"Can't find rss sourse by id - {id}");
                 return BadRequest($"Can't find rss sourse by id - {id}");
             }
 
-            var res = await _rssSourceService.DeleteRssSourse(id);//можно пернуть количество удаленных записей
-
-            return Ok($"Rss Sourse \"{rssSourseModel.Name}\" was successfully deleted");
+            try
+            {
+                var res = await _rssSourceService.DeleteRssSourse(id);//можно пернуть количество удаленных записей
+                return Ok($"Rss Sourse \"{rssSourseModel.Name}\" was successfully deleted");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+                throw;
+            }
         }
     }
 }

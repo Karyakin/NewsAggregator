@@ -28,6 +28,8 @@ using Services.ÑurrencyExchangeHelpers;
 using NewsAggregatorMain.Helper;
 using Services.ServiseHelpers;
 
+
+/*https://www.youtube.com/watch?v=M5kbqNaT4eA&ab_channel=ITAcademyWebinar*/
 /*cd C:\Users\d.karyakin\Desktop\NewsAggregator\RepositoryBase*/
 
 /*PS C:\Users\d.karyakin\Desktop\NewsAggregator\RepositoryBase> dotnet ef --startup-project ../NewsAggregatorMain/ migration
